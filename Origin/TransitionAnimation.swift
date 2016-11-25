@@ -19,14 +19,16 @@ final class TransitionAnimation : TransitionAnimatable {
     
     private var miniPlayerStartFrame: CGRect
     private var tabBarStartFrame: CGRect
+    private var navBarStrartFrame: CGRect?
     
     private var containerView: UIView?
     
     deinit {
         print("deinit TransitionAnimation")
     }
-    
+    // 初期化
     init(rootVC: MainViewController, modalVC: CollectionViewController) {
+        print("2")
         self.rootVC = rootVC
         self.modalVC = modalVC
         
@@ -37,12 +39,15 @@ final class TransitionAnimation : TransitionAnimatable {
     func prepareContainer(_ transitionType: TransitionType, containerView: UIView, from fromVC: UIViewController, to toVC: UIViewController) {
         self.containerView = containerView
         if transitionType.isPresenting {
+            print("-1")
             //            self.modalVC.view.removeFromSuperview()
             self.rootVC.view.insertSubview(self.modalVC.view, belowSubview: self.rootVC.tabBar)
         } else {
+            print("0")
             //            self.modalVC.view.removeFromSuperview()
             self.rootVC.view.insertSubview(self.modalVC.view, belowSubview: self.rootVC.tabBar)
         }
+        print("1")
         self.rootVC.view.setNeedsLayout()
         self.rootVC.view.layoutIfNeeded()
         self.modalVC.view.setNeedsLayout()
@@ -54,10 +59,12 @@ final class TransitionAnimation : TransitionAnimatable {
     
     func willAnimation(_ transitionType: TransitionType, containerView: UIView) {
         if transitionType.isPresenting {
+            print("2")
             self.rootVC.beginAppearanceTransition(true, animated: false)
             
             self.modalVC.view.frame.origin.y = self.rootVC.miniPlayerView.frame.origin.y + self.rootVC.miniPlayerView.frame.size.height
         } else {
+            print("3")
             self.rootVC.beginAppearanceTransition(false, animated: false)
             
             self.rootVC.miniPlayerView.alpha = 1.0
@@ -68,6 +75,7 @@ final class TransitionAnimation : TransitionAnimatable {
     
     func updateAnimation(_ transitionType: TransitionType, percentComplete: CGFloat) {
         if transitionType.isPresenting {
+            print("4")
             // miniPlayerView
             let startOriginY = self.miniPlayerStartFrame.origin.y
             let endOriginY = -self.miniPlayerStartFrame.size.height
@@ -89,6 +97,7 @@ final class TransitionAnimation : TransitionAnimatable {
             self.rootVC.tabBar.alpha = alpha
             self.rootVC.miniPlayerView.subviews.forEach { $0.alpha = alpha }
         } else {
+            print("5")
             // miniPlayerView
             let startOriginY = 0 - self.rootVC.miniPlayerView.bounds.size.height
             let endOriginY = self.miniPlayerStartFrame.origin.y

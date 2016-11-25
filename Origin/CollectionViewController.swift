@@ -20,6 +20,7 @@ class CollectionViewController: ExpandingViewController {
     fileprivate var artworkArray = [UIImage]()
     fileprivate var items: [MPMediaItem]?
     
+    @IBOutlet weak var navBar: UIView!
     @IBOutlet weak var toggleButton: SpringButton!
     @IBOutlet weak var currentTitle: UILabel!
     @IBOutlet weak var currentDetail: UILabel!
