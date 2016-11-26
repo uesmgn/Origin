@@ -42,28 +42,39 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet weak var toggleButton: SpringButton!
     @IBOutlet weak var nextButton: SpringButton!
     @IBOutlet weak var tabBar: UITabBar!
+    @IBOutlet weak var containerBottom: NSLayoutConstraint!
     
+    fileprivate var coredataAdmin = CoreDataAdmin()
     fileprivate var animator : ARNTransitionAnimator?
     fileprivate var modalVC : CollectionViewController!
 }
 
 extension MainViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //musicplayer.stop()
+        musicplayer.viewController = self
         s_queue.sync {
             musicplayer.allItemsToQueue()
             musicplayer.updatePlaylist()
         }
+        coredataAdmin.viewController = self
+        s_queue.sync {
+            self.coredataAdmin.deleteAll(entityName: "History")
+            self.coredataAdmin.defaultSetLibrary()
+        }
+        
+        ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         self.modalVC = storyboard.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController
         self.modalVC.modalPresentationStyle = .overFullScreen
         
         self.setupAnimator()
-        //miniPlayerView.isHidden = true
-        ratingView.isHidden = true
-        
+        miniPlayerView.isHidden = true
+        containerBottom.constant = -miniPlayerView.frame.size.height
     }
 
     override func didReceiveMemoryWarning() {
@@ -78,15 +89,15 @@ extension MainViewController {
     // update detail of now playing song
     func updatePlayinfo() {
         if let song = musicplayer.nowPlayingItem {
-            //miniPlayerView.isHidden = false
-            ratingView.isHidden = false
+            miniPlayerView.isHidden = false
+            containerBottom.constant = 0
             currentTitle.text = song.title ?? "unknown"
+            currentDetail.text = song.artist ?? "unknown"
             currentArtwork.image = song.artwork?.image(at: currentArtwork.bounds.size) ?? UIImage(named: "artwork_default")
-            // rating value of song in database
-            m_queue.async {
-            }
+            //システム設定の評価値
+            ratingBar.rating = Double(song.rating)
         } else {
-            //miniPlayerView.isHidden = true
+            miniPlayerView.isHidden = true
             ratingView.isHidden = true
         }
     }
@@ -98,8 +109,22 @@ extension MainViewController {
             self.toggleButton.imageView?.image = UIImage(named: "play-1")
         }
     }
+    
+    fileprivate func didFinishTouchingCosmos(_ rating: Double) {
+        if let song = musicplayer.nowPlayingItem {
+            // システム設定の評価値変更
+            musicplayer.setRating(Int(rating))
+            // CoreDataに保存
+            coredataAdmin.changeRatingOfLibrary(song: song, rating: rating)
+        }
+    }
 }
 
+extension MainViewController {
+    @IBAction func backToHome(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+}
 extension MainViewController {
     
     func setupAnimator() {
@@ -140,4 +165,6 @@ extension MainViewController {
         
         return image!
     }
+    
+    
 }

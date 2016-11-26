@@ -138,6 +138,12 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     func currentTime() -> Double {
         return player.currentPlaybackTime
     }
+    
+    func setRating(_ rating : Int) {
+        if let item = musicplayer.nowPlayingItem {
+            item.setValue(NSNumber(value:rating), forKey: MPMediaItemPropertyRating)
+        }
+    }
 }
 
 

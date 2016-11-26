@@ -24,6 +24,8 @@ class CollectionViewController: ExpandingViewController {
     fileprivate var cellsIsOpen = [Bool]()
     fileprivate var artworkArray = [UIImage]()
     fileprivate var items: [MPMediaItem]?
+    fileprivate var ratingDict: [MPMediaItem:Double]?
+    fileprivate var isKnownDict: [MPMediaItem:Bool]?
     
     @IBOutlet weak var navBar: UIView!
     @IBOutlet weak var toggleButton: SpringButton!

@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		30CD9FB18C1602C963CEE2C4 /* Pods_Origin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4DEEF4F3E640A783E5AD659 /* Pods_Origin.framework */; };
+		B20857C81DE9B34A00E05CAD /* CoreDataAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857C71DE9B34A00E05CAD /* CoreDataAdmin.swift */; };
+		B20857CD1DE9B41000E05CAD /* Other+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857C91DE9B41000E05CAD /* Other+CoreDataClass.swift */; };
+		B20857CE1DE9B41000E05CAD /* Other+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857CA1DE9B41000E05CAD /* Other+CoreDataProperties.swift */; };
+		B20857CF1DE9B41000E05CAD /* Library+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857CB1DE9B41000E05CAD /* Library+CoreDataClass.swift */; };
+		B20857D01DE9B41000E05CAD /* Library+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857CC1DE9B41000E05CAD /* Library+CoreDataProperties.swift */; };
+		B20857D31DE9BC1600E05CAD /* LibraryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857D21DE9BC1600E05CAD /* LibraryTableViewController.swift */; };
+		B20857DA1DE9E89200E05CAD /* History+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857D81DE9E89200E05CAD /* History+CoreDataClass.swift */; };
+		B20857DB1DE9E89200E05CAD /* History+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857D91DE9E89200E05CAD /* History+CoreDataProperties.swift */; };
+		B20857DD1DEA013600E05CAD /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857DC1DEA013600E05CAD /* TableViewCell.swift */; };
 		B24EED3A1DE6D0C300F5F5E8 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EED391DE6D0C300F5F5E8 /* CollectionViewController.swift */; };
 		B24EED3E1DE6D75200F5F5E8 /* MusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EED3D1DE6D75200F5F5E8 /* MusicPlayerController.swift */; };
 		B24EED401DE6D7B900F5F5E8 /* MiniPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EED3F1DE6D7B900F5F5E8 /* MiniPlayerView.swift */; };
@@ -26,6 +35,15 @@
 /* Begin PBXFileReference section */
 		104A44546A3700F7707A2536 /* Pods-Origin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Origin.release.xcconfig"; path = "Pods/Target Support Files/Pods-Origin/Pods-Origin.release.xcconfig"; sourceTree = "<group>"; };
 		19A7B1783C8F33698F3569ED /* Pods-Origin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Origin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Origin/Pods-Origin.debug.xcconfig"; sourceTree = "<group>"; };
+		B20857C71DE9B34A00E05CAD /* CoreDataAdmin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataAdmin.swift; sourceTree = "<group>"; };
+		B20857C91DE9B41000E05CAD /* Other+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Other+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B20857CA1DE9B41000E05CAD /* Other+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Other+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B20857CB1DE9B41000E05CAD /* Library+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Library+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B20857CC1DE9B41000E05CAD /* Library+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Library+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B20857D21DE9BC1600E05CAD /* LibraryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryTableViewController.swift; sourceTree = "<group>"; };
+		B20857D81DE9E89200E05CAD /* History+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "History+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B20857D91DE9E89200E05CAD /* History+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "History+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B20857DC1DEA013600E05CAD /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		B24EED391DE6D0C300F5F5E8 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		B24EED3D1DE6D75200F5F5E8 /* MusicPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerController.swift; sourceTree = "<group>"; };
 		B24EED3F1DE6D7B900F5F5E8 /* MiniPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniPlayerView.swift; sourceTree = "<group>"; };
@@ -65,6 +83,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		B20857D11DE9BBE800E05CAD /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				B20857D21DE9BC1600E05CAD /* LibraryTableViewController.swift */,
+				B20857DC1DEA013600E05CAD /* TableViewCell.swift */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
 		B24EED381DE6D09600F5F5E8 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +105,13 @@
 		B24EED3B1DE6D0D400F5F5E8 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				B20857C71DE9B34A00E05CAD /* CoreDataAdmin.swift */,
+				B20857D81DE9E89200E05CAD /* History+CoreDataClass.swift */,
+				B20857D91DE9E89200E05CAD /* History+CoreDataProperties.swift */,
+				B20857C91DE9B41000E05CAD /* Other+CoreDataClass.swift */,
+				B20857CA1DE9B41000E05CAD /* Other+CoreDataProperties.swift */,
+				B20857CB1DE9B41000E05CAD /* Library+CoreDataClass.swift */,
+				B20857CC1DE9B41000E05CAD /* Library+CoreDataProperties.swift */,
 				B2CC1B2A1DE6C6AE00356219 /* Origin.xcdatamodeld */,
 			);
 			name = CoreData;
@@ -117,6 +151,7 @@
 				B2CC1B251DE6C6AE00356219 /* MainViewController.swift */,
 				B2CC1B391DE6C80900356219 /* Origin */,
 				B24EED3C1DE6D14900F5F5E8 /* MusicPlayer */,
+				B20857D11DE9BBE800E05CAD /* Library */,
 				B2CC1B381DE6C80200356219 /* Transition */,
 				B24EED3B1DE6D0D400F5F5E8 /* CoreData */,
 				B24EED381DE6D09600F5F5E8 /* SupportFiles */,
@@ -278,14 +313,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B20857D31DE9BC1600E05CAD /* LibraryTableViewController.swift in Sources */,
 				B2CC1B261DE6C6AE00356219 /* MainViewController.swift in Sources */,
 				B2CC1B241DE6C6AE00356219 /* AppDelegate.swift in Sources */,
+				B20857D01DE9B41000E05CAD /* Library+CoreDataProperties.swift in Sources */,
 				B24EED401DE6D7B900F5F5E8 /* MiniPlayerView.swift in Sources */,
+				B20857C81DE9B34A00E05CAD /* CoreDataAdmin.swift in Sources */,
 				B24EED3E1DE6D75200F5F5E8 /* MusicPlayerController.swift in Sources */,
 				B2CC1B2C1DE6C6AE00356219 /* Origin.xcdatamodeld in Sources */,
+				B20857CD1DE9B41000E05CAD /* Other+CoreDataClass.swift in Sources */,
 				B24EED3A1DE6D0C300F5F5E8 /* CollectionViewController.swift in Sources */,
 				B24EED7C1DE6F84200F5F5E8 /* CollectionViewCell.swift in Sources */,
+				B20857DA1DE9E89200E05CAD /* History+CoreDataClass.swift in Sources */,
+				B20857DB1DE9E89200E05CAD /* History+CoreDataProperties.swift in Sources */,
+				B20857CE1DE9B41000E05CAD /* Other+CoreDataProperties.swift in Sources */,
+				B20857DD1DEA013600E05CAD /* TableViewCell.swift in Sources */,
 				B24EED421DE6DA7500F5F5E8 /* TransitionAnimation.swift in Sources */,
+				B20857CF1DE9B41000E05CAD /* Library+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
