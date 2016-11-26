@@ -12,7 +12,12 @@ import expanding_collection
 import MediaPlayer
 import Spring
 
+//------------------------------------------
+// スクロール型View
+//------------------------------------------
+
 class CollectionViewController: ExpandingViewController {
+    
     var m_queue = DispatchQueue.main
     var s_queue = DispatchQueue(label: "queue")
     
@@ -211,7 +216,6 @@ extension CollectionViewController {
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         super.scrollViewDidEndDecelerating(scrollView)
         musicplayer.nowPlayingItem = items?[currentIndex]
-        print(musicplayer.nowPlayingItem?.title)
     }
 }
 

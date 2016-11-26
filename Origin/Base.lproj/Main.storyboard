@@ -339,6 +339,7 @@
                     <connections>
                         <outlet property="currentDetail" destination="ld1-LS-8bK" id="BUA-hP-e4w"/>
                         <outlet property="currentTitle" destination="ssS-nl-MDa" id="qKu-UM-WBv"/>
+                        <outlet property="navBar" destination="OlB-wT-OXf" id="XP0-eT-pb0"/>
                         <outlet property="pageLabel" destination="mq0-XB-ucj" id="X5a-4V-glV"/>
                         <outlet property="repeatButton" destination="zLr-X4-LDy" id="lKZ-Dm-Yv9"/>
                         <outlet property="shuffleButton" destination="pvQ-ws-hZl" id="lv2-6B-3bE"/>
@@ -347,7 +348,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xqx-oY-rs3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1541.5999999999999" y="262.21889055472263"/>
+            <point key="canvasLocation" x="1516" y="143"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="4hh-7c-WQN">
@@ -365,7 +366,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fxd-Ar-USZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="791" y="188"/>
+            <point key="canvasLocation" x="788" y="219"/>
         </scene>
     </scenes>
     <resources>
