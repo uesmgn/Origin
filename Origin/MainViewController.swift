@@ -15,7 +15,7 @@ import ARNTransitionAnimator
 
 var musicplayer = MusicPlayerController()
 
-class MainViewController: UIViewController, UIGestureRecognizerDelegate{
+class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBarDelegate {
     //create dispatch queue
     /// メインキュー UI表示用タスク
     open var m_queue = DispatchQueue.main
@@ -54,6 +54,9 @@ extension MainViewController {
         super.viewDidLoad()
         
         //musicplayer.stop()
+        tabBar.delegate = self
+        tabBar.selectedItem?.tag = 1
+        
         musicplayer.viewController = self
         s_queue.sync {
             musicplayer.allItemsToQueue()
@@ -95,9 +98,10 @@ extension MainViewController {
             currentArtwork.image = song.artwork?.image(at: currentArtwork.bounds.size) ?? UIImage(named: "artwork_default")
             //システム設定の評価値
             ratingBar.rating = Double(song.rating)
+            self.toggleButton.imageView?.image = UIImage(named: "pause-1")
         } else {
             miniPlayerView.isHidden = true
-            ratingView.isHidden = true
+            self.toggleButton.imageView?.image = UIImage(named: "play-1")
         }
     }
     
@@ -192,6 +196,19 @@ extension MainViewController {
         UIGraphicsEndImageContext()
         
         return image!
+    }
+    
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        switch item.tag {
+        case 1:
+            containerView.isHidden = false
+        case 2:
+            containerView.isHidden = true
+        case 3:
+            containerView.isHidden = true
+        default:
+            return
+        }
     }
     
     

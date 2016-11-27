@@ -20,6 +20,11 @@ class LibraryTableViewController: UIViewController, UITableViewDelegate, UITable
         setup(tableView)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        self.tableView.scrollToNearestSelectedRow(at: UITableViewScrollPosition.top, animated: true)
+    }
+    
     //各セクション中のセル数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return musicplayer.playlist.count

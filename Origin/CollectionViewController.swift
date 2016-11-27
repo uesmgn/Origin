@@ -42,22 +42,24 @@ extension CollectionViewController {
         // セルのサイズ
         itemSize = CGSize(width: 200, height: 200)
         super.viewDidLoad()
-        s_queue.sync {
-            items = musicplayer.playlist
-        }
-        s_queue.sync {
+        s_queue.async {
+            self.items = musicplayer.playlist
             // 生成したxibファイルと関連付け
-            registerCell()
+            self.registerCell()
             // cellIsOpen配列に全てfalseを追加
-            fillCellIsOpenArray()
+            self.fillCellIsOpenArray()
             // artwork配列にプレイリストの曲のすべてのアートワークをセット
-            fillArtworkArray()
+            self.fillArtworkArray()
             // gestureセット
-            addGestureToView(collectionView!)
+            self.addGestureToView(self.collectionView!)
         }
         m_queue.async {
             self.updateToggle()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
     }
 }
 
@@ -212,6 +214,9 @@ extension CollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        //collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: false)
+        
         return collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CollectionViewCell.self), for: indexPath)
     }
 

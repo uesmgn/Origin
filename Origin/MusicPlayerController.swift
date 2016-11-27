@@ -78,7 +78,6 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     func playItemChanged(notify: NSNotification) {
         viewController?.updatePlayinfo()
         libraryTable?.tableView.reloadData()
-        viewController?.updateToggle()
     }
     func playbackStateDidChange(notify: NSNotification) {
     }
