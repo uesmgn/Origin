@@ -40,8 +40,8 @@
                                     <constraint firstAttribute="height" constant="49" id="AQe-UF-hN0"/>
                                 </constraints>
                                 <items>
-                                    <tabBarItem systemItem="favorites" id="Ddp-RJ-uY3"/>
-                                    <tabBarItem systemItem="more" id="u3b-Gt-NZm"/>
+                                    <tabBarItem title="" systemItem="favorites" id="Ddp-RJ-uY3"/>
+                                    <tabBarItem tag="1" systemItem="history" id="u3b-Gt-NZm"/>
                                 </items>
                                 <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tabBar>
@@ -118,8 +118,11 @@
                                                     <constraint firstAttribute="height" constant="34" id="Ytn-Ar-b7T"/>
                                                     <constraint firstAttribute="width" constant="34" id="xu0-qr-7rJ"/>
                                                 </constraints>
-                                                <color key="tintColor" red="0.99277311563491821" green="0.99565273523330688" blue="0.9920535683631897" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Button" image="fastforward"/>
+                                                <connections>
+                                                    <action selector="tapNextButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YKE-h3-rjB"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D15-G9-icg" customClass="SpringButton" customModule="Spring">
                                                 <rect key="frame" x="295" y="18" width="34" height="34"/>
@@ -128,8 +131,11 @@
                                                     <constraint firstAttribute="width" secondItem="D15-G9-icg" secondAttribute="height" multiplier="1:1" id="aFC-Y6-iLZ"/>
                                                     <constraint firstAttribute="width" constant="34" id="sXV-Sk-xJa"/>
                                                 </constraints>
-                                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="tintColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Button" image="play-1"/>
+                                                <connections>
+                                                    <action selector="tapToggleButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cgx-ff-CcN"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

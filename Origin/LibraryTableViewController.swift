@@ -13,6 +13,7 @@ class LibraryTableViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var songCountLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,18 +28,26 @@ class LibraryTableViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let item = musicplayer.playlist[(indexPath as NSIndexPath).row]
-        //cell.backgroundColor = UIColor.black
+        let nowIndex = (indexPath as NSIndexPath).row
+        cell.tag = nowIndex
+        let item = musicplayer.playlist[nowIndex]
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = "\(item.artist!) - \(item.albumTitle!)"
         //cell.imageView?.image = item.artwork?.image(at: CGSize(width: 40.0, height: 40.0)) ?? UIImage(named: "artwork_default")
         
+        if let song = musicplayer.nowPlayingItem {
+            if nowIndex == musicplayer.playlist.index(of: song) {
+                cell.isSelected = true
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
+            }
+        }
         return cell
     }
     
     func setup(_ tableView: UITableView) {
         tableView.delegate = self
         tableView.dataSource = self
+        musicplayer.libraryTable = self
         tableView.rowHeight = 44
         songCountLabel.text = "\(musicplayer.playlist.count) Songs"
         

@@ -46,8 +46,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate{
     
     fileprivate var coredataAdmin = CoreDataAdmin()
     fileprivate var animator : ARNTransitionAnimator?
-    fileprivate var modalVC : CollectionViewController!
-}
+    fileprivate var modalVC : CollectionViewController!}
 
 extension MainViewController {
     
@@ -116,13 +115,42 @@ extension MainViewController {
             musicplayer.setRating(Int(rating))
             // CoreDataに保存
             coredataAdmin.changeRatingOfLibrary(song: song, rating: rating)
+            coredataAdmin.appendHistory(song: song, rating: rating)
         }
     }
 }
 
+// UI
 extension MainViewController {
     @IBAction func backToHome(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func tapToggleButton(_ sender: Any) {
+        toggleButton.animation = "pop"
+        if musicplayer.isPlaying() {
+            DispatchQueue.main.async {
+                musicplayer.pause()
+                self.toggleButton.imageView?.image = UIImage(named: "play-1")
+                self.toggleButton.duration = 0.4
+                self.toggleButton.animate()
+            }
+        } else {
+            DispatchQueue.main.async {
+                musicplayer.play()
+                self.toggleButton.imageView?.image = UIImage(named: "pause-1")
+                self.toggleButton.duration = 0.4
+                self.toggleButton.animate()
+            }
+        }
+
+    }
+    @IBAction func tapNextButton(_ sender: Any) {
+        m_queue.async {
+            self.nextButton.animation = "pop"
+            self.nextButton.duration = 0.4
+            self.nextButton.animate()
+        }
+        musicplayer.skipToNextItem()
     }
 }
 extension MainViewController {

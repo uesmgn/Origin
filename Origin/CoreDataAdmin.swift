@@ -36,6 +36,7 @@ class CoreDataAdmin: NSObject, NSFetchedResultsControllerDelegate{
         }
     }
     
+    
     func defaultSetLibrary() {
         let appDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedObjectContext = appDelegate.managedObjectContext
@@ -85,6 +86,29 @@ class CoreDataAdmin: NSObject, NSFetchedResultsControllerDelegate{
             let result = results[0] as! Library
             result.rating = rating
             
+        }catch{
+        }
+    }
+    
+    
+    func appendHistory(song: MPMediaItem, rating: Double, isKnown: Bool=true) {
+        let appDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
+        let managedObjectContext = appDelegate.managedObjectContext
+        
+        let entity = NSEntityDescription.entity(forEntityName: "History", in: managedObjectContext)
+        
+        let record = History(entity: entity!, insertInto: managedObjectContext)
+        
+        record.id = "\(song.persistentID)"
+        record.title = song.title ?? "unknown"
+        record.artist = song.artist ?? "unknown"
+        record.album = song.albumTitle ?? "unknown"
+        record.rating = rating
+        record.isKnown = isKnown
+        record.date = NSDate()
+        
+        do{
+            try managedObjectContext.save()
         }catch{
         }
     }

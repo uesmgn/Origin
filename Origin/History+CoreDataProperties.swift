@@ -22,5 +22,6 @@ extension History {
     @NSManaged public var artist: String?
     @NSManaged public var album: String?
     @NSManaged public var isKnown: Bool
+    @NSManaged public var date: NSDate?
 
 }

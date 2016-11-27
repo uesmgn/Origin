@@ -15,8 +15,8 @@ import CoreData
 class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     
     //------------ Property ------------------
-    
     weak var viewController:MainViewController?
+    weak var libraryTable:LibraryTableViewController?
     
     let player = MPMusicPlayerController.applicationMusicPlayer()
     
@@ -77,6 +77,7 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     
     func playItemChanged(notify: NSNotification) {
         viewController?.updatePlayinfo()
+        libraryTable?.tableView.reloadData()
         viewController?.updateToggle()
     }
     func playbackStateDidChange(notify: NSNotification) {
