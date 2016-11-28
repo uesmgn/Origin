@@ -87,32 +87,27 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     }
     
     func  playlistToQueue() {
-        
         if playlist.isEmpty == false {
             let collection = MPMediaItemCollection(items: playlist)
             player.setQueue(with: collection)
         }
     }
     func updatePlaylist() {
-        
         let query = MPMediaQuery.songs()
-        
         let num = NSNumber(value: false as Bool)
         let pre = MPMediaPropertyPredicate(value: num, forProperty: MPMediaItemPropertyIsCloudItem)
         query.addFilterPredicate(pre)
-        
         playlist = query.items!
         
+        libraryTable?.songCountLabel.text = "\(playlist.count) Songs"
     }
     
     func allItemsToQueue() {
         let query = MPMediaQuery.songs()
         player.setQueue(with: query)
-        
     }
     
     func isPlaying() -> Bool {
-        
         let av = AVAudioSession.sharedInstance()
         return av.isOtherAudioPlaying
     }
@@ -150,6 +145,20 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     func setRating(_ rating : Int) {
         if let item = musicplayer.nowPlayingItem {
             item.setValue(NSNumber(value:rating), forKey: MPMediaItemPropertyRating)
+        }
+    }
+    
+    func setBackgroundMode() {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(AVAudioSessionCategoryPlayback)
+        } catch  {
+            fatalError("カテゴリ設定失敗")
+        }
+        do {
+        try session.setActive(true)
+        } catch {
+            fatalError("session有効化失敗")
         }
     }
 }

@@ -20,7 +20,6 @@
 		B20C551D1DEBAD9700C1F4A8 /* JsonAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C551C1DEBAD9700C1F4A8 /* JsonAdmin.swift */; };
 		B20C55201DEBF0B100C1F4A8 /* RecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C551F1DEBF0B100C1F4A8 /* RecommendViewController.swift */; };
 		B20C552C1DEC014A00C1F4A8 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C552B1DEC014A00C1F4A8 /* HistoryTableViewController.swift */; };
-		B20C552E1DEC016C00C1F4A8 /* ParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C552D1DEC016C00C1F4A8 /* ParentViewController.swift */; };
 		B24B32581DEAA94A00C7E421 /* MPMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24B32571DEAA94A00C7E421 /* MPMediaItem.swift */; };
 		B24EED3A1DE6D0C300F5F5E8 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EED391DE6D0C300F5F5E8 /* CollectionViewController.swift */; };
 		B24EED3E1DE6D75200F5F5E8 /* MusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EED3D1DE6D75200F5F5E8 /* MusicPlayerController.swift */; };
@@ -52,7 +51,6 @@
 		B20C551C1DEBAD9700C1F4A8 /* JsonAdmin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonAdmin.swift; sourceTree = "<group>"; };
 		B20C551F1DEBF0B100C1F4A8 /* RecommendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendViewController.swift; sourceTree = "<group>"; };
 		B20C552B1DEC014A00C1F4A8 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
-		B20C552D1DEC016C00C1F4A8 /* ParentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParentViewController.swift; sourceTree = "<group>"; };
 		B24B32571DEAA94A00C7E421 /* MPMediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPMediaItem.swift; sourceTree = "<group>"; };
 		B24EED391DE6D0C300F5F5E8 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		B24EED3D1DE6D75200F5F5E8 /* MusicPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerController.swift; sourceTree = "<group>"; };
@@ -121,7 +119,6 @@
 		B20C55291DEC00F800C1F4A8 /* TabBarItems */ = {
 			isa = PBXGroup;
 			children = (
-				B20C552D1DEC016C00C1F4A8 /* ParentViewController.swift */,
 				B20857D11DE9BBE800E05CAD /* Library */,
 				B20C551E1DEBF08F00C1F4A8 /* Recommend */,
 				B20C552A1DEC011400C1F4A8 /* History */,
@@ -271,6 +268,14 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = R299JKHSCU;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -364,7 +369,6 @@
 				B20857D31DE9BC1600E05CAD /* LibraryTableViewController.swift in Sources */,
 				B2CC1B261DE6C6AE00356219 /* MainViewController.swift in Sources */,
 				B2CC1B241DE6C6AE00356219 /* AppDelegate.swift in Sources */,
-				B20C552E1DEC016C00C1F4A8 /* ParentViewController.swift in Sources */,
 				B20857D01DE9B41000E05CAD /* Library+CoreDataProperties.swift in Sources */,
 				B24EED401DE6D7B900F5F5E8 /* MiniPlayerView.swift in Sources */,
 				B20857C81DE9B34A00E05CAD /* CoreDataAdmin.swift in Sources */,

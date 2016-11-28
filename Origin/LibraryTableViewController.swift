@@ -25,7 +25,6 @@ class LibraryTableViewController: UIViewController, UITableViewDelegate, UITable
         self.tableView.scrollToNearestSelectedRow(at: UITableViewScrollPosition.top, animated: true)
     }
     
-    //各セクション中のセル数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return musicplayer.playlist.count
     }
@@ -56,8 +55,6 @@ class LibraryTableViewController: UIViewController, UITableViewDelegate, UITable
         tableView.dataSource = self
         musicplayer.libraryTable = self
         tableView.rowHeight = 44
-        songCountLabel.text = "\(musicplayer.playlist.count) Songs"
-        
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

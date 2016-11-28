@@ -167,9 +167,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Songs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="viH-3G-56R">
-                                        <rect key="frame" x="148" y="37" width="80" height="17"/>
+                                        <rect key="frame" x="108" y="37" width="160" height="17"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="Xt6-Jn-IJY"/>
+                                            <constraint firstAttribute="width" constant="160" id="Xt6-Jn-IJY"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -257,16 +257,16 @@
                         <outlet property="currentArtwork" destination="J7v-AW-20Y" id="UA1-YT-76i"/>
                         <outlet property="currentDetail" destination="SAc-Oo-YX0" id="h3V-q9-oN2"/>
                         <outlet property="currentTitle" destination="1cF-a6-uW8" id="ll6-oX-wH1"/>
-                        <outlet property="favoriteTab" destination="Ddp-RJ-uY3" id="1El-ue-VkY"/>
+                        <outlet property="favTab" destination="Ddp-RJ-uY3" id="fHr-r7-9wG"/>
                         <outlet property="hisContainer" destination="uxL-8G-Jif" id="14K-ug-OcN"/>
-                        <outlet property="historyTab" destination="u3b-Gt-NZm" id="AJT-O7-qW5"/>
+                        <outlet property="hisTab" destination="u3b-Gt-NZm" id="Tse-H5-ydO"/>
                         <outlet property="libContainer" destination="4QM-O8-Y6K" id="PjK-i4-Hwo"/>
                         <outlet property="miniPlayerView" destination="nbf-W0-O7k" id="MGP-WN-Min"/>
                         <outlet property="nextButton" destination="5QS-l0-uzx" id="7NW-D9-dYY"/>
                         <outlet property="ratingBar" destination="kJI-mC-yS1" id="qMj-CV-Mt8"/>
                         <outlet property="ratingView" destination="RmA-bc-lgl" id="OJM-HG-Usx"/>
                         <outlet property="recContainer" destination="pBn-Ac-3Wz" id="kQW-HP-Qyd"/>
-                        <outlet property="recommendTab" destination="NWF-M9-6zV" id="rnN-Yf-kP3"/>
+                        <outlet property="recTab" destination="NWF-M9-6zV" id="IRa-OZ-D87"/>
                         <outlet property="tabBar" destination="9NZ-fh-6CN" id="I1k-5c-wfY"/>
                         <outlet property="toggleButton" destination="D15-G9-icg" id="EC3-8W-2zZ"/>
                         <outlet property="topView" destination="ICh-fH-ffX" id="Gvq-bh-qGv"/>
@@ -782,23 +782,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="454"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexTrackingBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="axs-4N-Qfe">
-                                    <rect key="frame" x="0.0" y="72" width="375" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song count" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q59-su-UEL">
-                                            <rect key="frame" x="20" y="9" width="51" height="12"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstItem="Q59-su-UEL" firstAttribute="centerY" secondItem="axs-4N-Qfe" secondAttribute="centerY" id="8uz-rU-fHE"/>
-                                        <constraint firstItem="Q59-su-UEL" firstAttribute="leading" secondItem="axs-4N-Qfe" secondAttribute="leading" constant="20" id="SlR-Li-ysN"/>
-                                    </constraints>
-                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="KZ1-sT-kYU" detailTextLabel="Nzx-fs-ORV" style="IBUITableViewCellStyleSubtitle" id="e8c-co-qlA">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -843,6 +826,9 @@
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="454"/>
+                    <connections>
+                        <outlet property="tableView" destination="9vo-id-g88" id="die-Sw-Lbt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QUH-e0-IbD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
