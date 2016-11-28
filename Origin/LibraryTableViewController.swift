@@ -39,14 +39,16 @@ class LibraryTableViewController: UIViewController, UITableViewDelegate, UITable
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = "\(item.artist!) - \(item.albumTitle!)"
         //cell.imageView?.image = item.artwork?.image(at: CGSize(width: 40.0, height: 40.0)) ?? UIImage(named: "artwork_default")
-        
-        if let song = musicplayer.nowPlayingItem {
-            if nowIndex == musicplayer.playlist.index(of: song) {
-                cell.isSelected = true
-                tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
-            }
-        }
+            
         return cell
+    }
+    
+    func sclollToCurrentItem(animated: Bool) {
+        if let song = musicplayer.nowPlayingItem {
+            let index = musicplayer.playlist.index(of: song)
+            let indexPathOfCurrentItem = IndexPath(item: index!, section: 0)
+            tableView.scrollToRow(at: indexPathOfCurrentItem, at: UITableViewScrollPosition.top, animated: animated)
+        }
     }
     
     func setup(_ tableView: UITableView) {

@@ -17,6 +17,7 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     //------------ Property ------------------
     weak var viewController:MainViewController?
     weak var libraryTable:LibraryTableViewController?
+    weak var collectionView:CollectionViewController?
     
     let player = MPMusicPlayerController.applicationMusicPlayer()
     
@@ -78,7 +79,10 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     func playItemChanged(notify: NSNotification) {
         viewController?.updatePlayinfo()
         libraryTable?.tableView.reloadData()
+        libraryTable?.sclollToCurrentItem(animated: true)
+        collectionView?.sclollToCurrentItem(animated: true)
     }
+    
     func playbackStateDidChange(notify: NSNotification) {
     }
     
@@ -125,6 +129,10 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     
     func pause() {
         player.pause()
+    }
+    
+    func stop() {
+        player.stop()
     }
     
     func skipToNextItem() {

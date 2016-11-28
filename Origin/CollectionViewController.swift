@@ -38,10 +38,19 @@ class CollectionViewController: ExpandingViewController {
 }
 
 extension CollectionViewController {
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        sclollToCurrentItem(animated: false)
+    }
+    
     override func viewDidLoad() {
         // セルのサイズ
         itemSize = CGSize(width: 200, height: 200)
         super.viewDidLoad()
+        
+        musicplayer.collectionView = self
+        
         s_queue.async {
             self.items = musicplayer.playlist
             // 生成したxibファイルと関連付け
@@ -56,10 +65,6 @@ extension CollectionViewController {
         m_queue.async {
             self.updateToggle()
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
     }
 }
 
@@ -112,6 +117,14 @@ extension CollectionViewController {
     @IBAction func tapShuffleButton(_ sender: Any) {
     }
     @IBAction func taoRepeatButton(_ sender: Any) {
+    }
+    
+    func sclollToCurrentItem(animated: Bool) {
+        if let song = musicplayer.nowPlayingItem {
+            let index = musicplayer.playlist.index(of: song)
+            let indexPathOfCurrentItem = IndexPath(item: index!, section: 0)
+            collectionView?.scrollToItem(at: indexPathOfCurrentItem, at: UICollectionViewScrollPosition.right, animated: animated)
+        }
     }
     
     func updateToggle() {
@@ -185,8 +198,9 @@ extension CollectionViewController {
         let index = (indexPath as NSIndexPath).row
         let info = items?[index]
         cell.artworkImage?.image = info?.artwork?.image(at: CGSize(width: 200, height: 200)) ?? UIImage(named: "artwork_default")
-        cell.ratingView.rating = 3
-       // cell.inKnown.text = "unknown"
+        cell.ratingView.rating = Double(info!.rating)
+        let known = info?.isKnown
+        cell.isKnown.text = "\(known)"
         cell.cellIsOpen(cellsIsOpen[index], animated: false)
         
     }
@@ -215,9 +229,19 @@ extension CollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        //collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: false)
+        let index = indexPath.row
+
+        print("\(indexPath.item),\(indexPath.section)")
         
-        return collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CollectionViewCell.self), for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CollectionViewCell.self), for: indexPath)
+        cell.tag = index
+        if let song = musicplayer.nowPlayingItem {
+            if index == musicplayer.playlist.index(of: song) {
+                collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+            }
+        }
+        
+        return cell
     }
 
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

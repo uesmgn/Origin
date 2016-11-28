@@ -16,22 +16,22 @@ import ARNTransitionAnimator
 var musicplayer = MusicPlayerController()
 
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBarDelegate {
-    //create dispatch queue
-    /// メインキュー UI表示用タスク
+
+    /// main queue: for UI
     open var m_queue = DispatchQueue.main
-    /// コンカレントキュー　優先度:最高　即座に処理
-    open var h_queue = DispatchQueue(label: "c_queue", qos: .userInteractive, attributes: .concurrent)
-    /// コンカレントキュー　優先度:高
-    open var i_queue = DispatchQueue(label: "c_queue", qos: .userInitiated, attributes: .concurrent)
-    /// コンカレントキュー　優先度:中
-    open var d_queue = DispatchQueue(label: "c_queue", attributes: .concurrent)
-    /// コンカレントキュー　優先度:低
-    open var u_queue = DispatchQueue(label: "c_queue", qos: .utility, attributes: .concurrent)
-    /// コンカレントキュー　優先度:最低　バックグラウンド動作用
-    open var b_queue = DispatchQueue(label: "c_queue", qos: .background, attributes: .concurrent)
-    /// シリアルキュー　優先度:中
-    open var s_queue = DispatchQueue(label: "s_queue2")
+    /// concurrent queue
+    open var h_queue = DispatchQueue(label: "c_queue1", qos: .userInteractive, attributes: .concurrent)
+    open var i_queue = DispatchQueue(label: "c_queue2", qos: .userInitiated, attributes: .concurrent)
+    open var d_queue = DispatchQueue(label: "c_queue3", attributes: .concurrent)
+    open var u_queue = DispatchQueue(label: "c_queue4", qos: .utility, attributes: .concurrent)
+    open var b_queue = DispatchQueue(label: "c_queue5", qos: .background, attributes: .concurrent)
+    /// serial queue
+    open var s_queue = DispatchQueue(label: "s_queue")
     
+    @IBOutlet weak var favoriteTab: UITabBarItem!
+    @IBOutlet weak var recommendTab: UITabBarItem!
+    @IBOutlet weak var historyTab: UITabBarItem!
+    @IBOutlet weak var label: UILabel!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var miniPlayerView: MiniPlayerView!
     @IBOutlet weak var ratingBar: CosmosView!
@@ -46,14 +46,18 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     
     fileprivate var coredataAdmin = CoreDataAdmin()
     fileprivate var animator : ARNTransitionAnimator?
-    fileprivate var modalVC : CollectionViewController!}
+    fileprivate var modalVC : CollectionViewController!
+
+    let json = JsonAdmin()
+}
 
 extension MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        musicplayer.pause()
         
-        //musicplayer.stop()
         tabBar.delegate = self
         tabBar.selectedItem?.tag = 1
         
@@ -79,11 +83,7 @@ extension MainViewController {
         containerBottom.constant = -miniPlayerView.frame.size.height
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
-
+    
 }
 
 

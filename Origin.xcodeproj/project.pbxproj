@@ -17,6 +17,9 @@
 		B20857DA1DE9E89200E05CAD /* History+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857D81DE9E89200E05CAD /* History+CoreDataClass.swift */; };
 		B20857DB1DE9E89200E05CAD /* History+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857D91DE9E89200E05CAD /* History+CoreDataProperties.swift */; };
 		B20857DD1DEA013600E05CAD /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20857DC1DEA013600E05CAD /* TableViewCell.swift */; };
+		B20C551D1DEBAD9700C1F4A8 /* JsonAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C551C1DEBAD9700C1F4A8 /* JsonAdmin.swift */; };
+		B20C55201DEBF0B100C1F4A8 /* RecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C551F1DEBF0B100C1F4A8 /* RecommendViewController.swift */; };
+		B24B32581DEAA94A00C7E421 /* MPMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24B32571DEAA94A00C7E421 /* MPMediaItem.swift */; };
 		B24EED3A1DE6D0C300F5F5E8 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EED391DE6D0C300F5F5E8 /* CollectionViewController.swift */; };
 		B24EED3E1DE6D75200F5F5E8 /* MusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EED3D1DE6D75200F5F5E8 /* MusicPlayerController.swift */; };
 		B24EED401DE6D7B900F5F5E8 /* MiniPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EED3F1DE6D7B900F5F5E8 /* MiniPlayerView.swift */; };
@@ -44,6 +47,9 @@
 		B20857D81DE9E89200E05CAD /* History+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "History+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B20857D91DE9E89200E05CAD /* History+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "History+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B20857DC1DEA013600E05CAD /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		B20C551C1DEBAD9700C1F4A8 /* JsonAdmin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonAdmin.swift; sourceTree = "<group>"; };
+		B20C551F1DEBF0B100C1F4A8 /* RecommendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendViewController.swift; sourceTree = "<group>"; };
+		B24B32571DEAA94A00C7E421 /* MPMediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPMediaItem.swift; sourceTree = "<group>"; };
 		B24EED391DE6D0C300F5F5E8 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		B24EED3D1DE6D75200F5F5E8 /* MusicPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerController.swift; sourceTree = "<group>"; };
 		B24EED3F1DE6D7B900F5F5E8 /* MiniPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniPlayerView.swift; sourceTree = "<group>"; };
@@ -92,6 +98,22 @@
 			name = Library;
 			sourceTree = "<group>";
 		};
+		B20C551B1DEBACCA00C1F4A8 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B20C551C1DEBAD9700C1F4A8 /* JsonAdmin.swift */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		B20C551E1DEBF08F00C1F4A8 /* Recommend */ = {
+			isa = PBXGroup;
+			children = (
+				B20C551F1DEBF0B100C1F4A8 /* RecommendViewController.swift */,
+			);
+			name = Recommend;
+			sourceTree = "<group>";
+		};
 		B24EED381DE6D09600F5F5E8 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				B24EED3D1DE6D75200F5F5E8 /* MusicPlayerController.swift */,
+				B24B32571DEAA94A00C7E421 /* MPMediaItem.swift */,
 			);
 			name = MusicPlayer;
 			sourceTree = "<group>";
@@ -151,7 +174,9 @@
 				B2CC1B251DE6C6AE00356219 /* MainViewController.swift */,
 				B2CC1B391DE6C80900356219 /* Origin */,
 				B24EED3C1DE6D14900F5F5E8 /* MusicPlayer */,
+				B20C551B1DEBACCA00C1F4A8 /* Network */,
 				B20857D11DE9BBE800E05CAD /* Library */,
+				B20C551E1DEBF08F00C1F4A8 /* Recommend */,
 				B2CC1B381DE6C80200356219 /* Transition */,
 				B24EED3B1DE6D0D400F5F5E8 /* CoreData */,
 				B24EED381DE6D09600F5F5E8 /* SupportFiles */,
@@ -313,6 +338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B24B32581DEAA94A00C7E421 /* MPMediaItem.swift in Sources */,
 				B20857D31DE9BC1600E05CAD /* LibraryTableViewController.swift in Sources */,
 				B2CC1B261DE6C6AE00356219 /* MainViewController.swift in Sources */,
 				B2CC1B241DE6C6AE00356219 /* AppDelegate.swift in Sources */,
@@ -321,6 +347,7 @@
 				B20857C81DE9B34A00E05CAD /* CoreDataAdmin.swift in Sources */,
 				B24EED3E1DE6D75200F5F5E8 /* MusicPlayerController.swift in Sources */,
 				B2CC1B2C1DE6C6AE00356219 /* Origin.xcdatamodeld in Sources */,
+				B20C55201DEBF0B100C1F4A8 /* RecommendViewController.swift in Sources */,
 				B20857CD1DE9B41000E05CAD /* Other+CoreDataClass.swift in Sources */,
 				B24EED3A1DE6D0C300F5F5E8 /* CollectionViewController.swift in Sources */,
 				B24EED7C1DE6F84200F5F5E8 /* CollectionViewCell.swift in Sources */,
@@ -329,6 +356,7 @@
 				B20857CE1DE9B41000E05CAD /* Other+CoreDataProperties.swift in Sources */,
 				B20857DD1DEA013600E05CAD /* TableViewCell.swift in Sources */,
 				B24EED421DE6DA7500F5F5E8 /* TransitionAnimation.swift in Sources */,
+				B20C551D1DEBAD9700C1F4A8 /* JsonAdmin.swift in Sources */,
 				B20857CF1DE9B41000E05CAD /* Library+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
