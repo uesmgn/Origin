@@ -15,7 +15,9 @@ import MediaPlayer
 class JsonAdmin: NSObject {
     
     weak var viewController:MainViewController?
-
+    weak var recTable:UITableView?
+    
+    
     let url:String = "http://127.0.0.1:8000/api/v1/books/"
     let m_queue = DispatchQueue.main
     
@@ -23,7 +25,9 @@ class JsonAdmin: NSObject {
     var tableDetail = [String]()
     var tableDict:[String:String] = [:]
     
+    
     func loadData(tableView:UITableView) {
+        print("load")
         Alamofire.request(url, encoding: JSONEncoding.default).responseJSON {
             response in
             
@@ -43,9 +47,7 @@ class JsonAdmin: NSObject {
             print(self.tableTitle)
             print(self.tableDetail)
             
-            self.m_queue.async {
-                tableView.reloadData()
-            }
+            self.recTable?.reloadData()
         }
     }
     

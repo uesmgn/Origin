@@ -14,6 +14,12 @@ class RecommendViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBAction func onLoadButton(_ sender: Any) {
+        jsonAdmin.loadData(tableView: tableView)
+    }
+    
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return jsonAdmin.tableTitle.count
     }
@@ -28,6 +34,8 @@ class RecommendViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        jsonAdmin.recTable = tableView
 
     }
 

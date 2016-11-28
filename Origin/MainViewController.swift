@@ -28,11 +28,14 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     /// serial queue
     open var s_queue = DispatchQueue(label: "s_queue")
     
+    @IBOutlet weak var PageTitle: UILabel!
     @IBOutlet weak var favoriteTab: UITabBarItem!
     @IBOutlet weak var recommendTab: UITabBarItem!
     @IBOutlet weak var historyTab: UITabBarItem!
     @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var libContainer: UIView!
+    @IBOutlet weak var recContainer: UIView!
+    @IBOutlet weak var hisContainer: UIView!
     @IBOutlet weak var miniPlayerView: MiniPlayerView!
     @IBOutlet weak var ratingBar: CosmosView!
     @IBOutlet weak var ratingView: UIView!
@@ -42,31 +45,46 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var toggleButton: SpringButton!
     @IBOutlet weak var nextButton: SpringButton!
     @IBOutlet weak var tabBar: UITabBar!
-    @IBOutlet weak var containerBottom: NSLayoutConstraint!
+    @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var const: NSLayoutConstraint!
+    
+    weak var containerView: UIView!
     
     fileprivate var coredataAdmin = CoreDataAdmin()
     fileprivate var animator : ARNTransitionAnimator?
     fileprivate var modalVC : CollectionViewController!
-
+    
     let json = JsonAdmin()
+    let vcArray = [UIViewController]()
 }
+
+
 
 extension MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        musicplayer.pause()
+        // Task: 他のアプリで再生中の音声を停止
         
+        // delegate設定
         tabBar.delegate = self
-        tabBar.selectedItem?.tag = 1
-        
         musicplayer.viewController = self
+        coredataAdmin.viewController = self
+        
+        //初期設定
+        containerView = libContainer
+        const.constant = -miniPlayerView.frame.size.height
+        self.view.sendSubview(toBack: containerView)
+        miniPlayerView.isHidden = true
+        libContainer.isHidden = false
+        recContainer.isHidden = true
+        hisContainer.isHidden = true
+        
         s_queue.sync {
             musicplayer.allItemsToQueue()
             musicplayer.updatePlaylist()
         }
-        coredataAdmin.viewController = self
         s_queue.sync {
             self.coredataAdmin.deleteAll(entityName: "History")
             self.coredataAdmin.defaultSetLibrary()
@@ -79,11 +97,8 @@ extension MainViewController {
         self.modalVC.modalPresentationStyle = .overFullScreen
         
         self.setupAnimator()
-        miniPlayerView.isHidden = true
-        containerBottom.constant = -miniPlayerView.frame.size.height
+        
     }
-
-    
 }
 
 
@@ -92,7 +107,8 @@ extension MainViewController {
     func updatePlayinfo() {
         if let song = musicplayer.nowPlayingItem {
             miniPlayerView.isHidden = false
-            containerBottom.constant = 0
+            const.constant = 0
+            
             currentTitle.text = song.title ?? "unknown"
             currentDetail.text = song.artist ?? "unknown"
             currentArtwork.image = song.artwork?.image(at: currentArtwork.bounds.size) ?? UIImage(named: "artwork_default")
@@ -199,17 +215,46 @@ extension MainViewController {
     }
     
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        //view.sendSubview(toBack: VIEW) ;最背面にVIEWを持ってくる
+        //view.bringSubview(toFront: VIEW) ;最前面にVIEWを持ってくる
+        self.libContainer.isHidden = !(item.tag == 1)
+        self.hisContainer.isHidden = !(item.tag == 2)
+        self.recContainer.isHidden = !(item.tag == 3)
+        
         switch item.tag {
         case 1:
-            containerView.isHidden = false
+            PageTitle.text = "Songs"
+            containerView = libContainer
+            self.view.sendSubview(toBack: libContainer)
+            break
         case 2:
-            containerView.isHidden = true
+            PageTitle.text = "Recommendation"
+            containerView = recContainer
+            self.view.sendSubview(toBack: recContainer)
+            break
         case 3:
-            containerView.isHidden = true
+            PageTitle.text = "History"
+            containerView = hisContainer
+            self.view.sendSubview(toBack: hisContainer)
+            break
         default:
             return
         }
+        
+        if musicplayer.isPlaying() {
+            self.view.bringSubview(toFront: miniPlayerView)
+            const.constant = 0
+        } else {
+            self.view.sendSubview(toBack: miniPlayerView)
+            const.constant = -miniPlayerView.frame.size.height
+        }
     }
     
-    
+    func resizeContainer(large: Bool) {
+        if large {
+            
+        } else {
+            
+        }
+    }
 }

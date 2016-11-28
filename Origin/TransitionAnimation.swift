@@ -93,7 +93,7 @@ final class TransitionAnimation : TransitionAnimatable {
             self.rootVC.tabBar.frame.origin.y = min(max(tabY, self.tabBarStartFrame.origin.y), tabEndOriginY)
             
             let alpha = 1.0 - (1.0 * percentComplete)
-            self.rootVC.containerView.alpha = alpha + 0.5
+            self.rootVC.containerView?.alpha = alpha + 0.5
             self.rootVC.tabBar.alpha = alpha
             self.rootVC.miniPlayerView.subviews.forEach { $0.alpha = alpha }
         } else {
@@ -114,7 +114,7 @@ final class TransitionAnimation : TransitionAnimatable {
             self.rootVC.tabBar.frame.origin.y = tabStartOriginY - (tabDiff *  percentComplete)
             
             let alpha = 1.0 * percentComplete
-            self.rootVC.containerView.alpha = alpha + 0.5
+            self.rootVC.containerView?.alpha = alpha + 0.5
             self.rootVC.tabBar.alpha = alpha
             self.rootVC.miniPlayerView.alpha = 1.0
             self.rootVC.miniPlayerView.subviews.forEach { $0.alpha = alpha }

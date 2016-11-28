@@ -1,0 +1,42 @@
+PODS:
+  - Alamofire (4.2.0)
+  - ARNTransitionAnimator (2.0.3)
+  - Cosmos (7.0.0)
+  - expanding-collection (1.0.4)
+  - Realm (2.1.0):
+    - Realm/Headers (= 2.1.0)
+  - Realm/Headers (2.1.0)
+  - Spring (1.0.3)
+  - SwiftyJSON (3.1.3)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.0)
+  - ARNTransitionAnimator
+  - Cosmos (~> 7.0)
+  - expanding-collection (~> 1.0.3)
+  - Realm
+  - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
+  - SwiftyJSON
+
+EXTERNAL SOURCES:
+  Spring:
+    :branch: swift3
+    :git: https://github.com/MengTo/Spring.git
+
+CHECKOUT OPTIONS:
+  Spring:
+    :commit: 3a9227c6e9157e7b47f5ac1ee5abab2a56b50002
+    :git: https://github.com/MengTo/Spring.git
+
+SPEC CHECKSUMS:
+  Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  ARNTransitionAnimator: 51c63c904e61435d1ff741722ec49819cd38fc4f
+  Cosmos: 2c8299147138758f6ebbb247cf1aeed77998bdf9
+  expanding-collection: be78b5822d7382d3da02b52d52273f4661567a64
+  Realm: bc829ad0ef3d4eea70c34cfcc3b1704d18d50df1
+  Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
+  SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
+
+PODFILE CHECKSUM: e8940f1e4ba84f3fa70d9aa8a27a24aa63e8c510
+
+COCOAPODS: 1.1.0.rc.2

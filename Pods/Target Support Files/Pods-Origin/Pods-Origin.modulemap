@@ -1,0 +1,6 @@
+framework module Pods_Origin {
+  umbrella header "Pods-Origin-umbrella.h"
+
+  export *
+  module * { export * }
+}
