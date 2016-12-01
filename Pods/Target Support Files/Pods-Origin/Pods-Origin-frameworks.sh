@@ -86,9 +86,9 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/ARNTransitionAnimator/ARNTransitionAnimator.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Alamofire/Alamofire.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/BTNavigationDropdownMenu/BTNavigationDropdownMenu.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Cosmos/Cosmos.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/KDEAudioPlayer/KDEAudioPlayer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PageMenu/PageMenu.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PagingMenuController/PagingMenuController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Realm/Realm.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SVProgressHUD/SVProgressHUD.framework"
@@ -99,9 +99,9 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/ARNTransitionAnimator/ARNTransitionAnimator.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Alamofire/Alamofire.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/BTNavigationDropdownMenu/BTNavigationDropdownMenu.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Cosmos/Cosmos.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/KDEAudioPlayer/KDEAudioPlayer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/PageMenu/PageMenu.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PagingMenuController/PagingMenuController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Realm/Realm.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SVProgressHUD/SVProgressHUD.framework"

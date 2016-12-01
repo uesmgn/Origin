@@ -1,10 +1,10 @@
 PODS:
   - Alamofire (4.2.0)
   - ARNTransitionAnimator (2.0.3)
+  - BTNavigationDropdownMenu (0.4.1)
   - Cosmos (7.0.0)
   - expanding-collection (1.0.4)
-  - KDEAudioPlayer (0.9.1)
-  - PageMenu (1.2.9)
+  - PagingMenuController (2.0.0)
   - Realm (2.1.0):
     - Realm/Headers (= 2.1.0)
   - Realm/Headers (2.1.0)
@@ -18,10 +18,10 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - ARNTransitionAnimator
+  - BTNavigationDropdownMenu (from `https://github.com/PhamBaTho/BTNavigationDropdownMenu.git`, branch `swift-3.0`)
   - Cosmos (~> 7.0)
   - expanding-collection (~> 1.0.3)
-  - KDEAudioPlayer
-  - PageMenu
+  - PagingMenuController
   - Realm
   - SDWebImage (~> 3.8)
   - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
@@ -29,11 +29,17 @@ DEPENDENCIES:
   - SwiftyJSON
 
 EXTERNAL SOURCES:
+  BTNavigationDropdownMenu:
+    :branch: swift-3.0
+    :git: https://github.com/PhamBaTho/BTNavigationDropdownMenu.git
   Spring:
     :branch: swift3
     :git: https://github.com/MengTo/Spring.git
 
 CHECKOUT OPTIONS:
+  BTNavigationDropdownMenu:
+    :commit: 2c08c8579cf7a53ecb3dbf578e6e1034080a9859
+    :git: https://github.com/PhamBaTho/BTNavigationDropdownMenu.git
   Spring:
     :commit: 3a9227c6e9157e7b47f5ac1ee5abab2a56b50002
     :git: https://github.com/MengTo/Spring.git
@@ -41,16 +47,16 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
   ARNTransitionAnimator: 51c63c904e61435d1ff741722ec49819cd38fc4f
+  BTNavigationDropdownMenu: 093f3cbfad1572f2c222bdf8d17584d1e13380d4
   Cosmos: 2c8299147138758f6ebbb247cf1aeed77998bdf9
   expanding-collection: be78b5822d7382d3da02b52d52273f4661567a64
-  KDEAudioPlayer: c052553e051974a39fd2e5e07d7f575ea3f557c2
-  PageMenu: ba19ff267f7a19e444e93c20a7847b78954a7011
+  PagingMenuController: 60602bfb5421d6536c1e3097baeed601dec1d85b
   Realm: bc829ad0ef3d4eea70c34cfcc3b1704d18d50df1
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SVProgressHUD: bfde85ed6c573ea802b9cb37894ed9b629034f1b
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
 
-PODFILE CHECKSUM: b19a00bce938931834fb888a478fde1112f05c87
+PODFILE CHECKSUM: 247029929471fc1caec1e33cb129c92cc32d35a9
 
 COCOAPODS: 1.1.0.rc.2

@@ -2,11 +2,11 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '10.1'
 use_frameworks!
-pod 'KDEAudioPlayer'
 pod 'SVProgressHUD'
 pod 'SDWebImage', '~>3.8'
-pod 'PageMenu'
 pod 'Realm'
+pod 'PagingMenuController'
+pod 'BTNavigationDropdownMenu', :git => 'https://github.com/PhamBaTho/BTNavigationDropdownMenu.git', :branch => 'swift-3.0'
 pod 'expanding-collection', '~> 1.0.3'
 pod 'ARNTransitionAnimator'
 pod 'Alamofire', '~> 4.0'

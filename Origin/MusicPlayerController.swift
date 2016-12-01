@@ -16,7 +16,9 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     
     //------------ Property ------------------
     weak var viewController:MainViewController?
-    weak var libraryTable:LibraryTableViewController?
+    weak var songTable:SongViewController?
+    weak var artistTable:ArtistViewController?
+    weak var albumTable:AlbumViewController?
     weak var collectionView:CollectionViewController?
     
     let player = MPMusicPlayerController.applicationMusicPlayer()
@@ -78,8 +80,12 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     
     func playItemChanged(notify: NSNotification) {
         viewController?.updatePlayinfo()
-        libraryTable?.tableView.reloadData()
-        libraryTable?.sclollToCurrentItem(animated: true)
+        songTable?.tableView.reloadData()
+        artistTable?.tableView.reloadData()
+        albumTable?.tableView.reloadData()
+        songTable?.sclollToCurrentItem(animated: true)
+        artistTable?.sclollToCurrentItem(animated: true)
+        albumTable?.sclollToCurrentItem(animated: true)
         collectionView?.sclollToCurrentItem(animated: true)
     }
     
@@ -99,7 +105,7 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
         query.addFilterPredicate(pre)
         playlist = query.items!
         
-        libraryTable?.songCountLabel.text = "\(playlist.count) Songs"
+        songTable?.songCountLabel.text = "\(playlist.count) Songs"
     }
     
     func allItemsToQueue() {
