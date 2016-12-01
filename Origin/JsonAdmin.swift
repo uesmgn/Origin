@@ -18,26 +18,23 @@ class JsonAdmin: NSObject {
     weak var recTable:UITableView?
     
     
-    let url:String = "http://127.0.0.1:8000/api/v1/books/"
     let m_queue = DispatchQueue.main
     
-    var tableTitle = [String]()
-    var tableDetail = [String]()
     var tableDict:[String:String] = [:]
     
     
+    var tableTitle = [String]()
+    var tableDetail = [String]()
+    let url:String = "http://10.200.1.231:8000/api/v1/books/"
+    
     func loadData(tableView:UITableView) {
-        print("load")
-        Alamofire.request(url, encoding: JSONEncoding.default).responseJSON {
-            response in
+        Alamofire.request(url).responseJSON { response in
             
             guard let value = response.result.value else {
                 return
             }
             let json = JSON(value)
-            print("json:\(json)")
             let books = json["books"]
-            print("books:\(books)")
            
             for item in books.arrayValue {
                 self.tableTitle.append(item["name"].stringValue)
@@ -47,14 +44,14 @@ class JsonAdmin: NSObject {
             print(self.tableTitle)
             print(self.tableDetail)
             
-            self.recTable?.reloadData()
+            tableView.reloadData()
         }
     }
     
-    /*
-    / getResponse() {
+    func getResponse() {
         Alamofire.request(url).responseJSON { response in
             
+            print(response.result)
             if let JSON = response.result.value {
                 print("JSON: \(JSON)")
             }
@@ -90,7 +87,6 @@ class JsonAdmin: NSObject {
     
     func getJson() {
         Alamofire.request(url).responseJSON { response in
-            debugPrint(response)
             
             if let json = response.result.value {
                 print("JSON: \(json)")
@@ -117,7 +113,7 @@ class JsonAdmin: NSObject {
             }
             print(json)
         }
-    }*/
+    }
     
     
     

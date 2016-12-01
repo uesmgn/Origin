@@ -3,10 +3,16 @@ PODS:
   - ARNTransitionAnimator (2.0.3)
   - Cosmos (7.0.0)
   - expanding-collection (1.0.4)
+  - KDEAudioPlayer (0.9.1)
+  - PageMenu (1.2.9)
   - Realm (2.1.0):
     - Realm/Headers (= 2.1.0)
   - Realm/Headers (2.1.0)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
   - Spring (1.0.3)
+  - SVProgressHUD (2.0.4)
   - SwiftyJSON (3.1.3)
 
 DEPENDENCIES:
@@ -14,8 +20,12 @@ DEPENDENCIES:
   - ARNTransitionAnimator
   - Cosmos (~> 7.0)
   - expanding-collection (~> 1.0.3)
+  - KDEAudioPlayer
+  - PageMenu
   - Realm
+  - SDWebImage (~> 3.8)
   - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
+  - SVProgressHUD
   - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -33,10 +43,14 @@ SPEC CHECKSUMS:
   ARNTransitionAnimator: 51c63c904e61435d1ff741722ec49819cd38fc4f
   Cosmos: 2c8299147138758f6ebbb247cf1aeed77998bdf9
   expanding-collection: be78b5822d7382d3da02b52d52273f4661567a64
+  KDEAudioPlayer: c052553e051974a39fd2e5e07d7f575ea3f557c2
+  PageMenu: ba19ff267f7a19e444e93c20a7847b78954a7011
   Realm: bc829ad0ef3d4eea70c34cfcc3b1704d18d50df1
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
+  SVProgressHUD: bfde85ed6c573ea802b9cb37894ed9b629034f1b
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
 
-PODFILE CHECKSUM: e8940f1e4ba84f3fa70d9aa8a27a24aa63e8c510
+PODFILE CHECKSUM: b19a00bce938931834fb888a478fde1112f05c87
 
 COCOAPODS: 1.1.0.rc.2

@@ -19,12 +19,32 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>KDEAudioPlayer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>PageMenu.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Origin.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Realm.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SVProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,7 +67,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>2823954ED47FD9E1BB200F26F1E73B7B</key>
+		<key>21C461B0CAD90DE64B07A5D212C5F829</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3458B21DA46C02256C5BF07D3B803832</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>541E9AD8F0209976F59A780F49A3F069</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -57,12 +87,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>68090A6E4200B0A3357581ED4D079333</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>79C040AFDDCE1BCBF6D8B5EB0B85887F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9689D7A9C8B690B3CB8FAD4AA6727D44</key>
+		<key>8555DF3A0F41C8FD3B4AA5AF1B1F04F3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,12 +112,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BB8F063ED72BFD629DF7BA092E013ACF</key>
+		<key>AB9EBBA347F6AE83752054C262B82157</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C1ED823A290C2959C6727E444C34422F</key>
+		<key>B824CD658481D91A58128A4BA30A5B22</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C66175EE05EAE7609DC4D66F848C4A86</key>
 		<dict>
 			<key>primary</key>
 			<true/>

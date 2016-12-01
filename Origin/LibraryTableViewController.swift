@@ -13,10 +13,8 @@ class LibraryTableViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var songCountLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setup(tableView)
     }
     
@@ -38,7 +36,6 @@ class LibraryTableViewController: UIViewController, UITableViewDelegate, UITable
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = "\(item.artist!) - \(item.albumTitle!)"
         //cell.imageView?.image = item.artwork?.image(at: CGSize(width: 40.0, height: 40.0)) ?? UIImage(named: "artwork_default")
-            
         return cell
     }
     

@@ -704,7 +704,7 @@
                                             <color key="tintColor" red="0.91331773996353149" green="0.93545234203338623" blue="0.18243643641471863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <state key="normal" title="Load"/>
                                             <connections>
-                                                <action selector="onLoadButton:" destination="w4r-yP-Gmz" eventType="touchUpInside" id="wyY-aG-O8y"/>
+                                                <action selector="tapLoad:" destination="w4r-yP-Gmz" eventType="touchUpInside" id="e76-lc-gdV"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -759,7 +759,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="454"/>
                     <connections>
-                        <outlet property="tableView" destination="jPy-Eb-V2X" id="NkG-Wi-8H1"/>
+                        <outlet property="tableView" destination="jPy-Eb-V2X" id="cSA-nZ-SZy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RUl-Zd-Gl7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -826,9 +826,6 @@
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="454"/>
-                    <connections>
-                        <outlet property="tableView" destination="9vo-id-g88" id="die-Sw-Lbt"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QUH-e0-IbD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
