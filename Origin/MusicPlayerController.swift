@@ -98,13 +98,15 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
             player.setQueue(with: collection)
         }
     }
+    
+    
+    
     func updatePlaylist() {
         let query = MPMediaQuery.songs()
         let num = NSNumber(value: false as Bool)
         let pre = MPMediaPropertyPredicate(value: num, forProperty: MPMediaItemPropertyIsCloudItem)
         query.addFilterPredicate(pre)
         playlist = query.items!
-        
         songTable?.songCountLabel.text = "\(playlist.count) Songs"
     }
     
@@ -112,6 +114,12 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
         let query = MPMediaQuery.songs()
         player.setQueue(with: query)
     }
+    
+    
+    
+    
+    
+    //----------------- Controller -------------------------
     
     func isPlaying() -> Bool {
         let av = AVAudioSession.sharedInstance()

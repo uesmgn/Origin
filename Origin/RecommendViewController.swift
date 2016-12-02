@@ -20,7 +20,7 @@ class RecommendViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBAction func tapLoad(_ sender: Any) {
         loadData(tableView: tableView)
     }
-    let url:String = "http://127.0.0.1:8000/api/v1/books/"
+    let url:String = "http://127.0.0.1:8000/api/v1/songs/"
     let m_queue = DispatchQueue.main
     
     var tableTitle = [String]()
@@ -35,29 +35,20 @@ class RecommendViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func loadData(tableView:UITableView) {
-        print("load")
-        get()
-        getJson()
-        getStr()
-        getString()
-        getChain()
         
         Alamofire.request(url, encoding: JSONEncoding.default).responseJSON {
             response in
-            
-            print(response.result.value)
-            
             guard let value = response.result.value else {
                 return
             }
             let json = JSON(value)
             print("json:\(json)")
-            let books = json["books"]
-            print("books:\(books)")
+            let songs = json["songs"]
+            print("songs:\(songs)")
             
-            for item in books.arrayValue {
-                self.tableTitle.append(item["name"].stringValue)
-                self.tableDetail.append(item["publisher"].stringValue)
+            for item in songs.arrayValue {
+                self.tableTitle.append(item["title"].stringValue)
+                self.tableDetail.append(item["artist"].stringValue)
             }
             print(self.tableTitle)
             print(self.tableDetail)

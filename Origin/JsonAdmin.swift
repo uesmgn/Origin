@@ -25,7 +25,7 @@ class JsonAdmin: NSObject {
     
     var tableTitle = [String]()
     var tableDetail = [String]()
-    let url:String = "http://10.200.1.231:8000/api/v1/books/"
+    let url:String = "http://localhost:8000/api/v1/songs/"
     
     func loadData(tableView:UITableView) {
         Alamofire.request(url).responseJSON { response in

@@ -64,12 +64,6 @@ extension MainViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        json.getJson()
-        json.get()
-        json.getChain()
-        json.getString()
-        json.getResponse()
-        
         // Task: 他のアプリで再生中の音声を停止
         musicplayer.setBackgroundMode()
         
