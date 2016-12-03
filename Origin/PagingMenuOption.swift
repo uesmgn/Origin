@@ -47,7 +47,7 @@ struct PagingMenuOption: PagingMenuControllerCustomizable {
             return [MenuItemSong(), MenuItemArtist(), MenuItemAlbum()]
         }
         var focusMode: MenuFocusMode {
-            return .underline(height: 1.5, color: .green, horizontalPadding: 0, verticalPadding: 0)
+            return .underline(height: 1.5, color: UIColor(hex: "4caf50"), horizontalPadding: 0, verticalPadding: 0)
         }
     }
 
@@ -55,7 +55,7 @@ struct PagingMenuOption: PagingMenuControllerCustomizable {
         let font = UIFont(name: "HelveticaNeue", size: 12)
         let selectedfont = UIFont(name: "HelveticaNeue-Bold", size: 12)
         var displayMode: MenuItemDisplayMode {
-                        let title = MenuItemText(text: "Song", color: .lightGray, selectedColor: .green, font: font!, selectedFont: selectedfont!)
+                        let title = MenuItemText(text: "Song", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
             return .text(title: title)
         }
     }
@@ -63,7 +63,7 @@ struct PagingMenuOption: PagingMenuControllerCustomizable {
         let font = UIFont(name: "HelveticaNeue", size: 12)
         let selectedfont = UIFont(name: "HelveticaNeue-Bold", size: 12)
         var displayMode: MenuItemDisplayMode {
-            let title = MenuItemText(text: "Artist", color: .lightGray, selectedColor: .green, font: font!, selectedFont: selectedfont!)
+            let title = MenuItemText(text: "Artist", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
             return .text(title: title)
         }
     }
@@ -71,7 +71,7 @@ struct PagingMenuOption: PagingMenuControllerCustomizable {
         let font = UIFont(name: "HelveticaNeue", size: 12)
         let selectedfont = UIFont(name: "HelveticaNeue-Bold", size: 12)
         var displayMode: MenuItemDisplayMode {
-            let title = MenuItemText(text: "Album", color: .lightGray, selectedColor: .green, font: font!, selectedFont: selectedfont!)
+            let title = MenuItemText(text: "Album", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
             return .text(title: title)
         }
     }

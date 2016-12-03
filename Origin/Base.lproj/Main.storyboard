@@ -28,20 +28,18 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9NZ-fh-6CN">
-                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="627" width="375" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="49" id="AQe-UF-hN0"/>
+                                    <constraint firstAttribute="height" constant="40" id="AQe-UF-hN0"/>
                                 </constraints>
                                 <items>
-                                    <tabBarItem tag="1" title="" systemItem="favorites" id="Ddp-RJ-uY3"/>
-                                    <tabBarItem tag="2" systemItem="more" id="NWF-M9-6zV"/>
-                                    <tabBarItem tag="3" systemItem="history" id="u3b-Gt-NZm"/>
+                                    <tabBarItem tag="1" title="Home" image="home-green-m" selectedImage="home-green" id="Ddp-RJ-uY3"/>
+                                    <tabBarItem tag="2" title="Discover" image="discover-green-m" selectedImage="discover-green-m" id="NWF-M9-6zV"/>
+                                    <tabBarItem tag="3" title="Find" image="light-green-m" selectedImage="light-green" id="u3b-Gt-NZm"/>
                                 </items>
-                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tabBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nbf-W0-O7k" customClass="MiniPlayerView" customModule="Origin" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="518" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="527" width="375" height="100"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RmA-bc-lgl">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="26"/>
@@ -176,44 +174,31 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ajd-rJ-nUT">
-                                        <rect key="frame" x="10" y="37" width="17" height="17"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="17" id="3u5-rE-pWD"/>
-                                            <constraint firstAttribute="height" constant="17" id="e9c-fM-I5a"/>
-                                        </constraints>
-                                        <state key="normal" title="Button" image="left"/>
-                                        <connections>
-                                            <action selector="backToHome:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KFt-Tr-FpD"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.99610227350000002" green="0.99589234589999998" blue="0.9921668172" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="viH-3G-56R" firstAttribute="centerX" secondItem="ICh-fH-ffX" secondAttribute="centerX" id="EmJ-gP-wkE"/>
                                     <constraint firstAttribute="height" constant="64" id="Kyz-wp-IdH"/>
-                                    <constraint firstItem="Ajd-rJ-nUT" firstAttribute="leading" secondItem="ICh-fH-ffX" secondAttribute="leading" constant="10" id="W2C-dp-rNz"/>
-                                    <constraint firstAttribute="bottom" secondItem="Ajd-rJ-nUT" secondAttribute="bottom" constant="10" id="rA8-qA-8oc"/>
                                     <constraint firstAttribute="bottom" secondItem="viH-3G-56R" secondAttribute="bottom" constant="10" id="wDu-PS-Nai"/>
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4QM-O8-Y6K" userLabel="LibraryContainer">
-                                <rect key="frame" x="0.0" y="64" width="375" height="454"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="463"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="jJs-KR-K8W" kind="embed" id="w9i-V0-lUV"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBn-Ac-3Wz" userLabel="RecommendContainer">
-                                <rect key="frame" x="0.0" y="64" width="375" height="454"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="463"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="w4r-yP-Gmz" kind="embed" id="iip-BY-JuM"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uxL-8G-Jif" userLabel="HistoryContainer">
-                                <rect key="frame" x="0.0" y="64" width="375" height="454"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="463"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="xek-fT-R1w" kind="embed" id="bhx-pu-kbJ"/>
@@ -237,7 +222,7 @@
                             <constraint firstItem="1c8-pR-zJJ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="RWL-OD-bEN"/>
                             <constraint firstItem="pBn-Ac-3Wz" firstAttribute="top" secondItem="ICh-fH-ffX" secondAttribute="bottom" id="Tt6-4i-FP6"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="9NZ-fh-6CN" secondAttribute="bottom" id="UGZ-QA-qOx"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nbf-W0-O7k" secondAttribute="bottom" constant="49" id="YBB-Vu-8gR"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nbf-W0-O7k" secondAttribute="bottom" constant="40" id="YBB-Vu-8gR"/>
                             <constraint firstItem="ICh-fH-ffX" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="YxD-dh-M8i"/>
                             <constraint firstItem="uxL-8G-Jif" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Z9i-Oz-fOW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="1c8-pR-zJJ" secondAttribute="trailing" constant="-16" id="ZQs-CP-Adl"/>
@@ -803,9 +788,13 @@
     <resources>
         <image name="bg-p" width="740" height="1334"/>
         <image name="bg5" width="750" height="1334"/>
+        <image name="discover-green-m" width="24" height="24"/>
         <image name="down" width="512" height="512"/>
         <image name="fastforward" width="512" height="512"/>
-        <image name="left" width="512" height="512"/>
+        <image name="home-green" width="30" height="30"/>
+        <image name="home-green-m" width="24" height="24"/>
+        <image name="light-green" width="24" height="30"/>
+        <image name="light-green-m" width="18" height="24"/>
         <image name="play" width="852" height="852"/>
         <image name="play-1" width="512" height="512"/>
         <image name="repeat" width="512" height="512"/>

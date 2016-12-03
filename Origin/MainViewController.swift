@@ -140,6 +140,29 @@ extension MainViewController {
     
     /// 各種UI設定
     func setUI() {
+        //tabbar設定
+        tabBar.barTintColor = UIColor(hex: "1e171a")
+        favTab.image = UIImage(named: "home-white-m")?.withRenderingMode(.alwaysOriginal)
+        favTab.selectedImage = UIImage(named: "home-green-m")?.withRenderingMode(.alwaysOriginal)
+        recTab.image = UIImage(named: "discover-white-m")?.withRenderingMode(.alwaysOriginal)
+        recTab.selectedImage = UIImage(named: "discover-green-m")?.withRenderingMode(.alwaysOriginal)
+        hisTab.image = UIImage(named: "light-white-m")?.withRenderingMode(.alwaysOriginal)
+        hisTab.selectedImage = UIImage(named: "light-green-m")?.withRenderingMode(.alwaysOriginal)
+        let selectedColor   = UIColor(hex: "4caf50")
+        let unselectedColor = UIColor.white
+        let font = UIFont(name:"HelveticaNeue-Light",size:6)
+        let attrsNormal = [
+            NSForegroundColorAttributeName: unselectedColor,
+            NSFontAttributeName: font
+        ]
+        let attrsSelected = [
+            NSForegroundColorAttributeName: selectedColor,
+            NSFontAttributeName: font
+        ]
+        UITabBarItem.appearance().setTitleTextAttributes(attrsNormal, for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes(attrsSelected, for: .selected)
+        
+        //tabbar動作設定
         guard let tag = tabBar.selectedItem?.tag else {
             tabBar.selectedItem = favTab
             setUI()
@@ -151,15 +174,15 @@ extension MainViewController {
         
         switch tag {
         case 1:
-            PageTitle.text = "Songs"
+            PageTitle.text = "Library"
             containerView = libContainer
             self.view.sendSubview(toBack: libContainer)
         case 2:
-            PageTitle.text = "Recommendation"
+            PageTitle.text = "Discover"
             containerView = recContainer
             self.view.sendSubview(toBack: recContainer)
         case 3:
-            PageTitle.text = "History"
+            PageTitle.text = "Find"
             containerView = hisContainer
             self.view.sendSubview(toBack: hisContainer)
         default:
@@ -179,10 +202,10 @@ extension MainViewController {
 
 // ------------ Action ----------------
 extension MainViewController {
-    
+    /*
     @IBAction func backToHome(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
-    }
+    }*/
     
     @IBAction func tapToggleButton(_ sender: Any) {
         toggleButton.animation = "pop"

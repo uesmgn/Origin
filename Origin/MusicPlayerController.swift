@@ -106,7 +106,11 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
         let num = NSNumber(value: false as Bool)
         let pre = MPMediaPropertyPredicate(value: num, forProperty: MPMediaItemPropertyIsCloudItem)
         query.addFilterPredicate(pre)
-        playlist = query.items!
+       
+        guard let items = query.items else {
+            return
+        }
+        playlist = items
         songTable?.songCountLabel.text = "\(playlist.count) Songs"
     }
     

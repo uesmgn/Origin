@@ -199,8 +199,6 @@ extension CollectionViewController {
         let info = items?[index]
         cell.artworkImage?.image = info?.artwork?.image(at: CGSize(width: 200, height: 200)) ?? UIImage(named: "artwork_default")
         cell.ratingView.rating = Double(info!.rating)
-        let known = info?.isKnown
-        cell.isKnown.text = "\(known)"
         cell.cellIsOpen(cellsIsOpen[index], animated: false)
         
     }
