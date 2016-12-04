@@ -38,7 +38,8 @@
 		B2CC1B2E1DE6C6AE00356219 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2CC1B2D1DE6C6AE00356219 /* Assets.xcassets */; };
 		B2CC1B311DE6C6AE00356219 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CC1B2F1DE6C6AE00356219 /* LaunchScreen.storyboard */; };
 		B2CC1B3F1DE6C84600356219 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B2CC1B3E1DE6C84600356219 /* Podfile */; };
-		B2FD5A7A1DF1FC9A0040C2A1 /* AudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FD5A791DF1FC9A0040C2A1 /* AudioPlayerController.swift */; };
+		B2E939C91DF3EE6200937460 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E939C81DF3EE6200937460 /* Song.swift */; };
+		B2FD5A7A1DF1FC9A0040C2A1 /* AVAudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FD5A791DF1FC9A0040C2A1 /* AVAudioPlayerController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,7 +77,8 @@
 		B2CC1B301DE6C6AE00356219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2CC1B321DE6C6AE00356219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2CC1B3E1DE6C84600356219 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		B2FD5A791DF1FC9A0040C2A1 /* AudioPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerController.swift; sourceTree = "<group>"; };
+		B2E939C81DF3EE6200937460 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		B2FD5A791DF1FC9A0040C2A1 /* AVAudioPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVAudioPlayerController.swift; sourceTree = "<group>"; };
 		C4DEEF4F3E640A783E5AD659 /* Pods_Origin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Origin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -175,7 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				B24EED3D1DE6D75200F5F5E8 /* MusicPlayerController.swift */,
-				B2FD5A791DF1FC9A0040C2A1 /* AudioPlayerController.swift */,
+				B2FD5A791DF1FC9A0040C2A1 /* AVAudioPlayerController.swift */,
 			);
 			name = MusicPlayer;
 			sourceTree = "<group>";
@@ -217,6 +219,7 @@
 				B2CC1B251DE6C6AE00356219 /* MainViewController.swift */,
 				B2CC1B391DE6C80900356219 /* Origin */,
 				B20C55291DEC00F800C1F4A8 /* TabBarItems */,
+				B2E939C71DF3EE4500937460 /* Models */,
 				B24EED3C1DE6D14900F5F5E8 /* MusicPlayer */,
 				B20C551B1DEBACCA00C1F4A8 /* Network */,
 				B2CC1B381DE6C80200356219 /* Transition */,
@@ -244,6 +247,14 @@
 				B2CC1B231DE6C6AE00356219 /* AppDelegate.swift */,
 			);
 			name = Origin;
+			sourceTree = "<group>";
+		};
+		B2E939C71DF3EE4500937460 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B2E939C81DF3EE6200937460 /* Song.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		EB02B1C57702E090A7BADCA7 /* Frameworks */ = {
@@ -400,7 +411,7 @@
 				B2CC1B2C1DE6C6AE00356219 /* Origin.xcdatamodeld in Sources */,
 				B20C55201DEBF0B100C1F4A8 /* RecommendViewController.swift in Sources */,
 				B20857CD1DE9B41000E05CAD /* Other+CoreDataClass.swift in Sources */,
-				B2FD5A7A1DF1FC9A0040C2A1 /* AudioPlayerController.swift in Sources */,
+				B2FD5A7A1DF1FC9A0040C2A1 /* AVAudioPlayerController.swift in Sources */,
 				B286272F1DF09DCF007A333D /* AlbumViewController.swift in Sources */,
 				B24EED3A1DE6D0C300F5F5E8 /* CollectionViewController.swift in Sources */,
 				B24EED7C1DE6F84200F5F5E8 /* CollectionViewCell.swift in Sources */,
@@ -413,6 +424,7 @@
 				B20C551D1DEBAD9700C1F4A8 /* JsonAdmin.swift in Sources */,
 				B286272D1DF09DC3007A333D /* ArtistViewController.swift in Sources */,
 				B20857CF1DE9B41000E05CAD /* Library+CoreDataClass.swift in Sources */,
+				B2E939C91DF3EE6200937460 /* Song.swift in Sources */,
 				B286272B1DF09DB6007A333D /* SongViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

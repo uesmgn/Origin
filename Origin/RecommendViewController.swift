@@ -9,145 +9,83 @@
 
 import Foundation
 import UIKit
-import SwiftyJSON
-import Alamofire
-import MediaPlayer
+import RealmSwift
 
 class RecommendViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func tapLoad(_ sender: Any) {
-        loadData(tableView: tableView)
     }
-    let url:String = "http://127.0.0.1:8000/api/v1/songs/"
-    let m_queue = DispatchQueue.main
     
-    var tableTitle = [String]()
-    var tableDetail = [String]()
+    let realm = try! Realm()
+    var playlist = [Song]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        loadData(tableView: tableView)
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
     }
     
-    func loadData(tableView:UITableView) {
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        Alamofire.request(url, encoding: JSONEncoding.default).responseJSON {
-            response in
-            guard let value = response.result.value else {
-                return
-            }
-            let json = JSON(value)
-            print("json:\(json)")
-            let songs = json["songs"]
-            print("songs:\(songs)")
-            
-            for item in songs.arrayValue {
-                self.tableTitle.append(item["title"].stringValue)
-                self.tableDetail.append(item["artist"].stringValue)
-            }
-            print(self.tableTitle)
-            print(self.tableDetail)
-            self.tableView.reloadData()
+        self.loadPlaylistData()
+        self.tableView.reloadData()
+    }
+    
+}
+
+extension RecommendViewController {
+    func loadPlaylistData() {
+        playlist.removeAll()
+        
+        var Songs: [Song] = []
+        let realmResponse = realm.objects(Song.self)
+        for result in realmResponse {
+            Songs.append(result)
         }
+        self.playlist = Songs.reversed()
+        self.tableView.reloadData()
     }
-    
-    func getResponse() {
-        Alamofire.request(url).responseJSON { response in
-            
-            if let JSON = response.result.value {
-                print("JSON: \(JSON)")
-            }
-        }
-    }
-    
-    func getString() {
-        Alamofire.request(url).response { response in
-            
-            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)")
-            }
-        }
-    }
-    
-    func getStr() {
-        Alamofire.request(url).response { response in
-            
-            if let data = response.data {
-                print(data)
-            }
-        }
-    }
-    
-    func post() {
-        Alamofire.request(url, method: .get).response { response in
-            
-            if let data = response.response {
-                print(data)
-            }
-        }
-    }
-    
-    func getJson() {
-        Alamofire.request(url).responseJSON { response in
-            
-            if let json = response.result.value {
-                print("JSON: \(json)")
-            }
-        }
-    }
-    
-    func getChain() {
-        Alamofire.request(url)
-            .responseString { response in
-                print("Response String: \(response.result.value)")
-            }
-            .responseJSON { response in
-                print("Response JSON: \(response.result.value)")
-        }
-    }
-    
-    
-    func get() {
-        Alamofire.request(url, method: .get, encoding: JSONEncoding.default).responseJSON { response in
-            
-            guard let json = response.result.value else {
-                return
-            }
-            print(json)
-        }
-    }
-    
-    /*
-     Cellが選択された際に呼び出される
-     */
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Num: \(indexPath.row)")
-        print("Value: \(tableTitle[indexPath.row])")
-    }
-    
-    /*
-     Cellの総数を返す.
-     */
+}
+
+extension RecommendViewController {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableTitle.count
+        return self.playlist.count
     }
     
-    /*
-     Cellに値を設定する
-     */
+    // MARK: - UITableViewDelegate
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // 再利用するCellを取得する.
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath)
-        
-        // Cellに値を設定する.
-        cell.textLabel!.text = "\(tableTitle[indexPath.row])"
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let nowIndex = (indexPath as NSIndexPath).row
+        cell.tag = nowIndex
+        let item = playlist[nowIndex]
+        cell.textLabel?.text = item.title
+        cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
+        //cell.imageView?.image = item.artwork?.image(at: CGSize(width: 40.0, height: 40.0)) ?? UIImage(named: "artwork_default")
         return cell
+        
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let player = AVAudioPlayerController.shared
+        if player.isPlaying() {
+            player.pause()
+        }
+        let song = playlist[indexPath.row]
+        player.song = song
+        player.play()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "detail") {
+        }
+    }
 }

@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import RealmSwift
+import APIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,10 +17,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var navigationController: UINavigationController?
     
+    let realm:Realm
+    
+    override init() {
+        realm = try! Realm()
+    }
+    
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        setDefault()
         return true
     }
+    
+    func setDefault() {
+        let songs = realm.objects(Song.self)
+        if songs.count == 0 {
+            setItems("Avicii")
+            setItems("Sia")
+            setItems("The chainsmorkers")
+        }
+    }
+    
+    
+    func setItems(_ term: String) {
+        let request = GetSearchRequest(term: term)
+        Session.send(request) { result in
+            switch result {
+            case .success(let songs):
+                for song in songs {
+                    try! self.realm.write {
+                        self.realm.add(song)
+                        print("\(song.title)")
+                        
+                    }
+                }
+            case .failure(let error):
+                print("error")
+            }
+        }
+    }
+
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

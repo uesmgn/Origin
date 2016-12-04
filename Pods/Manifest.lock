@@ -1,13 +1,18 @@
 PODS:
   - Alamofire (4.2.0)
+  - APIKit (3.1.0):
+    - Result (~> 3.0)
   - ARNTransitionAnimator (2.0.3)
   - BTNavigationDropdownMenu (0.4.1)
   - Cosmos (7.0.0)
   - expanding-collection (1.0.4)
   - PagingMenuController (2.0.0)
-  - Realm (2.1.0):
-    - Realm/Headers (= 2.1.0)
-  - Realm/Headers (2.1.0)
+  - Realm (2.1.1):
+    - Realm/Headers (= 2.1.1)
+  - Realm/Headers (2.1.1)
+  - RealmSwift (2.1.1):
+    - Realm (= 2.1.1)
+  - Result (3.1.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -17,12 +22,13 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
+  - APIKit (~> 3.0)
   - ARNTransitionAnimator
   - BTNavigationDropdownMenu (from `https://github.com/PhamBaTho/BTNavigationDropdownMenu.git`, branch `swift-3.0`)
   - Cosmos (~> 7.0)
   - expanding-collection (~> 1.0.3)
   - PagingMenuController
-  - Realm
+  - RealmSwift
   - SDWebImage (~> 3.8)
   - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
   - SVProgressHUD
@@ -46,17 +52,20 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  APIKit: e9fddf34a1b2786e7c8d9079c9df6ef278749b23
   ARNTransitionAnimator: 51c63c904e61435d1ff741722ec49819cd38fc4f
   BTNavigationDropdownMenu: 093f3cbfad1572f2c222bdf8d17584d1e13380d4
   Cosmos: 2c8299147138758f6ebbb247cf1aeed77998bdf9
   expanding-collection: be78b5822d7382d3da02b52d52273f4661567a64
   PagingMenuController: 60602bfb5421d6536c1e3097baeed601dec1d85b
-  Realm: bc829ad0ef3d4eea70c34cfcc3b1704d18d50df1
+  Realm: a55959c0b171a5fe5267406d17f314fec3cefaae
+  RealmSwift: 749fd955bf8d6471c21d218b9389a47aaeccfe3f
+  Result: 4e3ed5995ed94d0cd6a09be9a431fce3f3624bbf
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SVProgressHUD: bfde85ed6c573ea802b9cb37894ed9b629034f1b
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
 
-PODFILE CHECKSUM: 247029929471fc1caec1e33cb129c92cc32d35a9
+PODFILE CHECKSUM: af1e12119201ba6cfe4933729c83638c3e991bd4
 
 COCOAPODS: 1.1.0.rc.2
