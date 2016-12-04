@@ -11,6 +11,7 @@ import UIKit
 import expanding_collection
 import MediaPlayer
 import Spring
+import RealmSwift
 
 //------------------------------------------
 // スクロール型View
@@ -18,14 +19,14 @@ import Spring
 
 class CollectionViewController: ExpandingViewController {
     
+    var player = AudioPlayer.shared
+    
     var m_queue = DispatchQueue.main
     var s_queue = DispatchQueue(label: "queue")
     
     fileprivate var cellsIsOpen = [Bool]()
     fileprivate var artworkArray = [UIImage]()
-    fileprivate var items: [MPMediaItem]?
-    fileprivate var ratingDict: [MPMediaItem:Double]?
-    fileprivate var isKnownDict: [MPMediaItem:Bool]?
+    fileprivate var items: [UserSong]?
     
     @IBOutlet weak var navBar: UIView!
     @IBOutlet weak var toggleButton: SpringButton!
@@ -49,19 +50,16 @@ extension CollectionViewController {
         itemSize = CGSize(width: 200, height: 200)
         super.viewDidLoad()
         
-        musicplayer.collectionView = self
-        
-        s_queue.async {
-            self.items = musicplayer.playlist
-            // 生成したxibファイルと関連付け
-            self.registerCell()
-            // cellIsOpen配列に全てfalseを追加
-            self.fillCellIsOpenArray()
-            // artwork配列にプレイリストの曲のすべてのアートワークをセット
-            self.fillArtworkArray()
-            // gestureセット
-            self.addGestureToView(self.collectionView!)
-        }
+        self.items = self.player.Library
+        // 生成したxibファイルと関連付け
+        self.registerCell()
+        // cellIsOpen配列に全てfalseを追加
+        self.fillCellIsOpenArray()
+        // artwork配列にプレイリストの曲のすべてのアートワークをセット
+        self.fillArtworkArray()
+        // gestureセット
+        self.addGestureToView(self.collectionView!)
+    
         m_queue.async {
             self.updateToggle()
         }
@@ -88,7 +86,7 @@ extension CollectionViewController {
     fileprivate func fillArtworkArray() {
         let size = CGSize(width: 200, height: 200)
         for song in items! {
-            let image = song.artwork?.image(at: size)  ?? UIImage(named: "artwork_default")
+            let image = UIImage(data: song.artwork!)
             artworkArray.append(image!)
         }
     }
@@ -97,16 +95,16 @@ extension CollectionViewController {
 extension CollectionViewController {
     @IBAction func tappedToggleButton(_ sender: Any) {
         toggleButton.animation = "pop"
-        if musicplayer.isPlaying() {
+        if player.isPlaying() {
             m_queue.async {
-                musicplayer.pause()
+                self.player.pause()
                 self.toggleButton.imageView?.image = UIImage(named: "play")
                 self.toggleButton.duration = 0.5
                 self.toggleButton.animate()
             }
         } else {
             m_queue.async {
-                musicplayer.play()
+                self.player.play()
                 self.toggleButton.imageView?.image = UIImage(named: "pause")
                 self.toggleButton.duration = 0.5
                 self.toggleButton.animate()
@@ -120,15 +118,15 @@ extension CollectionViewController {
     }
     
     func sclollToCurrentItem(animated: Bool) {
-        if let song = musicplayer.nowPlayingItem {
-            let index = musicplayer.playlist.index(of: song)
+        if let song = player.nowPlayingItem() as? UserSong {
+            let index = player.Library.index(of: song)
             let indexPathOfCurrentItem = IndexPath(item: index!, section: 0)
             collectionView?.scrollToItem(at: indexPathOfCurrentItem, at: UICollectionViewScrollPosition.right, animated: animated)
         }
     }
     
     func updateToggle() {
-        if musicplayer.isPlaying() {
+        if player.isPlaying() {
             self.toggleButton.imageView?.image = UIImage(named: "pause")
         } else {
             self.toggleButton.imageView?.image = UIImage(named: "play")
@@ -180,10 +178,8 @@ extension CollectionViewController {
             return
         }
         let song = items?[currentIndex]
-        m_queue.async {
-            self.currentTitle.text = "\((song?.title)!)"
-            self.currentDetail.text = "\((song?.artist)!)-\((song?.albumTitle)!)"
-        }
+        self.currentTitle.text = "\((song?.title)!)"
+        self.currentDetail.text = "\((song?.artist)!)-\((song?.album)!)"
     }
     
 }
@@ -197,7 +193,7 @@ extension CollectionViewController {
         //let index = (indexPath as NSIndexPath).row % items.count
         let index = (indexPath as NSIndexPath).row
         let info = items?[index]
-        cell.artworkImage?.image = info?.artwork?.image(at: CGSize(width: 200, height: 200)) ?? UIImage(named: "artwork_default")
+        cell.artworkImage?.image = UIImage(data: (info?.artwork)!)
         cell.ratingView.rating = Double(info!.rating)
         cell.cellIsOpen(cellsIsOpen[index], animated: false)
         
@@ -233,8 +229,8 @@ extension CollectionViewController {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CollectionViewCell.self), for: indexPath)
         cell.tag = index
-        if let song = musicplayer.nowPlayingItem {
-            if index == musicplayer.playlist.index(of: song) {
+        if let song = player.nowPlayingItem() as? UserSong {
+            if index == player.Library.index(of: song) {
                 collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
             }
         }
@@ -244,7 +240,8 @@ extension CollectionViewController {
 
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         super.scrollViewDidEndDecelerating(scrollView)
-        musicplayer.nowPlayingItem = items?[currentIndex]
+        player.usersong = items?[currentIndex]
+        player.play()
     }
 }
 

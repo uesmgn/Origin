@@ -50,7 +50,7 @@ extension RecommendViewController {
         for result in realmResponse {
             Songs.append(result)
         }
-        self.playlist = Songs.reversed()
+        self.playlist = Songs
         self.tableView.reloadData()
     }
 }
@@ -69,14 +69,13 @@ extension RecommendViewController {
         let item = playlist[nowIndex]
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
-        //cell.imageView?.image = item.artwork?.image(at: CGSize(width: 40.0, height: 40.0)) ?? UIImage(named: "artwork_default")
         return cell
         
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let player = AVAudioPlayerController.shared
+        let player = AudioPlayer.shared
         if player.isPlaying() {
             player.pause()
         }

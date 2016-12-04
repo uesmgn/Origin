@@ -12,8 +12,8 @@ import MediaPlayer
 import Spring
 import Cosmos
 import ARNTransitionAnimator
+import RealmSwift
 
-var musicplayer = MusicPlayerController()
 
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBarDelegate {
     
@@ -48,16 +48,20 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var toggleButton: SpringButton!
     @IBOutlet weak var nextButton: SpringButton!
     @IBOutlet weak var const: NSLayoutConstraint!
+    @IBOutlet weak var plusButton: SpringButton!
+
     weak var containerView: UIView!
-    
     //-------------- Property --------------------
-    fileprivate var coredataAdmin = CoreDataAdmin()
     fileprivate var animator : ARNTransitionAnimator?
     fileprivate var modalVC : CollectionViewController!
     fileprivate let vcArray = [UIViewController]()
-
+    let player = AudioPlayer.shared
+    
     //-------------- Instanse ---------------
     fileprivate let json = JsonAdmin()
+    
+    let realm = try! Realm()
+    
 }
 
 extension MainViewController {
@@ -65,26 +69,15 @@ extension MainViewController {
         super.viewDidLoad()
         
         // Task: 他のアプリで再生中の音声を停止
-        musicplayer.setBackgroundMode()
         
         // delegate
         tabBar.delegate = self
-        musicplayer.viewController = self
-        coredataAdmin.viewController = self
+        player.viewController = self
+        
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos
         
         updatePlayinfo()
-        
-        s_queue.sync {
-            musicplayer.allItemsToQueue()
-            musicplayer.updatePlaylist()
-        }
-        s_queue.sync {
-            self.coredataAdmin.deleteAll(entityName: "History")
-            self.coredataAdmin.defaultSetLibrary()
-        }
-        
-        
+                
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         self.modalVC = storyboard.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController
         self.modalVC.modalPresentationStyle = .overFullScreen
@@ -96,19 +89,31 @@ extension MainViewController {
 // --------------- Private Method -------------------
 extension MainViewController {
     
-    /// 再生中の曲情報を表示
     func updatePlayinfo() {
-        if let song = musicplayer.nowPlayingItem {
+        if let song = player.nowPlayingItem() {
             miniPlayerView.isHidden = false
             const.constant = 0
-            
-            currentTitle.text = song.title ?? "unknown"
-            currentDetail.text = song.artist ?? "unknown"
-            currentArtwork.image = song.artwork?.image(at: currentArtwork.bounds.size) ?? UIImage(named: "artwork_default")
+            if song as? UserSong != nil {
+                nextButton.isHidden = false
+                plusButton.isHidden = true
+                let item = song as! UserSong
+                currentTitle.text = item.title
+                currentDetail.text = item.artist
+                currentArtwork.image = UIImage(data: item.artwork!)
+                ratingBar.rating = Double(item.rating)
+            } else if song as? Song != nil {
+                nextButton.isHidden = true
+                plusButton.isHidden = false
+                let item = song as! Song
+                currentTitle.text = item.title
+                currentDetail.text = item.artist
+                currentArtwork.image = UIImage(named: "artwork_default")
+                ratingBar.rating = Double(item.rating)
+            }
             //システム設定の評価値
-            ratingBar.rating = Double(song.rating)
             self.toggleButton.imageView?.image = UIImage(named: "pause-1")
         } else {
+            miniPlayerView.isHidden = true
             setUI()
             self.toggleButton.imageView?.image = UIImage(named: "play-1")
         }
@@ -116,7 +121,7 @@ extension MainViewController {
     
     /// トグルボタンを押した時以外で再生状況が変化した時に呼び出し
     func updateToggle() {
-        if musicplayer.isPlaying() {
+        if player.isPlaying() {
             self.toggleButton.imageView?.image = UIImage(named: "pause-1")
         } else {
             self.toggleButton.imageView?.image = UIImage(named: "play-1")
@@ -128,13 +133,25 @@ extension MainViewController {
         setUI()
     }
     
+
     fileprivate func didFinishTouchingCosmos(_ rating: Double) {
-        if let song = musicplayer.nowPlayingItem {
-            
-            musicplayer.setRating(Int(rating))
-            // Save to CoreData; LibraryData,HistoryData
-            coredataAdmin.changeRatingOfLibrary(song: song, rating: rating)
-            coredataAdmin.appendHistory(song: song, rating: rating)
+        if let song = player.nowPlayingItem() {
+            if let item = (song as? UserSong) {
+                let id = item.itunesId
+                let song = realm.object(ofType: UserSong.self, forPrimaryKey: id)
+                try! realm.write() {
+                    song?.rating = Int(rating)
+                }
+            } else if let item = (song as? Song) {
+                // Task: 評価値をつけたものからRealmに保存
+                let id = item.itunesId
+                
+                if let song = realm.object(ofType: Song.self, forPrimaryKey: id) {
+                    try! realm.write() {
+                        song.rating = Int(rating)
+                    }
+                }
+            }
         }
     }
     
@@ -189,7 +206,7 @@ extension MainViewController {
             return
         }
         
-        if musicplayer.nowPlayingItem != nil {
+        if player.nowPlayingItem() != nil {
             miniPlayerView.isHidden = false
             const.constant = 0
         } else {
@@ -209,21 +226,26 @@ extension MainViewController {
     
     @IBAction func tapToggleButton(_ sender: Any) {
         toggleButton.animation = "pop"
-        if musicplayer.isPlaying() {
+        if player.isPlaying() {
             DispatchQueue.main.async {
-                musicplayer.pause()
+                self.player.pause()
                 self.toggleButton.imageView?.image = UIImage(named: "play-1")
                 self.toggleButton.duration = 0.4
                 self.toggleButton.animate()
             }
         } else {
             DispatchQueue.main.async {
-                musicplayer.play()
+                self.player.play()
                 self.toggleButton.imageView?.image = UIImage(named: "pause-1")
                 self.toggleButton.duration = 0.4
                 self.toggleButton.animate()
             }
         }
+    }
+    
+    @IBAction func plusButtonTapped(_ sender: Any) {
+        
+        
     }
     
     @IBAction func tapNextButton(_ sender: Any) {
@@ -232,7 +254,7 @@ extension MainViewController {
             self.nextButton.duration = 0.4
             self.nextButton.animate()
         }
-        musicplayer.skipToNextItem()
+        player.skipToNextItem()
     }
 }
 

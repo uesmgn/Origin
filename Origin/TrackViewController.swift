@@ -15,6 +15,7 @@ class TrackViewController: UITableViewController {
     
     let realm = try! Realm()
     var playlist = [UserSong]()
+    let player = AudioPlayer.shared
     
     class func instantiateFromStoryboard() -> TrackViewController {
         let storyboard = UIStoryboard(name: "MenuViewController", bundle: nil)
@@ -50,7 +51,7 @@ extension TrackViewController {
         for result in realmResponse {
             Songs.append(result)
         }
-        self.playlist = Songs.reversed()
+        self.playlist = Songs
         self.tableView.reloadData()
     }
 }
@@ -76,7 +77,7 @@ extension TrackViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let player = AVAudioPlayerController.shared
+        let player = AudioPlayer.shared
         if player.isPlaying() {
             player.pause()
         }
@@ -88,6 +89,15 @@ extension TrackViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "detail") {
+        }
+    }
+    
+    
+    func sclollToCurrentItem(animated: Bool) {
+        if let song = player.nowPlayingItem() as? UserSong {
+            let index = player.Library.index(of: song)
+            let indexPathOfCurrentItem = IndexPath(item: index!, section: 0)
+            tableView.scrollToRow(at: indexPathOfCurrentItem, at: UITableViewScrollPosition.top, animated: animated)
         }
     }
 }

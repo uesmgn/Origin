@@ -61,6 +61,7 @@ struct GetSearchRequest: iTunesRequest {
                 song.artist = dictionary["artistName"] as? String ?? "unknown"
                 song.album = dictionary["collectionName"] as? String ?? "unknown"
                 song.trackSource = dictionary["previewUrl"] as? String ?? "unknown"
+                song.rating = 0
                 Songs.append(song)
             }
         }

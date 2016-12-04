@@ -32,7 +32,9 @@ struct GetLibraryRequest: LibraryAccess {
             song.artist = item.artist ?? "unknown"
             song.album = item.albumTitle ?? "unknown"
             song.itunesId = Int(item.persistentID)
-            song.artwork = item.artwork?.description ?? ""
+            let size = CGSize(width: 100, height: 100)
+            song.artwork = UIImagePNGRepresentation(item.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)
+            song.rating = item.rating
             song.trackSource = "\(item.assetURL!)"
             Songs.append(song)
         }

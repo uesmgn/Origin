@@ -9,4 +9,7 @@ class Song: Object {
     dynamic var trackSource = ""
     dynamic var rating = 0
     dynamic var isKnown = 0
+    override static func primaryKey() -> String? {
+        return "itunesId"
+    }
 }
