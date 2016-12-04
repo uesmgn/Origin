@@ -17,6 +17,17 @@ class AVAudioPlayerController: NSObject, AVAudioPlayerDelegate {
     
     var audioPlayer: AVAudioPlayer!
     
+    var usersong:UserSong? {
+        didSet {
+            self.initRemoteControl()
+            let fileUrl = URL(string: self.usersong!.trackSource)
+            audioPlayer = try! AVAudioPlayer(contentsOf: fileUrl!)
+            audioPlayer.delegate = self
+            audioPlayer.prepareToPlay()
+        }
+    }
+    
+    
     var song:Song? {
         didSet {
             self.initRemoteControl()
@@ -27,7 +38,6 @@ class AVAudioPlayerController: NSObject, AVAudioPlayerDelegate {
             audioPlayer.prepareToPlay()
         }
     }
-    
     
     func play() {
         if let audioPlayer = audioPlayer {

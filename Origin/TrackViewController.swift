@@ -1,8 +1,8 @@
 //
-//  RecommendViewController.swift
+//  TrackViewController.swift
 //  Origin
 //
-//  Created by Gen on 2016/11/28.
+//  Created by Gen on 2016/12/04.
 //  Copyright © 2016年 Gen. All rights reserved.
 //
 
@@ -11,15 +11,15 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class RecommendViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    @IBOutlet weak var tableView: UITableView!
-    
-    @IBAction func tapLoad(_ sender: Any) {
-    }
+class TrackViewController: UITableViewController {
     
     let realm = try! Realm()
-    var playlist = [Song]()
+    var playlist = [UserSong]()
+    
+    class func instantiateFromStoryboard() -> TrackViewController {
+        let storyboard = UIStoryboard(name: "MenuViewController", bundle: nil)
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! TrackViewController
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,12 +41,12 @@ class RecommendViewController: UIViewController, UITableViewDelegate, UITableVie
     
 }
 
-extension RecommendViewController {
+extension TrackViewController {
     func loadPlaylistData() {
         playlist.removeAll()
         
-        var Songs: [Song] = []
-        let realmResponse = realm.objects(Song.self)
+        var Songs: [UserSong] = []
+        let realmResponse = realm.objects(UserSong.self)
         for result in realmResponse {
             Songs.append(result)
         }
@@ -55,14 +55,15 @@ extension RecommendViewController {
     }
 }
 
-extension RecommendViewController {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+extension TrackViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.playlist.count
     }
     
     // MARK: - UITableViewDelegate
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let nowIndex = (indexPath as NSIndexPath).row
         cell.tag = nowIndex
@@ -74,15 +75,14 @@ extension RecommendViewController {
         
     }
     
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let player = AVAudioPlayerController.shared
         if player.isPlaying() {
             player.pause()
         }
         let song = playlist[indexPath.row]
         print(song.trackSource)
-        player.song = song
+        player.usersong = song
         player.play()
     }
     

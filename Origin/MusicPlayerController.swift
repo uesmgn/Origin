@@ -14,6 +14,9 @@ import CoreData
 
 class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     
+    //singleton
+    static let shared = MusicPlayerController()
+    
     //------------ Property ------------------
     weak var viewController:MainViewController?
     weak var songTable:SongViewController?
@@ -92,12 +95,6 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
     func playbackStateDidChange(notify: NSNotification) {
     }
     
-    func  playlistToQueue() {
-        if playlist.isEmpty == false {
-            let collection = MPMediaItemCollection(items: playlist)
-            player.setQueue(with: collection)
-        }
-    }
     
     
     
@@ -112,6 +109,13 @@ class MusicPlayerController: NSObject, AVAudioPlayerDelegate{
         }
         playlist = items
         songTable?.songCountLabel.text = "\(playlist.count) Songs"
+    }
+    
+    func  playlistToQueue() {
+        if playlist.isEmpty == false {
+            let collection = MPMediaItemCollection(items: playlist)
+            player.setQueue(with: collection)
+        }
     }
     
     func allItemsToQueue() {

@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Song View Controller-->
+        <!--Track View Controller-->
         <scene sceneID="6mX-6j-yYf">
             <objects>
-                <tableViewController storyboardIdentifier="SongViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6lY-SO-g5S" customClass="SongViewController" customModule="Origin" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="TrackViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6lY-SO-g5S" customClass="TrackViewController" customModule="Origin" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ymE-4D-aOl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -75,9 +75,6 @@
                             <outlet property="delegate" destination="6lY-SO-g5S" id="LFq-TC-cWD"/>
                         </connections>
                     </tableView>
-                    <connections>
-                        <outlet property="songCountLabel" destination="L17-4w-kfa" id="S5b-zp-JOe"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FzG-sN-gyh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

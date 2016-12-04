@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import RealmSwift
 import APIKit
+import MediaPlayer
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,18 +19,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var navigationController: UINavigationController?
     
     let realm:Realm
+    var library:[MPMediaItem]
     
     override init() {
         realm = try! Realm()
+        
+        // ユーザライブラリの曲をlibraryに格納
+        let query = MPMediaQuery.songs()
+        guard let items = query.items else {
+            self.library = []
+            return
+        }
+        self.library = items
     }
-    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setDefault()
         return true
     }
     
+    
     func setDefault() {
+        let userSongs = realm.objects(UserSong.self)
+        if userSongs.count == 0 {
+            setLibrary()
+        }
+        
         let songs = realm.objects(Song.self)
         if songs.count == 0 {
             setItems("Avicii")
@@ -38,6 +53,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    func setLibrary() {
+        let request = GetLibraryRequest(library: library)
+        let songs = try! request.response()
+        for song in songs {
+            try! self.realm.write {
+                self.realm.add(song)
+                print("\(song.title)")
+            }
+        }
+    }
     
     func setItems(_ term: String) {
         let request = GetSearchRequest(term: term)
@@ -48,7 +73,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     try! self.realm.write {
                         self.realm.add(song)
                         print("\(song.title)")
-                        
                     }
                 }
             case .failure(let error):
