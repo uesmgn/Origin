@@ -28,30 +28,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let query = MPMediaQuery.songs()
         guard let items = query.items else {
             self.library = []
+            print("楽曲が読み込めませんでした")
             return
         }
         self.library = items
     }
     
+    // 初回起動時実行
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        setDefault()
-        return true
-    }
-    
-    
-    func setDefault() {
+        // ライブラリーの曲をRealmに保存
         let userSongs = realm.objects(UserSong.self)
         if userSongs.count == 0 {
             setLibrary()
         }
         
+        // デフォルトデータをRealmに保存
         let songs = realm.objects(Song.self)
         if songs.count == 0 {
             setItems("Avicii")
             setItems("Sia")
             setItems("The chainsmorkers")
         }
+        return true
     }
+    
     
     func setLibrary() {
         let request = GetLibraryRequest(library: library)
@@ -59,7 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         for song in songs {
             try! self.realm.write {
                 self.realm.add(song)
-                print("\(song.title)")
             }
         }
     }
@@ -72,7 +71,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 for song in songs {
                     try! self.realm.write {
                         self.realm.add(song)
-                        print("\(song.title)")
                     }
                 }
             case .failure(let error):

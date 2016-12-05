@@ -15,9 +15,6 @@ class RecommendViewController: UIViewController, UITableViewDelegate, UITableVie
 
     @IBOutlet weak var tableView: UITableView!
     
-    @IBAction func tapLoad(_ sender: Any) {
-    }
-    
     let realm = try! Realm()
     var playlist = [Song]()
     

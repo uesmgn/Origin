@@ -136,20 +136,44 @@ extension MainViewController {
 
     fileprivate func didFinishTouchingCosmos(_ rating: Double) {
         if let song = player.nowPlayingItem() {
+            var id:Int?
+            // ライブラリーの曲に評価
             if let item = (song as? UserSong) {
-                let id = item.itunesId
-                let song = realm.object(ofType: UserSong.self, forPrimaryKey: id)
+                id = item.itunesId
+                // ライブラリーの楽曲の評価値を更新
+                let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
                 try! realm.write() {
-                    song?.rating = Int(rating)
+                    usersong?.rating = Int(rating)
                 }
-            } else if let item = (song as? Song) {
-                // Task: 評価値をつけたものからRealmに保存
-                let id = item.itunesId
-                
+            }
+            // プレビューに評価
+            else if let item = (song as? Song) {
+                id = item.itunesId
                 if let song = realm.object(ofType: Song.self, forPrimaryKey: id) {
                     try! realm.write() {
                         song.rating = Int(rating)
                     }
+                }
+            }
+            guard id != nil else {
+                return
+            }
+            // 更新
+            if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
+                try! realm.write() {
+                    let oldVlaue = ratingsong.rating
+                    ratingsong.rating = Int(rating)
+                    let newValue = ratingsong.rating
+                    print("\(ratingsong.title)の評価値を更新:\(oldVlaue)->\(newValue)")
+                }
+            }
+            // 新規追加
+            else {
+                let request = SaveRatedSongRequest(item: song)
+                let song = try! request.response()
+                try! self.realm.write {
+                    self.realm.add(song!)
+                    print("\((song?.title)!)を評価しました:\((song?.rating)!)")
                 }
             }
         }
@@ -186,8 +210,8 @@ extension MainViewController {
             return
         }
         self.libContainer.isHidden = !(tag == 1)
-        self.hisContainer.isHidden = !(tag == 2)
-        self.recContainer.isHidden = !(tag == 3)
+        self.recContainer.isHidden = !(tag == 2)
+        self.hisContainer.isHidden = !(tag == 3)
         
         switch tag {
         case 1:
@@ -243,9 +267,27 @@ extension MainViewController {
         }
     }
     
+    /// お気に入り追加
     @IBAction func plusButtonTapped(_ sender: Any) {
-        
-        
+        if let song = player.nowPlayingItem() {
+            let request = SaveFavoriteRequest(item: song)
+            let song = try! request.response()
+            let id = song?.itunesId
+            guard realm.object(ofType: FavoriteSong.self, forPrimaryKey: id) == nil else {
+                print("すでに追加されています")
+                return
+            }
+            if song != nil {
+                guard song?.rating != 0 else {
+                    print("評価してください")
+                    return
+                }
+                try! self.realm.write {
+                    self.realm.add(song!)
+                    print("\((song?.title)!)をお気に入りに追加しました")
+                }
+            }
+        }
     }
     
     @IBAction func tapNextButton(_ sender: Any) {

@@ -10,11 +10,13 @@
 import Foundation
 import UIKit
 import RealmSwift
+import MediaPlayer
 
 class TrackViewController: UITableViewController {
     
     let realm = try! Realm()
     var playlist = [UserSong]()
+    var library:[MPMediaItem] = []
     let player = AudioPlayer.shared
     
     class func instantiateFromStoryboard() -> TrackViewController {
@@ -48,11 +50,39 @@ extension TrackViewController {
         
         var Songs: [UserSong] = []
         let realmResponse = realm.objects(UserSong.self)
+        
+        if realmResponse.count != 0 {
+            reloadLibrary()
+        }
+        
         for result in realmResponse {
             Songs.append(result)
         }
         self.playlist = Songs
         self.tableView.reloadData()
+    }
+    
+    
+    func reloadLibrary() {
+        // ユーザライブラリの曲をlibraryに格納
+        let query = MPMediaQuery.songs()
+        guard let items = query.items else {
+            self.library = []
+            print("楽曲が読み込めませんでした")
+            return
+        }
+        self.library = items
+        
+        let userSongs = realm.objects(UserSong.self)
+        if userSongs.count == 0 {
+            let request = GetLibraryRequest(library: library)
+            let songs = try! request.response()
+            for song in songs {
+                try! self.realm.write {
+                    self.realm.add(song)
+                }
+            }
+        }
     }
 }
 

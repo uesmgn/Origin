@@ -95,22 +95,23 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func play() {
         if let player = player {
+            print("play")
             player.play()
         }
     }
     
     func stop() {
-        if let player = player {
-            player.stop()
-            status = .Pausing
-            viewController?.updatePlayinfo()
-        }
+        print("stop")
+        player.stop()
+        status = .Pausing
+        viewController?.updatePlayinfo()
+        viewController?.updateToggle()
     }
     
     func pause() {
-        if let player = player {
-            player.pause()
-        }
+        print("pause")
+        player.pause()
+        status = .Pausing
     }
     
     func pos(_ time: Double) {
@@ -119,10 +120,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    //
-    func itemChanged() {
-        
-    }
     
     func skipToNextItem() {
         switch (status!) {
@@ -208,9 +205,8 @@ extension AudioPlayer {
     }
     
     func playerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        itemChanged()
-        viewController?.updatePlayinfo()
-        viewController?.updateToggle()
+        print("finish")
+        stop()
         let notification = Notification(name: Notification.Name(rawValue: "finishPlayer"), object: nil)
         NotificationCenter.default.post(notification)
     }

@@ -7,14 +7,14 @@
 //
 import MediaPlayer
 
-protocol LibraryAccess {
+protocol LibraryAccessHelper {
     
     associatedtype Response
     
     func response() throws -> Response
 }
 
-struct GetLibraryRequest: LibraryAccess {
+struct GetLibraryRequest: LibraryAccessHelper {
     
     typealias Response = [UserSong]
     
@@ -31,10 +31,10 @@ struct GetLibraryRequest: LibraryAccess {
             song.title = item.title ?? "unknown"
             song.artist = item.artist ?? "unknown"
             song.album = item.albumTitle ?? "unknown"
-            song.itunesId = Int(item.persistentID)
+            song.itunesId = Int(item.persistentID) // Task:iTunesID割り当て
             let size = CGSize(width: 100, height: 100)
             song.artwork = UIImagePNGRepresentation(item.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)
-            song.rating = item.rating
+            song.rating = 0
             song.trackSource = "\(item.assetURL!)"
             Songs.append(song)
         }

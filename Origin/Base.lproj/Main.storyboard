@@ -35,7 +35,8 @@
                                 <items>
                                     <tabBarItem tag="1" title="Home" image="home-green-m" selectedImage="home-green" id="Ddp-RJ-uY3"/>
                                     <tabBarItem tag="2" title="Discover" image="discover-green-m" selectedImage="discover-green-m" id="NWF-M9-6zV"/>
-                                    <tabBarItem tag="3" title="Find" image="light-green-m" selectedImage="light-green" id="u3b-Gt-NZm"/>
+                                    <tabBarItem tag="3" title="Find" image="light-green-m" id="u3b-Gt-NZm"/>
+                                    <tabBarItem tag="4" title="History" image="history-black-m" id="PxI-am-Six"/>
                                 </items>
                             </tabBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nbf-W0-O7k" customClass="MiniPlayerView" customModule="Origin" customModuleProvider="target">
@@ -644,28 +645,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="454"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexTrackingBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="P2j-gQ-Ob8">
-                                    <rect key="frame" x="0.0" y="72" width="375" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zfW-Gu-IxJ">
-                                            <rect key="frame" x="170" y="0.0" width="34" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="RsL-uK-mx7"/>
-                                            </constraints>
-                                            <color key="tintColor" red="0.91331773996353149" green="0.93545234203338623" blue="0.18243643641471863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <state key="normal" title="Load"/>
-                                            <connections>
-                                                <action selector="tapLoad:" destination="w4r-yP-Gmz" eventType="touchUpInside" id="e76-lc-gdV"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstItem="zfW-Gu-IxJ" firstAttribute="centerY" secondItem="P2j-gQ-Ob8" secondAttribute="centerY" id="TyG-w6-qra"/>
-                                        <constraint firstItem="zfW-Gu-IxJ" firstAttribute="centerX" secondItem="P2j-gQ-Ob8" secondAttribute="centerX" id="gkL-6d-ytf"/>
-                                    </constraints>
-                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="l1w-KW-jWU" detailTextLabel="HWo-Yk-ChW" style="IBUITableViewCellStyleSubtitle" id="gCX-HI-ePU">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -808,9 +787,9 @@
         <image name="discover-green-m" width="24" height="24"/>
         <image name="down" width="512" height="512"/>
         <image name="fastforward" width="512" height="512"/>
+        <image name="history-black-m" width="24" height="22"/>
         <image name="home-green" width="30" height="30"/>
         <image name="home-green-m" width="24" height="24"/>
-        <image name="light-green" width="24" height="30"/>
         <image name="light-green-m" width="18" height="24"/>
         <image name="play" width="852" height="852"/>
         <image name="play-1" width="512" height="512"/>
