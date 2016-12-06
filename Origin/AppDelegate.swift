@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // デフォルトデータをRealmに保存
-        let songs = realm.objects(Song.self)
+        let songs = realm.objects(OtherSong.self)
         if songs.count == 0 {
             setItems("Avicii")
             setItems("Sia")

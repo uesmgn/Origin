@@ -43,9 +43,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     /// default result srray
-    var Songs:[Song] {
-        var songs: [Song] = []
-        let realmResponse = realm.objects(Song.self)
+    var Songs:[OtherSong] {
+        var songs: [OtherSong] = []
+        let realmResponse = realm.objects(OtherSong.self)
         for result in realmResponse {
             songs.append(result)
         }
@@ -68,7 +68,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    var song:Song? {
+    var song:OtherSong? {
         didSet {
             status = .PreviewPlaying
             self.initRemoteControl()

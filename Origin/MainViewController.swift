@@ -13,7 +13,7 @@ import Spring
 import Cosmos
 import ARNTransitionAnimator
 import RealmSwift
-
+import SVProgressHUD
 
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBarDelegate {
     
@@ -35,13 +35,15 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var ratingView: UIView!
     @IBOutlet weak var ratingBar: CosmosView!
     @IBOutlet weak var tabBar: UITabBar!
-    @IBOutlet weak var favTab: UITabBarItem!
-    @IBOutlet weak var recTab: UITabBarItem!
-    @IBOutlet weak var hisTab: UITabBarItem!
-    @IBOutlet weak var libContainer: UIView!
-    @IBOutlet weak var recContainer: UIView!
-    @IBOutlet weak var hisContainer: UIView!
+    @IBOutlet weak var homeTab: UITabBarItem!
+    @IBOutlet weak var discoverTab: UITabBarItem!
+    @IBOutlet weak var findTab: UITabBarItem!
+    @IBOutlet weak var historyTab: UITabBarItem!
+    @IBOutlet weak var homeContainer: UIView!
+    @IBOutlet weak var discoverContainer: UIView!
+    @IBOutlet weak var findContainer: UIView!
     @IBOutlet weak var PageTitle: UILabel!
+    @IBOutlet weak var historyContainer: UIView!
     @IBOutlet weak var currentArtwork: UIImageView!
     @IBOutlet weak var currentTitle: UILabel!
     @IBOutlet weak var currentDetail: UILabel!
@@ -56,10 +58,11 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     fileprivate var modalVC : CollectionViewController!
     fileprivate let vcArray = [UIViewController]()
     let player = AudioPlayer.shared
+    let history = HistoryViewController.shared
     
     //-------------- Instanse ---------------
     fileprivate let json = JsonAdmin()
-    
+    let nc = NotificationCenter.default
     let realm = try! Realm()
     
 }
@@ -69,6 +72,7 @@ extension MainViewController {
         super.viewDidLoad()
         
         // Task: 他のアプリで再生中の音声を停止
+        
         
         // delegate
         tabBar.delegate = self
@@ -101,10 +105,10 @@ extension MainViewController {
                 currentDetail.text = item.artist
                 currentArtwork.image = UIImage(data: item.artwork!)
                 ratingBar.rating = Double(item.rating)
-            } else if song as? Song != nil {
+            } else if song as? OtherSong != nil {
                 nextButton.isHidden = true
                 plusButton.isHidden = false
-                let item = song as! Song
+                let item = song as! OtherSong
                 currentTitle.text = item.title
                 currentDetail.text = item.artist
                 currentArtwork.image = UIImage(named: "artwork_default")
@@ -147,9 +151,9 @@ extension MainViewController {
                 }
             }
             // プレビューに評価
-            else if let item = (song as? Song) {
+            else if let item = (song as? OtherSong) {
                 id = item.itunesId
-                if let song = realm.object(ofType: Song.self, forPrimaryKey: id) {
+                if let song = realm.object(ofType: OtherSong.self, forPrimaryKey: id) {
                     try! realm.write() {
                         song.rating = Int(rating)
                     }
@@ -158,24 +162,40 @@ extension MainViewController {
             guard id != nil else {
                 return
             }
+            
+            let record = Record()
+            var comment:String?
+            var date:NSDate?
+            // Record保存
             // 更新
             if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
                 try! realm.write() {
-                    let oldVlaue = ratingsong.rating
                     ratingsong.rating = Int(rating)
                     let newValue = ratingsong.rating
-                    print("\(ratingsong.title)の評価値を更新:\(oldVlaue)->\(newValue)")
+                    comment = "\(ratingsong.title)の評価値を\(newValue)に更新しました"
+                    date = Date() as NSDate?
+                    Progress.showAlertWithRating(rating)
+                    print(comment!)
                 }
             }
             // 新規追加
             else {
                 let request = SaveRatedSongRequest(item: song)
-                let song = try! request.response()
+                let ratingsong = try! request.response()
                 try! self.realm.write {
-                    self.realm.add(song!)
-                    print("\((song?.title)!)を評価しました:\((song?.rating)!)")
+                    comment = "\((ratingsong?.title)!)に評価値\(Int(rating))をつけました"
+                    date = Date() as NSDate?
+                    Progress.showAlertWithRating(rating)
+                    self.realm.add(ratingsong!)
+                    print(comment!)
                 }
             }
+            try! realm.write {
+                record.comment = comment!
+                record.date = Date()
+                realm.add(record)
+            }
+            nc.post(name: NSNotification.Name(rawValue: "AddHistory"), object: nil)
         }
     }
     
@@ -183,15 +203,17 @@ extension MainViewController {
     func setUI() {
         //tabbar設定
         tabBar.barTintColor = UIColor(hex: "1e171a")
-        favTab.image = UIImage(named: "home-white-m")?.withRenderingMode(.alwaysOriginal)
-        favTab.selectedImage = UIImage(named: "home-green-m")?.withRenderingMode(.alwaysOriginal)
-        recTab.image = UIImage(named: "discover-white-m")?.withRenderingMode(.alwaysOriginal)
-        recTab.selectedImage = UIImage(named: "discover-green-m")?.withRenderingMode(.alwaysOriginal)
-        hisTab.image = UIImage(named: "light-white-m")?.withRenderingMode(.alwaysOriginal)
-        hisTab.selectedImage = UIImage(named: "light-green-m")?.withRenderingMode(.alwaysOriginal)
+        homeTab.image = UIImage(named: "home-white-m")?.withRenderingMode(.alwaysOriginal)
+        homeTab.selectedImage = UIImage(named: "home-green-m")?.withRenderingMode(.alwaysOriginal)
+        discoverTab.image = UIImage(named: "discover-white-m")?.withRenderingMode(.alwaysOriginal)
+        discoverTab.selectedImage = UIImage(named: "discover-green-m")?.withRenderingMode(.alwaysOriginal)
+        findTab.image = UIImage(named: "light-white-m")?.withRenderingMode(.alwaysOriginal)
+        findTab.selectedImage = UIImage(named: "light-green-m")?.withRenderingMode(.alwaysOriginal)
+        historyTab.image = UIImage(named: "history-white-m")?.withRenderingMode(.alwaysOriginal)
+        historyTab.selectedImage = UIImage(named: "history-green-m")?.withRenderingMode(.alwaysOriginal)
         let selectedColor   = UIColor(hex: "4caf50")
         let unselectedColor = UIColor.white
-        let font = UIFont(name:"HelveticaNeue-Light",size:6)
+        let font = UIFont(name:"HelveticaNeue-Light",size:7)
         let attrsNormal = [
             NSForegroundColorAttributeName: unselectedColor,
             NSFontAttributeName: font
@@ -205,27 +227,33 @@ extension MainViewController {
         
         //tabbar動作設定
         guard let tag = tabBar.selectedItem?.tag else {
-            tabBar.selectedItem = favTab
+            tabBar.selectedItem = homeTab
             setUI()
             return
         }
-        self.libContainer.isHidden = !(tag == 1)
-        self.recContainer.isHidden = !(tag == 2)
-        self.hisContainer.isHidden = !(tag == 3)
+        self.homeContainer.isHidden = !(tag == 1)
+        self.discoverContainer.isHidden = !(tag == 2)
+        self.findContainer.isHidden = !(tag == 3)
+        self.historyContainer.isHidden = !(tag == 4)
         
         switch tag {
         case 1:
             PageTitle.text = "Library"
-            containerView = libContainer
-            self.view.sendSubview(toBack: libContainer)
+            containerView = homeContainer
+            self.view.sendSubview(toBack: homeContainer)
         case 2:
             PageTitle.text = "Discover"
-            containerView = recContainer
-            self.view.sendSubview(toBack: recContainer)
+            containerView = discoverContainer
+            self.view.sendSubview(toBack: discoverContainer)
         case 3:
             PageTitle.text = "Find"
-            containerView = hisContainer
-            self.view.sendSubview(toBack: hisContainer)
+            containerView = findContainer
+            self.view.sendSubview(toBack: findContainer)
+        case 4:
+            PageTitle.text = "History"
+            containerView = historyContainer
+            self.view.sendSubview(toBack: historyContainer)
+            nc.post(name: NSNotification.Name(rawValue: "AddHistory"), object: nil)
         default:
             return
         }
@@ -286,6 +314,7 @@ extension MainViewController {
                     self.realm.add(song!)
                     print("\((song?.title)!)をお気に入りに追加しました")
                 }
+                nc.post(name: NSNotification.Name(rawValue: "AddFavorite"), object: nil)
             }
         }
     }

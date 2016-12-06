@@ -15,7 +15,7 @@ struct MenuItemArtist: MenuItemViewCustomizable {}
 struct MenuItemAlbum: MenuItemViewCustomizable {}
 
 struct PagingMenuOption: PagingMenuControllerCustomizable {
-    let songViewController = TrackViewController.instantiateFromStoryboard()
+    let songViewController = SongsViewController.instantiateFromStoryboard()
     let artistViewController = ArtistViewController.instantiateFromStoryboard()
     let albumViewController = AlbumViewController.instantiateFromStoryboard()
     

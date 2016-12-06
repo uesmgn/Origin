@@ -1,5 +1,5 @@
 //
-//  LibraryTableViewController.swift
+//  HomeTableViewController.swift
 //  Origin
 //
 //  Created by Gen on 2016/11/26.
@@ -9,7 +9,7 @@
 import UIKit
 import PagingMenuController
 
-class LibraryTableViewController: UIViewController/*, UITableViewDelegate, UITableViewDataSource */{
+class HomeTableViewController: UIViewController/*, UITableViewDelegate, UITableViewDataSource */{
 
     //@IBOutlet weak var songCountLabel: UILabel!
     //@IBOutlet weak var tableView: UITableView!

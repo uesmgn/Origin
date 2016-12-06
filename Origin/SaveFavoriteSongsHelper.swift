@@ -28,8 +28,8 @@ struct SaveFavoriteRequest: SaveFavoriteSongsHelper {
     
     func response() throws -> Response {
         var Songs:FavoriteSong? = nil
-        if item as? Song != nil {
-            let item = self.item as! Song
+        if item as? OtherSong != nil {
+            let item = self.item as! OtherSong
             let song = FavoriteSong()
             song.title = item.title
             song.artist = item.artist

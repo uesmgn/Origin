@@ -1,6 +1,6 @@
 import RealmSwift
 
-class Song: Object {
+class OtherSong: Object {
     dynamic var itunesId = 0
     dynamic var title = ""
     dynamic var artist = ""

@@ -22,7 +22,7 @@ extension iTunesRequest {
 
 struct GetSearchRequest: iTunesRequest {
     
-    typealias Response = [Song]
+    typealias Response = [OtherSong]
     
     var method: HTTPMethod {
         return .get
@@ -49,12 +49,12 @@ struct GetSearchRequest: iTunesRequest {
     }
     
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
-        var Songs = [Song]()
+        var Songs = [OtherSong]()
         print(object)
         let obj = object as! [String : Any]
         if let dictionaries = obj["results"] as? [NSDictionary] {
             for dictionary in dictionaries {
-                let song = Song()
+                let song = OtherSong()
                 song.itunesId = dictionary["trackId"] as! Int
                 song.title = dictionary["trackName"] as? String ?? "unknown"
                 song.artwork = dictionary["artworkUrl100"] as? String ?? "unknown"

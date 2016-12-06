@@ -1,5 +1,5 @@
 //
-//  TrackViewController.swift
+//  SongsViewController.swift
 //  Origin
 //
 //  Created by Gen on 2016/12/04.
@@ -12,16 +12,16 @@ import UIKit
 import RealmSwift
 import MediaPlayer
 
-class TrackViewController: UITableViewController {
+class SongsViewController: UITableViewController {
     
     let realm = try! Realm()
     var playlist = [UserSong]()
     var library:[MPMediaItem] = []
     let player = AudioPlayer.shared
     
-    class func instantiateFromStoryboard() -> TrackViewController {
+    class func instantiateFromStoryboard() -> SongsViewController {
         let storyboard = UIStoryboard(name: "MenuViewController", bundle: nil)
-        return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! TrackViewController
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! SongsViewController
     }
     
     override func viewDidLoad() {
@@ -44,7 +44,7 @@ class TrackViewController: UITableViewController {
     
 }
 
-extension TrackViewController {
+extension SongsViewController {
     func loadPlaylistData() {
         playlist.removeAll()
         
@@ -87,7 +87,7 @@ extension TrackViewController {
 }
 
 
-extension TrackViewController {
+extension SongsViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.playlist.count
     }
