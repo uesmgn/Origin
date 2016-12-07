@@ -17,13 +17,14 @@ class FindViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     
     let realm = try! Realm()
-    var playlist = [Record]()
+    var playlist = [FavoriteSong]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("history did load")
         // NotificationCenterに登録する。
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(self.reload(notify:)), name: NSNotification.Name(rawValue: "AddHistory"), object: nil)
+        nc.addObserver(self, selector: #selector(self.reload(notify:)), name: NSNotification.Name(rawValue: "AddFavorite"), object: nil)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -35,9 +36,10 @@ class FindViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        print("history did appear")
         playlist.removeAll()
-        var Songs: [Record] = []
-        let realmResponse = realm.objects(Record.self)
+        var Songs: [FavoriteSong] = []
+        let realmResponse = realm.objects(FavoriteSong.self)
         for result in realmResponse {
             Songs.append(result)
         }
@@ -55,8 +57,8 @@ extension FindViewController {
     
     func reload(notify: NSNotification) {
         playlist.removeAll()
-        var Songs: [Record] = []
-        let realmResponse = realm.objects(Record.self)
+        var Songs: [FavoriteSong] = []
+        let realmResponse = realm.objects(FavoriteSong.self)
         for result in realmResponse {
             Songs.append(result)
         }
@@ -78,8 +80,8 @@ extension FindViewController {
         let nowIndex = (indexPath as NSIndexPath).row
         cell.tag = nowIndex
         let item = playlist[nowIndex]
-        cell.textLabel?.text = item.datestring
-        cell.detailTextLabel?.text = item.comment
+        cell.textLabel?.text = item.title
+        cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
         return cell
         
     }

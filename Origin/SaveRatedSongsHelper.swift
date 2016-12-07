@@ -32,8 +32,8 @@ struct SaveRatedSongRequest: SaveRatedSongsHelper {
             let item = self.item as! OtherSong
             let song = RatedSong()
             song.title = item.title
-            song.artist = item.artist
-            song.album = item.album
+            song.artist = item.artistName
+            song.album = item.albumTitle
             song.itunesId = item.itunesId
             song.artwork = UIImagePNGRepresentation(UIImage(named:"artwork_default")!)
             song.trackSource = item.trackSource
@@ -43,8 +43,8 @@ struct SaveRatedSongRequest: SaveRatedSongsHelper {
             let item = self.item as! UserSong
             let song = RatedSong()
             song.title = item.title
-            song.artist = item.artist
-            song.album = item.album
+            song.artist = item.artistName
+            song.album = item.albumTitle
             song.itunesId = item.itunesId
             song.artwork = item.artwork
             song.trackSource = item.trackSource

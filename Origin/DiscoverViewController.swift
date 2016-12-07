@@ -64,7 +64,7 @@ extension DiscoverViewController {
         cell.tag = nowIndex
         let item = playlist[nowIndex]
         cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
+        cell.detailTextLabel?.text = "\(item.artistName)-\(item.albumTitle)"
         return cell
     }
     

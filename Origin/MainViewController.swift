@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Foundation
 import CoreData
 import MediaPlayer
+import APIKit
 import Spring
 import Cosmos
 import ARNTransitionAnimator
@@ -65,6 +67,32 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     let nc = NotificationCenter.default
     let realm = try! Realm()
     
+    @IBAction func tappedClear(_ sender: Any) {
+        let othersongs = realm.objects(OtherSong.self)
+        try! self.realm.write {
+            for song in othersongs {
+                song.rating = 0
+            }
+        }
+        let usersongs = realm.objects(UserSong.self)
+        try! self.realm.write {
+            for song in usersongs {
+                song.rating = 0
+            }
+        }
+    }
+    
+    @IBAction func tappedInfo(_ sender: Any) {
+        let othersongs = realm.objects(OtherSong.self)
+        for song in othersongs {
+            print("\(song.itunesId),\(song.rating),\(song.title),\(song.artistName),\(song.albumTitle)")
+        }
+        print("\n")
+        let usersongs = realm.objects(UserSong.self)
+        for song in usersongs {
+            print("\(song.itunesId),\(song.rating),\(song.title),\(song.artistName),\(song.albumTitle)")
+        }
+    }
 }
 
 extension MainViewController {
@@ -75,8 +103,11 @@ extension MainViewController {
         
         
         // delegate
+        
         tabBar.delegate = self
         player.viewController = self
+        
+        
         
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos
         
@@ -86,6 +117,7 @@ extension MainViewController {
         self.modalVC = storyboard.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController
         self.modalVC.modalPresentationStyle = .overFullScreen
         self.setupAnimator()
+        
     }
 }
 
@@ -102,7 +134,7 @@ extension MainViewController {
                 plusButton.isHidden = true
                 let item = song as! UserSong
                 currentTitle.text = item.title
-                currentDetail.text = item.artist
+                currentDetail.text = item.artistName
                 currentArtwork.image = UIImage(data: item.artwork!)
                 ratingBar.rating = Double(item.rating)
             } else if song as? OtherSong != nil {
@@ -110,7 +142,7 @@ extension MainViewController {
                 plusButton.isHidden = false
                 let item = song as! OtherSong
                 currentTitle.text = item.title
-                currentDetail.text = item.artist
+                currentDetail.text = item.artistName
                 currentArtwork.image = UIImage(named: "artwork_default")
                 ratingBar.rating = Double(item.rating)
             }
@@ -145,12 +177,13 @@ extension MainViewController {
             if let item = (song as? UserSong) {
                 id = item.itunesId
                 // ライブラリーの楽曲の評価値を更新
-                let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
-                try! realm.write() {
-                    usersong?.rating = Int(rating)
+                if let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id) {
+                    try! realm.write() {
+                        usersong.rating = Int(rating)
+                    }
                 }
             }
-            // プレビューに評価
+                // プレビューに評価
             else if let item = (song as? OtherSong) {
                 id = item.itunesId
                 if let song = realm.object(ofType: OtherSong.self, forPrimaryKey: id) {
@@ -165,7 +198,6 @@ extension MainViewController {
             
             let record = Record()
             var comment:String?
-            var date:NSDate?
             // Record保存
             // 更新
             if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
@@ -173,7 +205,6 @@ extension MainViewController {
                     ratingsong.rating = Int(rating)
                     let newValue = ratingsong.rating
                     comment = "\(ratingsong.title)の評価値を\(newValue)に更新しました"
-                    date = Date() as NSDate?
                     Progress.showAlertWithRating(rating)
                     print(comment!)
                 }
@@ -184,7 +215,6 @@ extension MainViewController {
                 let ratingsong = try! request.response()
                 try! self.realm.write {
                     comment = "\((ratingsong?.title)!)に評価値\(Int(rating))をつけました"
-                    date = Date() as NSDate?
                     Progress.showAlertWithRating(rating)
                     self.realm.add(ratingsong!)
                     print(comment!)
@@ -302,17 +332,20 @@ extension MainViewController {
             let song = try! request.response()
             let id = song?.itunesId
             guard realm.object(ofType: FavoriteSong.self, forPrimaryKey: id) == nil else {
-                print("すでに追加されています")
+                let message = "すでに追加されています"
+                Progress.showAlert(message)
                 return
             }
             if song != nil {
                 guard song?.rating != 0 else {
-                    print("評価してください")
+                    let message = "評価してください"
+                    Progress.showAlert(message)
                     return
                 }
                 try! self.realm.write {
                     self.realm.add(song!)
-                    print("\((song?.title)!)をお気に入りに追加しました")
+                    let message = "\((song?.title)!)をお気に入りに追加しました"
+                    Progress.showMessage(message)
                 }
                 nc.post(name: NSNotification.Name(rawValue: "AddFavorite"), object: nil)
             }

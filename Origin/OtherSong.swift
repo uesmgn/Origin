@@ -3,8 +3,8 @@ import RealmSwift
 class OtherSong: Object {
     dynamic var itunesId = 0
     dynamic var title = ""
-    dynamic var artist = ""
-    dynamic var album = ""
+    dynamic var artistName = ""
+    dynamic var albumTitle = ""
     dynamic var artwork = ""
     dynamic var trackSource = ""
     dynamic var rating = 0

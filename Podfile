@@ -5,6 +5,7 @@ use_frameworks!
 pod 'SVProgressHUD'
 pod 'SDWebImage', '~>3.8'
 pod 'RealmSwift'
+pod 'SwiftDate', '~> 4.0'
 pod 'APIKit', '~> 3.0'
 pod 'PagingMenuController'
 pod 'BTNavigationDropdownMenu', :git => 'https://github.com/PhamBaTho/BTNavigationDropdownMenu.git', :branch => 'swift-3.0'

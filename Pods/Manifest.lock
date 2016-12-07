@@ -18,6 +18,7 @@ PODS:
   - SDWebImage/Core (3.8.2)
   - Spring (1.0.3)
   - SVProgressHUD (2.0.4)
+  - SwiftDate (4.0.8)
   - SwiftyJSON (3.1.3)
 
 DEPENDENCIES:
@@ -32,6 +33,7 @@ DEPENDENCIES:
   - SDWebImage (~> 3.8)
   - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
   - SVProgressHUD
+  - SwiftDate (~> 4.0)
   - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -64,8 +66,9 @@ SPEC CHECKSUMS:
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SVProgressHUD: bfde85ed6c573ea802b9cb37894ed9b629034f1b
+  SwiftDate: 9aa3259d8850d818bec02802f8f05aa9a8c26fdb
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
 
-PODFILE CHECKSUM: af1e12119201ba6cfe4933729c83638c3e991bd4
+PODFILE CHECKSUM: d89ca0da58659c8c3d7b6e7d8c3189bfa798f691
 
 COCOAPODS: 1.1.0.rc.2

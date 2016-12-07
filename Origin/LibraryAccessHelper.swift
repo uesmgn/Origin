@@ -29,8 +29,8 @@ struct GetLibraryRequest: LibraryAccessHelper {
         for item in library {
             let song = UserSong()
             song.title = item.title ?? "unknown"
-            song.artist = item.artist ?? "unknown"
-            song.album = item.albumTitle ?? "unknown"
+            song.artistName = item.albumArtist ?? "unknown"
+            song.albumTitle = item.albumTitle ?? "unknown"
             song.itunesId = Int(item.persistentID) // Task:iTunesID割り当て
             let size = CGSize(width: 100, height: 100)
             song.artwork = UIImagePNGRepresentation(item.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)

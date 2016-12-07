@@ -10,8 +10,6 @@ import Foundation
 import SVProgressHUD
 
 class Progress {
-    init() {
-    }
     
     class func showProgressWithMessage(_ message:String){
         SVProgressHUD.setBackgroundColor(UIColor.darkGray)
@@ -23,9 +21,8 @@ class Progress {
     }
     
     class func showAlertWithRating(_ rating: Double) {
-        SVProgressHUD.setBackgroundColor(UIColor.black)
-        SVProgressHUD.setMinimumSize(CGSize(width: 100, height: 100))
-        SVProgressHUD.setMinimumDismissTimeInterval(0.4)
+        SVProgressHUD.setMinimumDismissTimeInterval(0.1)
+        SVProgressHUD.setFadeOutAnimationDuration(0.3)
         switch rating {
         case 0..<2.5:
             SVProgressHUD.show(UIImage(named:"dislike"), status: "Hate")
@@ -36,15 +33,16 @@ class Progress {
         }
     }
     
-    class func stopWithSuccessMessageImg(_ image:UIImage,message:String){
-        SVProgressHUD.popActivity()
-        SVProgressHUD.show(image, status: message)
+    class func showMessage(_ message:String) {
+        SVProgressHUD.setMinimumDismissTimeInterval(0.1)
+        SVProgressHUD.setFadeOutAnimationDuration(0.3)
+        SVProgressHUD.showSuccess(withStatus: message)
     }
     
-    class func stopWithErrorMessage(_ message:String){
-        SVProgressHUD.popActivity()
-        SVProgressHUD.showError(withStatus: message)
+    class func showAlert(_ message:String) {
+        SVProgressHUD.setMinimumDismissTimeInterval(0.1)
+        SVProgressHUD.setFadeOutAnimationDuration(0.3)
+        SVProgressHUD.showInfo(withStatus: message)
     }
-
 }
     

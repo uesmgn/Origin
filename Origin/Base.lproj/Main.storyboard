@@ -35,7 +35,7 @@
                                 <items>
                                     <tabBarItem tag="1" title="Home" image="home-green-m" selectedImage="home-green" id="Ddp-RJ-uY3" userLabel="HomeTab"/>
                                     <tabBarItem tag="2" title="Discover" image="discover-green-m" selectedImage="discover-green-m" id="NWF-M9-6zV" userLabel="DiscoverTab"/>
-                                    <tabBarItem tag="3" title="Find" image="light-green-m" id="u3b-Gt-NZm" userLabel="FindTab"/>
+                                    <tabBarItem tag="3" title="Favorites" image="light-green-m" id="u3b-Gt-NZm" userLabel="FindTab"/>
                                     <tabBarItem tag="4" title="History" image="history-black-m" id="PxI-am-Six" userLabel="HistoryTab"/>
                                 </items>
                             </tabBar>
@@ -191,13 +191,39 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DzQ-rH-z9H">
+                                        <rect key="frame" x="350" y="37" width="17" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="9Vc-Ty-JaU"/>
+                                            <constraint firstAttribute="width" constant="17" id="ouS-sv-Gcn"/>
+                                        </constraints>
+                                        <state key="normal" title="Button" image="error"/>
+                                        <connections>
+                                            <action selector="tappedClear:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gQ1-EV-5rm"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Csm-Aj-Xuo">
+                                        <rect key="frame" x="8" y="37" width="17" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="KnS-ja-aKu"/>
+                                            <constraint firstAttribute="width" constant="17" id="cCo-Cd-EaS"/>
+                                        </constraints>
+                                        <state key="normal" title="Button" image="warning"/>
+                                        <connections>
+                                            <action selector="tappedInfo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="P7D-2W-8yD"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.99610227350000002" green="0.99589234589999998" blue="0.9921668172" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Csm-Aj-Xuo" secondAttribute="bottom" constant="10" id="AtJ-we-iBJ"/>
                                     <constraint firstItem="viH-3G-56R" firstAttribute="centerX" secondItem="ICh-fH-ffX" secondAttribute="centerX" id="EmJ-gP-wkE"/>
                                     <constraint firstAttribute="height" constant="64" id="Kyz-wp-IdH"/>
+                                    <constraint firstAttribute="trailing" secondItem="DzQ-rH-z9H" secondAttribute="trailing" constant="8" id="XGw-oE-mgE"/>
+                                    <constraint firstAttribute="bottom" secondItem="DzQ-rH-z9H" secondAttribute="bottom" constant="10" id="l3K-h6-Ajq"/>
                                     <constraint firstAttribute="bottom" secondItem="viH-3G-56R" secondAttribute="bottom" constant="10" id="wDu-PS-Nai"/>
+                                    <constraint firstItem="Csm-Aj-Xuo" firstAttribute="leading" secondItem="ICh-fH-ffX" secondAttribute="leading" constant="8" id="xSb-U0-Izv"/>
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4QM-O8-Y6K" userLabel="HomeContainer">
@@ -285,12 +311,11 @@
                         <outlet property="ratingView" destination="RmA-bc-lgl" id="OJM-HG-Usx"/>
                         <outlet property="tabBar" destination="9NZ-fh-6CN" id="I1k-5c-wfY"/>
                         <outlet property="toggleButton" destination="D15-G9-icg" id="EC3-8W-2zZ"/>
-                        <outlet property="topView" destination="ICh-fH-ffX" id="Gvq-bh-qGv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-290.39999999999998" y="54.422788605697157"/>
+            <point key="canvasLocation" x="-314.39999999999998" y="43.628185907046479"/>
         </scene>
         <!--Collection View Controller-->
         <scene sceneID="xlS-Yq-oCh">
@@ -444,7 +469,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xqx-oY-rs3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1782" y="232"/>
+            <point key="canvasLocation" x="1641" y="411"/>
         </scene>
         <!--Home Table View Controller-->
         <scene sceneID="4hh-7c-WQN">
@@ -496,7 +521,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b68-uY-WAh" id="keD-YC-kBu">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg-p" translatesAutoresizingMaskIntoConstraints="NO" id="BoY-HX-0Rw">
@@ -516,7 +541,7 @@
                                         <rect key="frame" x="0.0" y="120" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0If-oi-OkT" id="OJd-so-kvY">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Songs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iGy-WD-JNs">
@@ -545,7 +570,7 @@
                                         <rect key="frame" x="0.0" y="240" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nxW-mJ-4Ff" id="N9C-Ex-Gpd">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artists" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNe-gg-T2S">
@@ -574,7 +599,7 @@
                                         <rect key="frame" x="0.0" y="360" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pK5-0a-Jju" id="FAi-8T-hIT">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Albums" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCQ-Sf-fPM">
@@ -603,7 +628,7 @@
                                         <rect key="frame" x="0.0" y="480" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TWK-k7-H96" id="oUD-EN-ieg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playlists" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6x4-lz-F5N">
@@ -707,7 +732,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RUl-Zd-Gl7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="820" y="507"/>
+            <point key="canvasLocation" x="820" y="515"/>
         </scene>
         <!--Find View Controller-->
         <scene sceneID="qb2-dA-3T1">
@@ -734,17 +759,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8bl-4e-xSO">
-                                                    <rect key="frame" x="15" y="9" width="17" height="11"/>
+                                                    <rect key="frame" x="15" y="9" width="25" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="9"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9LZ-Ml-4XR">
-                                                    <rect key="frame" x="15" y="20" width="44" height="15"/>
+                                                    <rect key="frame" x="15" y="24" width="33" height="12"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -775,7 +800,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QUH-e0-IbD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="820" y="988"/>
+            <point key="canvasLocation" x="-103" y="958"/>
         </scene>
         <!--Paging Menu Controller-->
         <scene sceneID="YQB-jH-ZEH">
@@ -793,7 +818,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Po-PH-jNX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1782" y="-345"/>
+            <point key="canvasLocation" x="1641" y="-150"/>
         </scene>
         <!--History View Controller-->
         <scene sceneID="hRK-LQ-JMV">
@@ -820,17 +845,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0wY-QL-XZt">
-                                                    <rect key="frame" x="15" y="8" width="23" height="14"/>
+                                                    <rect key="frame" x="15" y="9" width="17" height="11"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="9"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5cU-dy-fVJ">
-                                                    <rect key="frame" x="15" y="22" width="39" height="15"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5cU-dy-fVJ">
+                                                    <rect key="frame" x="15" y="20" width="44" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="12"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -859,7 +884,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wzg-WU-Y7i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="60" y="992"/>
+            <point key="canvasLocation" x="-746" y="959"/>
         </scene>
     </scenes>
     <resources>
@@ -867,6 +892,7 @@
         <image name="bg5" width="750" height="1334"/>
         <image name="discover-green-m" width="24" height="24"/>
         <image name="down" width="512" height="512"/>
+        <image name="error" width="512" height="512"/>
         <image name="fastforward" width="512" height="512"/>
         <image name="history-black-m" width="24" height="22"/>
         <image name="home-green" width="30" height="30"/>
@@ -877,5 +903,6 @@
         <image name="plus" width="512" height="512"/>
         <image name="repeat" width="512" height="512"/>
         <image name="shuffle" width="512" height="512"/>
+        <image name="warning" width="512" height="512"/>
     </resources>
 </document>

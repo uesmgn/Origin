@@ -27,6 +27,9 @@ class SongsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(self.reload(_:)), name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
@@ -38,54 +41,43 @@ class SongsViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.loadPlaylistData()
-        self.tableView.reloadData()
+        if playlist.count == 0 {
+            self.reloadTable()
+        }
     }
     
 }
 
 extension SongsViewController {
-    func loadPlaylistData() {
+    // 初回起動時に実行
+    func reload(_ notify: NSNotification) {
         playlist.removeAll()
-        
+        // メインスレッドで実行しないとエラー
+        DispatchQueue.main.async {
+            let realmResponse = self.realm.objects(UserSong.self)
+            if realmResponse.count == 0 {
+                Progress.stopProgress()
+                Progress.showAlert("楽曲が読み込めませんでした")
+            }
+            for result in realmResponse {
+                self.playlist.append(result)
+            }
+            self.tableView.reloadData()
+            Progress.stopProgress()
+        }
+    }
+    
+    func reloadTable() {
+        // ユーザライブラリの曲をlibraryに格納
         var Songs: [UserSong] = []
         let realmResponse = realm.objects(UserSong.self)
-        
-        if realmResponse.count != 0 {
-            reloadLibrary()
-        }
-        
         for result in realmResponse {
             Songs.append(result)
         }
         self.playlist = Songs
         self.tableView.reloadData()
     }
-    
-    
-    func reloadLibrary() {
-        // ユーザライブラリの曲をlibraryに格納
-        let query = MPMediaQuery.songs()
-        guard let items = query.items else {
-            self.library = []
-            print("楽曲が読み込めませんでした")
-            return
-        }
-        self.library = items
-        
-        let userSongs = realm.objects(UserSong.self)
-        if userSongs.count == 0 {
-            let request = GetLibraryRequest(library: library)
-            let songs = try! request.response()
-            for song in songs {
-                try! self.realm.write {
-                    self.realm.add(song)
-                }
-            }
-        }
-    }
 }
-
 
 extension SongsViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -100,7 +92,7 @@ extension SongsViewController {
         cell.tag = nowIndex
         let item = playlist[nowIndex]
         cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
+        cell.detailTextLabel?.text = "\(item.artistName)-\(item.albumTitle)"
         //cell.imageView?.image = item.artwork?.image(at: CGSize(width: 40.0, height: 40.0)) ?? UIImage(named: "artwork_default")
         return cell
         

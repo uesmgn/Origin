@@ -17,14 +17,13 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     
     let realm = try! Realm()
-    var playlist = [FavoriteSong]()
+    var playlist = [Record]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("history did load")
         // NotificationCenterに登録する。
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(self.reload(notify:)), name: NSNotification.Name(rawValue: "AddFavorite"), object: nil)
+        nc.addObserver(self, selector: #selector(self.reload(notify:)), name: NSNotification.Name(rawValue: "AddHistory"), object: nil)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -36,10 +35,9 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("history did appear")
         playlist.removeAll()
-        var Songs: [FavoriteSong] = []
-        let realmResponse = realm.objects(FavoriteSong.self)
+        var Songs: [Record] = []
+        let realmResponse = realm.objects(Record.self)
         for result in realmResponse {
             Songs.append(result)
         }
@@ -57,8 +55,8 @@ extension HistoryViewController {
     
     func reload(notify: NSNotification) {
         playlist.removeAll()
-        var Songs: [FavoriteSong] = []
-        let realmResponse = realm.objects(FavoriteSong.self)
+        var Songs: [Record] = []
+        let realmResponse = realm.objects(Record.self)
         for result in realmResponse {
             Songs.append(result)
         }
@@ -80,8 +78,8 @@ extension HistoryViewController {
         let nowIndex = (indexPath as NSIndexPath).row
         cell.tag = nowIndex
         let item = playlist[nowIndex]
-        cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
+        cell.textLabel?.text = item.datestring
+        cell.detailTextLabel?.text = item.comment
         return cell
         
     }
