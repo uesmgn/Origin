@@ -179,7 +179,7 @@ extension CollectionViewController {
         }
         let song = items?[currentIndex]
         self.currentTitle.text = "\((song?.title)!)"
-        self.currentDetail.text = "\((song?.artistName)!)-\((song?.albumTitle)!)"
+        self.currentDetail.text = "\((song?.artist)!)-\((song?.album)!)"
     }
     
 }

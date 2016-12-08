@@ -1,5 +1,5 @@
 //
-//  ArtistViewHeader.swift
+//  SectionHeader.swift
 //  Origin
 //
 //  Created by Gen on 2016/12/07.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol ArtistViewHeaderDelegate {
-    func toggleSection(_ header: ArtistViewHeader, section: Int)
+protocol SectionHeaderDelegate {
+    func toggleSection(_ header: SectionHeader, section: Int)
 }
 
-class ArtistViewHeader: UITableViewHeaderFooterView {
+class SectionHeader: UITableViewHeaderFooterView {
     
-    var delegate: ArtistViewHeaderDelegate?
+    var delegate: SectionHeaderDelegate?
     var section: Int = 0
     
     let titleLabel = UILabel()
@@ -31,14 +31,12 @@ class ArtistViewHeader: UITableViewHeaderFooterView {
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         arrowLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         contentView.addSubview(titleLabel)
         contentView.addSubview(arrowLabel)
-        
         //
         // Call tapHeader when tapping on this header
         //
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ArtistViewHeader.tapHeader(_:))))
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SectionHeader.tapHeader(_:))))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,11 +46,14 @@ class ArtistViewHeader: UITableViewHeaderFooterView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        let label = UILabel()
+        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        
         contentView.backgroundColor = UIColor(hex: 0x2E3944)
-        
-        titleLabel.textColor = UIColor.white
-        arrowLabel.textColor = UIColor.white
-        
+        titleLabel.font = label.font
+        arrowLabel.font = label.font
+        titleLabel.textColor = UIColor.lightGray
+        arrowLabel.textColor = UIColor.lightGray
         //
         // Autolayout the lables
         //
@@ -87,7 +88,7 @@ class ArtistViewHeader: UITableViewHeaderFooterView {
     // Trigger toggle section when tapping on the header
     //
     func tapHeader(_ gestureRecognizer: UITapGestureRecognizer) {
-        guard let cell = gestureRecognizer.view as? ArtistViewHeader else {
+        guard let cell = gestureRecognizer.view as? SectionHeader else {
             return
         }
         

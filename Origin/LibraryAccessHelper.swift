@@ -6,6 +6,8 @@
 //  Copyright © 2016年 Gen. All rights reserved.
 //
 import MediaPlayer
+import Foundation
+import RealmSwift
 
 protocol LibraryAccessHelper {
     
@@ -14,31 +16,53 @@ protocol LibraryAccessHelper {
     func response() throws -> Response
 }
 
-struct GetLibraryRequest: LibraryAccessHelper {
+struct AlbumsRequest: LibraryAccessHelper {
     
-    typealias Response = [UserSong]
+    typealias Response = List<Album>
     
-    var library:[MPMediaItem]
+    var songQuery = MPMediaQuery.songs()
+    var albumCollection:[MPMediaItemCollection] // groupingType:album 21
     
-    init(library:[MPMediaItem]) {
-        self.library = library
+    init() {
+        songQuery.groupingType = MPMediaGrouping.album
+        self.albumCollection = songQuery.collections!
     }
     
     func response() throws -> Response {
-        var Songs = [UserSong]()
-        for item in library {
-            let song = UserSong()
-            song.title = item.title ?? "unknown"
-            song.artistName = item.albumArtist ?? "unknown"
-            song.albumTitle = item.albumTitle ?? "unknown"
-            song.itunesId = Int(item.persistentID) // Task:iTunesID割り当て
+        // アルバムのリストを作成
+        let albums = List<Album>()
+        
+        for collection in albumCollection {
+            
+            let album = Album()
+            let songs = List<UserSong>()
+            
+            for item in collection.items {
+                let song = UserSong()
+                song.title = item.title ?? "unknown"
+                song.artist = item.albumArtist ?? "unknown"
+                song.album = item.albumTitle ?? "unknown"
+                song.id = Int(item.persistentID) // Task:iTunesID割り当て
+                let size = CGSize(width: 100, height: 100)
+                song.artwork = UIImagePNGRepresentation(item.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)
+                song.rating = 0
+                song.trackSource = "\(item.assetURL!)"
+                songs.append(song)
+                print(song.title)
+            }
+            let first = collection.items[0]
+            album.songs.append(objectsIn: songs)
+            album.albumTitle = first.albumTitle ?? "unknown"
+            album.artistName = first.albumArtist ?? "unknown"
             let size = CGSize(width: 100, height: 100)
-            song.artwork = UIImagePNGRepresentation(item.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)
-            song.rating = 0
-            song.trackSource = "\(item.assetURL!)"
-            Songs.append(song)
+            album.artwork = UIImagePNGRepresentation(first.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)
+            albums.append(album)
+            print("---------------------")
+            print(album.albumTitle)
+            print("---------------------")
         }
-        return Songs
+        print("----------------------------------------")
+        return albums
     }
-
+    
 }

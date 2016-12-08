@@ -27,12 +27,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // 初回起動時実行
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
         // ライブラリーの曲をRealmに保存
-        let userSongs = realm.objects(UserSong.self)
-        if userSongs.count == 0 {
-            loadLibrary()
+        let Songs = realm.objects(UserSong.self)
+        if Songs.count == 0 {
+            authorize()
         }
+        
         // デフォルトデータをRealmに保存
         let songs = realm.objects(OtherSong.self)
         if songs.count == 0 {
@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
-    
+    /*
     func loadLibrary() {
         if #available(iOS 9.3, *) {
             let authorizationStatus = MPMediaLibrary.authorizationStatus()
@@ -88,10 +88,70 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         let nc = NotificationCenter.default
         nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
+    }*/
+    
+    func authorize() {
+        if #available(iOS 9.3, *) {
+            let authorizationStatus = MPMediaLibrary.authorizationStatus()
+            switch authorizationStatus {
+            case .authorized:
+                let query = MPMediaQuery.songs()
+                print("query: \(query.items?.count)")
+                if query.items?.count == 0  {
+                    self.library = []
+                } else {
+                    print(query.items!.count)
+                    for item in query.items! {
+                        library.append(item)
+                    }
+                }
+            case .notDetermined:
+                MPMediaLibrary.requestAuthorization({[weak self] (newAuthorizationStatus: MPMediaLibraryAuthorizationStatus) in
+                    self?.authorize()
+                })
+            case .denied, .restricted:
+                return
+            }
+        }
+        if library.count != 0 {
+            Progress.showProgressWithMessage("メディアライブラリーの曲を読み込んでいます")
+            let albumReq = AlbumsRequest()
+            let albums = try! albumReq.response()
+            realm = try! Realm()// 入れないとエラー
+            try! self.realm.write {
+                self.realm.add(albums)
+            }
+            setArtist()
+        } else {
+            Progress.showAlert("ライブラリーに曲がありません")
+        }
+        
+        let nc = NotificationCenter.default
+        nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
+        
     }
     
-    func setLibrary() {
-        
+    func setArtist() {
+        var artistNameArray:[String] = []
+        let albums = self.realm.objects(Album.self)
+        for album in albums {
+            if !artistNameArray.contains(album.artistName) {
+                artistNameArray.append(album.artistName)
+            }
+        }
+        print(artistNameArray)
+        for artistName in artistNameArray {
+            let artist = Artist()
+            let objects = self.realm.objects(Album.self).filter("artistName contains '\(artistName)'")
+            print("\(artistName):\(objects.count)")
+            artist.albums.append(objectsIn: objects)
+            artist.artistName = artistName
+            try! self.realm.write {
+                self.realm.add(artist)
+            }
+        }
+        let nc = NotificationCenter.default
+        nc.post(name: NSNotification.Name(rawValue: "setArtist"), object: nil)
     }
     
     func setItems(_ term: String) {

@@ -7,16 +7,20 @@
 //
 
 
+import Foundation
 import UIKit
+import RealmSwift
+import MediaPlayer
+
 //
 // MARK: - Section Data Structure
 //
 struct Section {
     var name: String!
-    var items: [String]!
+    var items: [UserSong]!
     var collapsed: Bool!
     
-    init(name: String, items: [String], collapsed: Bool = false) {
+    init(name: String, items: [UserSong], collapsed: Bool = false) {
         self.name = name
         self.items = items
         self.collapsed = collapsed
@@ -24,6 +28,11 @@ struct Section {
 }
 
 class ArtistViewController: UITableViewController {
+    
+    let realm = try! Realm()
+    var sectionNameArray:[String] = []
+    var sectionElement:[[UserSong]] = []
+    let player = AudioPlayer.shared
     
     class func instantiateFromStoryboard() -> ArtistViewController {
         let storyboard = UIStoryboard(name: "MenuViewController", bundle: nil)
@@ -35,17 +44,56 @@ class ArtistViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Apple Products"
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(self.reload(_:)), name: NSNotification.Name(rawValue: "setArtist"), object: nil)
         
-        // Initialize the sections array
-        // Here we have three sections: Mac, iPad, iPhone
-        sections = [
-            Section(name: "Mac", items: ["MacBook", "MacBook Air", "MacBook Pro", "iMac", "Mac Pro", "Mac mini", "Accessories", "OS X El Capitan"]),
-            Section(name: "iPad", items: ["iPad Pro", "iPad Air 2", "iPad mini 4", "Accessories"]),
-            Section(name: "iPhone", items: ["iPhone 6s", "iPhone 6", "iPhone SE", "Accessories"]),
-        ]
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        reloadTable()
+
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)    }
+    
+    func reload(_ notify: NSNotification) {
+        //playlist.removeAll()
+        // メインスレッドで実行しないとエラー
+        DispatchQueue.main.async {
+            let realmResponse = self.realm.objects(Artist.self)
+            if realmResponse.count == 0 {
+                Progress.stopProgress()
+                Progress.showAlert("楽曲が読み込めませんでした")
+            }
+            for results in realmResponse {
+                let artistName = results.artistName
+                var resultArray:[UserSong] = []
+                for result in results.albums {
+                    resultArray.append(contentsOf: result.songs)
+                }
+                let songs = resultArray
+                self.sections.append(Section(name: artistName, items: songs))
+            }
+            self.tableView.reloadData()
+            Progress.stopProgress()
+        }
+    }
+    func reloadTable() {
+        // ユーザライブラリの曲をlibraryに格納
+        let realmResponse = realm.objects(Artist.self)
+        for results in realmResponse {
+            let artistName = results.artistName
+            var resultArray:[UserSong] = []
+            for result in results.albums {
+                resultArray.append(contentsOf: result.songs)
+            }
+            let songs = resultArray
+            self.sections.append(Section(name: artistName, items: songs))
+        }
+        self.tableView.reloadData()
+    }
+
+
 }
 
 //
@@ -63,25 +111,35 @@ extension ArtistViewController {
     
     // Cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell? ?? UITableViewCell(style: .default, reuseIdentifier: "cell")
-        
-        cell.textLabel?.text = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let song = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
+        cell.textLabel?.text = song.title
+        cell.detailTextLabel?.text = song.album
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return sections[(indexPath as NSIndexPath).section].collapsed! ? 0 : 44.0
+        return sections[(indexPath as NSIndexPath).section].collapsed! ? 0 : 40.0
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let player = AudioPlayer.shared
+        if player.isPlaying() {
+            player.pause()
+        }
+        let song = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
+        print(song.trackSource)
+        player.usersong = song
+        player.play()
     }
     
     // Header
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? ArtistViewHeader ?? ArtistViewHeader(reuseIdentifier: "header")
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? SectionHeader ?? SectionHeader(reuseIdentifier: "header")
         
         header.titleLabel.text = sections[section].name
         header.arrowLabel.text = ">"
         header.setCollapsed(sections[section].collapsed)
-        
         header.section = section
         header.delegate = self
         
@@ -89,7 +147,7 @@ extension ArtistViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44.0
+        return 32.0
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -101,9 +159,9 @@ extension ArtistViewController {
 //
 // MARK: - Section Header Delegate
 //
-extension ArtistViewController: ArtistViewHeaderDelegate {
+extension ArtistViewController: SectionHeaderDelegate {
     
-    func toggleSection(_ header: ArtistViewHeader, section: Int) {
+    func toggleSection(_ header: SectionHeader, section: Int) {
         let collapsed = !sections[section].collapsed
         
         // Toggle collapse

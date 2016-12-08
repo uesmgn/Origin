@@ -44,9 +44,9 @@ struct SaveFavoriteRequest: SaveFavoriteSongsHelper {
             let item = self.item as! UserSong
             let song = FavoriteSong()
             song.title = item.title
-            song.artist = item.artistName
-            song.album = item.albumTitle
-            song.itunesId = item.itunesId
+            song.artist = item.artist
+            song.album = item.album
+            song.itunesId = item.id
             song.artwork = item.artwork
             song.rating = item.rating
             song.trackSource = item.trackSource

@@ -90,14 +90,11 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private func playerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
         print("end interruption")
         player.play()
-        
     }
     
     func play() {
-        if let player = player {
-            print("play")
-            player.play()
-        }
+        print("play")
+        player.play()
     }
     
     func stop() {
@@ -111,7 +108,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     func pause() {
         print("pause")
         player.pause()
-        status = .Pausing
     }
     
     func pos(_ time: Double) {

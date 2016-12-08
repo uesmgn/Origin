@@ -74,7 +74,7 @@ extension SongsViewController {
         for result in realmResponse {
             Songs.append(result)
         }
-        self.playlist = Songs
+        self.playlist = Songs.sorted(by: {$0.0.title < $0.1.title})
         self.tableView.reloadData()
     }
 }
@@ -92,7 +92,7 @@ extension SongsViewController {
         cell.tag = nowIndex
         let item = playlist[nowIndex]
         cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = "\(item.artistName)-\(item.albumTitle)"
+        cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
         //cell.imageView?.image = item.artwork?.image(at: CGSize(width: 40.0, height: 40.0)) ?? UIImage(named: "artwork_default")
         return cell
         
@@ -109,10 +109,16 @@ extension SongsViewController {
         player.play()
     }
     
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40.0
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "detail") {
         }
     }
+    
     
     
     func sclollToCurrentItem(animated: Bool) {

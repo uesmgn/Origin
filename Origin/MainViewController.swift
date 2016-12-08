@@ -90,7 +90,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
         print("\n")
         let usersongs = realm.objects(UserSong.self)
         for song in usersongs {
-            print("\(song.itunesId),\(song.rating),\(song.title),\(song.artistName),\(song.albumTitle)")
+            print("\(song.id),\(song.rating),\(song.title),\(song.artist),\(song.album)")
         }
     }
 }
@@ -134,7 +134,7 @@ extension MainViewController {
                 plusButton.isHidden = true
                 let item = song as! UserSong
                 currentTitle.text = item.title
-                currentDetail.text = item.artistName
+                currentDetail.text = item.artist
                 currentArtwork.image = UIImage(data: item.artwork!)
                 ratingBar.rating = Double(item.rating)
             } else if song as? OtherSong != nil {
@@ -175,7 +175,7 @@ extension MainViewController {
             var id:Int?
             // ライブラリーの曲に評価
             if let item = (song as? UserSong) {
-                id = item.itunesId
+                id = item.id
                 // ライブラリーの楽曲の評価値を更新
                 if let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id) {
                     try! realm.write() {
