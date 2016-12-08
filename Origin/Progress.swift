@@ -45,4 +45,5 @@ class Progress {
         SVProgressHUD.showInfo(withStatus: message)
     }
 }
+
     

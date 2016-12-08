@@ -52,7 +52,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         return songs
     }
 
-    // 
     var libraryIndex:Int = 0
     var songsIndex:Int = 0
     

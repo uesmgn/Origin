@@ -12,3 +12,4 @@ class RatedSong: Object {
         return "itunesId"
     }
 }
+

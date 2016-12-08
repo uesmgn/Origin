@@ -52,5 +52,4 @@ struct SaveRatedSongRequest: SaveRatedSongsHelper {
         }
         return Songs
     }
-    
 }

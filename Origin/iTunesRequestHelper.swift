@@ -8,12 +8,9 @@
 import APIKit
 
 // Define request protocol
-// Requestに沿った設計
 protocol iTunesRequest: Request {
-    
 }
 
-// http://itunes.apple.com/search?term=chainsmorkers&limit=10&country=jp
 extension iTunesRequest {
     var baseURL: URL {
         return URL(string: "http://itunes.apple.com")!

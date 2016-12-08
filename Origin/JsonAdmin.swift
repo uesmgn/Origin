@@ -12,11 +12,11 @@ import SwiftyJSON
 import Alamofire
 import MediaPlayer
 
+// Djangoサーバとの接続
 class JsonAdmin: NSObject {
     
     weak var viewController:MainViewController?
     weak var recTable:UITableView?
-    
     
     let m_queue = DispatchQueue.main
     

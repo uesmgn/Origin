@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             authorize()
         }
         
-        // デフォルトデータをRealmに保存
+        // デフォルトのプレビューデータをRealmに保存
         let songs = realm.objects(OtherSong.self)
         if songs.count == 0 {
             setItems("Avicii")
@@ -42,53 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
-    /*
-    func loadLibrary() {
-        if #available(iOS 9.3, *) {
-            let authorizationStatus = MPMediaLibrary.authorizationStatus()
-            switch authorizationStatus {
-            case .authorized:
-                print("authorized")
-                let query = MPMediaQuery.songs()
-                print("query: \(query.items?.count)")
-                if query.items?.count == 0  {
-                        self.library = []
-                } else {
-                    print(query.items!.count)
-                    for item in query.items! {
-                        library.append(item)
-                    }
-                    print("library: \(library.count)")
-                }
-            case .notDetermined:
-                // Show the permission prompt.
-                MPMediaLibrary.requestAuthorization({[weak self] (newAuthorizationStatus: MPMediaLibraryAuthorizationStatus) in
-                    // Try again after the prompt is dismissed.
-                    print("notDetermined")
-                    self?.loadLibrary()
-                })
-            case .denied, .restricted:
-                // Do not use MPMediaQuery.
-                return
-            }
-        }
-        if library.count != 0 {
-            Progress.showProgressWithMessage("メディアライブラリーの曲を読み込んでいます")
-            let request = GetLibraryRequest(library: library)
-            let songs = try! request.response()
-            realm = try! Realm()// 入れないとエラー
-            try! self.realm.write {
-                for song in songs {
-                    self.realm.add(song)
-                }
-            }
-            
-        } else {
-            Progress.showAlert("ライブラリーに曲がありません")
-        }
-        let nc = NotificationCenter.default
-        nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
-    }*/
     
     func authorize() {
         if #available(iOS 9.3, *) {

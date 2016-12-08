@@ -13,3 +13,4 @@ class FavoriteSong: Object {
         return "itunesId"
     }
 }
+

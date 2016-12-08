@@ -11,7 +11,6 @@ class Record: Object {
         let now = dateformatter.string(from: date)
         return now
     }
-    
     /*{
         let calendar = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let year = format(calendar.year!)

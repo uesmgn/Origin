@@ -13,3 +13,4 @@ class OtherSong: Object {
         return "itunesId"
     }
 }
+

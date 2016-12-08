@@ -22,14 +22,6 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     //--------------- Dispatch_queue ------------------
     /// main queue: for UI
     open var m_queue = DispatchQueue.main
-    /// concurrent queue
-    open var h_queue = DispatchQueue(label: "c_queue1", qos: .userInteractive, attributes: .concurrent)
-    open var i_queue = DispatchQueue(label: "c_queue2", qos: .userInitiated, attributes: .concurrent)
-    open var d_queue = DispatchQueue(label: "c_queue3", attributes: .concurrent)
-    open var u_queue = DispatchQueue(label: "c_queue4", qos: .utility, attributes: .concurrent)
-    open var b_queue = DispatchQueue(label: "c_queue5", qos: .background, attributes: .concurrent)
-    /// serial queue
-    open var s_queue = DispatchQueue(label: "s_queue")
     
     //--------------- Outlet --------------------
     @IBOutlet weak var topView: UIView!
@@ -54,19 +46,20 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var const: NSLayoutConstraint!
     @IBOutlet weak var plusButton: SpringButton!
 
-    weak var containerView: UIView!
+    
     //-------------- Property --------------------
+    weak var containerView: UIView!
     fileprivate var animator : ARNTransitionAnimator?
     fileprivate var modalVC : CollectionViewController!
     fileprivate let vcArray = [UIViewController]()
     let player = AudioPlayer.shared
     let history = HistoryViewController.shared
     
-    //-------------- Instanse ---------------
     fileprivate let json = JsonAdmin()
-    let nc = NotificationCenter.default
+    let nc = NotificationCenter.default // Notification Center
     let realm = try! Realm()
     
+    // clear rating
     @IBAction func tappedClear(_ sender: Any) {
         let othersongs = realm.objects(OtherSong.self)
         try! self.realm.write {
@@ -82,6 +75,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
         }
     }
     
+    // display song data
     @IBAction func tappedInfo(_ sender: Any) {
         let othersongs = realm.objects(OtherSong.self)
         for song in othersongs {
@@ -101,13 +95,9 @@ extension MainViewController {
         
         // Task: 他のアプリで再生中の音声を停止
         
-        
         // delegate
-        
         tabBar.delegate = self
         player.viewController = self
-        
-        
         
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos
         
@@ -117,14 +107,12 @@ extension MainViewController {
         self.modalVC = storyboard.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController
         self.modalVC.modalPresentationStyle = .overFullScreen
         self.setupAnimator()
-        
     }
 }
 
 
 // --------------- Private Method -------------------
 extension MainViewController {
-    
     func updatePlayinfo() {
         if let song = player.nowPlayingItem() {
             miniPlayerView.isHidden = false
@@ -146,7 +134,6 @@ extension MainViewController {
                 currentArtwork.image = UIImage(named: "artwork_default")
                 ratingBar.rating = Double(item.rating)
             }
-            //システム設定の評価値
             self.toggleButton.imageView?.image = UIImage(named: "pause-1")
         } else {
             miniPlayerView.isHidden = true
@@ -176,14 +163,13 @@ extension MainViewController {
             // ライブラリーの曲に評価
             if let item = (song as? UserSong) {
                 id = item.id
-                // ライブラリーの楽曲の評価値を更新
                 if let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id) {
                     try! realm.write() {
                         usersong.rating = Int(rating)
                     }
                 }
             }
-                // プレビューに評価
+            // プレビューに評価
             else if let item = (song as? OtherSong) {
                 id = item.itunesId
                 if let song = realm.object(ofType: OtherSong.self, forPrimaryKey: id) {
@@ -198,7 +184,6 @@ extension MainViewController {
             
             let record = Record()
             var comment:String?
-            // Record保存
             // 更新
             if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
                 try! realm.write() {
@@ -301,11 +286,6 @@ extension MainViewController {
 
 // ------------ Action ----------------
 extension MainViewController {
-    /*
-    @IBAction func backToHome(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }*/
-    
     @IBAction func tapToggleButton(_ sender: Any) {
         toggleButton.animation = "pop"
         if player.isPlaying() {
@@ -400,7 +380,6 @@ extension MainViewController {
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
         return image!
     }
 }

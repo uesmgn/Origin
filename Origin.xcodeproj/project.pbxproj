@@ -43,8 +43,6 @@
 		B2B425D21DF29D12002B47D5 /* iTunesRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B425D11DF29D12002B47D5 /* iTunesRequestHelper.swift */; };
 		B2BCA0D01DF79F6B00498C2A /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BCA0CF1DF79F6B00498C2A /* SectionHeader.swift */; };
 		B2BCA0D21DF79FD800498C2A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BCA0D11DF79FD800498C2A /* Extension.swift */; };
-		B2BCA0D81DF7A87F00498C2A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BCA0D71DF7A87F00498C2A /* Artist.swift */; };
-		B2BCA0DA1DF7A88A00498C2A /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BCA0D91DF7A88A00498C2A /* Album.swift */; };
 		B2CC1B241DE6C6AE00356219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CC1B231DE6C6AE00356219 /* AppDelegate.swift */; };
 		B2CC1B261DE6C6AE00356219 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CC1B251DE6C6AE00356219 /* MainViewController.swift */; };
 		B2CC1B291DE6C6AE00356219 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CC1B271DE6C6AE00356219 /* Main.storyboard */; };
@@ -93,8 +91,6 @@
 		B2B425D11DF29D12002B47D5 /* iTunesRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iTunesRequestHelper.swift; sourceTree = "<group>"; };
 		B2BCA0CF1DF79F6B00498C2A /* SectionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		B2BCA0D11DF79FD800498C2A /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		B2BCA0D71DF7A87F00498C2A /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
-		B2BCA0D91DF7A88A00498C2A /* Album.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		B2CC1B201DE6C6AE00356219 /* Origin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Origin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2CC1B231DE6C6AE00356219 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2CC1B251DE6C6AE00356219 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -303,8 +299,6 @@
 			children = (
 				B2E939C81DF3EE6200937460 /* OtherSong.swift */,
 				B2AEDDEB1DF4008E00320A2D /* UserSong.swift */,
-				B2BCA0D71DF7A87F00498C2A /* Artist.swift */,
-				B2BCA0D91DF7A88A00498C2A /* Album.swift */,
 				B2AEDDF11DF4F5E400320A2D /* FavoriteSong.swift */,
 				B25F8BEF1DF5724C006DC304 /* RatedSong.swift */,
 				B25F8BF71DF61677006DC304 /* Record.swift */,
@@ -474,7 +468,6 @@
 				B2AEDDF01DF4107B00320A2D /* SongsViewController.swift in Sources */,
 				B28627281DF09CCF007A333D /* PagingMenuOption.swift in Sources */,
 				B20C55201DEBF0B100C1F4A8 /* DiscoverViewController.swift in Sources */,
-				B2BCA0DA1DF7A88A00498C2A /* Album.swift in Sources */,
 				B25F8BF81DF61677006DC304 /* Record.swift in Sources */,
 				B2FD5A7A1DF1FC9A0040C2A1 /* AudioPlayer.swift in Sources */,
 				B25F8BF41DF5F0DF006DC304 /* FindViewController.swift in Sources */,
@@ -482,7 +475,6 @@
 				B25F8BF61DF5F0EE006DC304 /* HistoryViewController.swift in Sources */,
 				B2AEDDF41DF4F76500320A2D /* SaveFavoriteSongsHelper.swift in Sources */,
 				B24EED3A1DE6D0C300F5F5E8 /* CollectionViewController.swift in Sources */,
-				B2BCA0D81DF7A87F00498C2A /* Artist.swift in Sources */,
 				B2AEDDEC1DF4008E00320A2D /* UserSong.swift in Sources */,
 				B24EED7C1DE6F84200F5F5E8 /* CollectionViewCell.swift in Sources */,
 				B2B425D21DF29D12002B47D5 /* iTunesRequestHelper.swift in Sources */,

@@ -54,5 +54,4 @@ struct SaveFavoriteRequest: SaveFavoriteSongsHelper {
         }
         return Songs
     }
-    
 }

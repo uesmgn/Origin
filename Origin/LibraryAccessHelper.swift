@@ -21,7 +21,7 @@ struct AlbumsRequest: LibraryAccessHelper {
     typealias Response = List<Album>
     
     var songQuery = MPMediaQuery.songs()
-    var albumCollection:[MPMediaItemCollection] // groupingType:album 21
+    var albumCollection:[MPMediaItemCollection]
     
     init() {
         songQuery.groupingType = MPMediaGrouping.album

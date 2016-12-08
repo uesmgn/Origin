@@ -9,11 +9,8 @@
 import UIKit
 import PagingMenuController
 
-class HomeTableViewController: UIViewController/*, UITableViewDelegate, UITableViewDataSource */{
+class HomeTableViewController: UIViewController {
 
-    //@IBOutlet weak var songCountLabel: UILabel!
-    //@IBOutlet weak var tableView: UITableView!
-    
     var options: PagingMenuControllerCustomizable {
         return PagingMenuOption()
     }
@@ -24,8 +21,6 @@ class HomeTableViewController: UIViewController/*, UITableViewDelegate, UITableV
         let pagingMenuController = self.childViewControllers.first as! PagingMenuController
         pagingMenuController.setup(options)
 
-        //setup(tableView)
-        
     }
 
 }

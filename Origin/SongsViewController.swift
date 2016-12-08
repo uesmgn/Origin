@@ -93,7 +93,6 @@ extension SongsViewController {
         let item = playlist[nowIndex]
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
-        //cell.imageView?.image = item.artwork?.image(at: CGSize(width: 40.0, height: 40.0)) ?? UIImage(named: "artwork_default")
         return cell
         
     }

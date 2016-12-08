@@ -28,3 +28,4 @@ class Artist: Object {
     dynamic var artistName = ""
     var albums = List<Album>()
 }
+
