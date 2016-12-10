@@ -117,13 +117,6 @@ extension SongsViewController {
         return 40.0
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "detail") {
-        }
-    }
-    
-    
-    
     func sclollToCurrentItem(animated: Bool) {
         if let song = player.nowPlayingItem() as? UserSong {
             let index = player.Library.index(of: song)

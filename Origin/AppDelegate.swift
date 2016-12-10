@@ -111,12 +111,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setRss() {
-        let request = RssRequest()
+        let request = ALlRssRequest()
         request.getRss()
     }
     
     func setRss(_ genre: String) {
-        let request = RssGenreRequest(genre: genre)
+        let request = GenreRssRequest(genre: genre)
         request.getRss()
     }
     

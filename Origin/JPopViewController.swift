@@ -11,25 +11,11 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class JPopViewController: UITableViewController {
+class JPopViewController: BasePageMenuController {
     
     class func instantiateFromStoryboard() -> JPopViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! JPopViewController
-    }
-    
-    let realm = try! Realm()
-    var playlist = [OtherSong]()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,7 +29,7 @@ class JPopViewController: UITableViewController {
 
 extension JPopViewController {
     func loadPlaylistData() {
-        playlist.removeAll()
+        self.playlist.removeAll()
         
         var Songs: [OtherSong] = []
         let realmResponse = realm.objects(OtherSong.self).filter("genre == '27'")
@@ -52,37 +38,5 @@ extension JPopViewController {
         }
         self.playlist = Songs//.sorted(by: {$0.0.title < $0.1.title} )
         self.tableView.reloadData()
-    }
-}
-
-extension JPopViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.playlist.count
-    }
-    
-    // MARK: - UITableViewDelegate
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let nowIndex = (indexPath as NSIndexPath).row
-        cell.tag = nowIndex
-        let item = playlist[nowIndex]
-        cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = "\(item.artistName)-\(item.albumTitle)"
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let player = AudioPlayer.shared
-        if player.isPlaying() {
-            player.pause()
-        }
-        let song = playlist[indexPath.row]
-        player.song = song
-        player.play()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "detail") {
-        }
     }
 }
