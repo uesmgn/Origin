@@ -15,6 +15,7 @@ import Spring
 import Cosmos
 import ARNTransitionAnimator
 import RealmSwift
+import Alamofire
 import SVProgressHUD
 
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBarDelegate {
@@ -57,7 +58,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     
     fileprivate let json = JsonAdmin()
     let nc = NotificationCenter.default // Notification Center
-    let realm = try! Realm()
+    var realm = try! Realm()
     
     // clear rating
     @IBAction func tappedClear(_ sender: Any) {

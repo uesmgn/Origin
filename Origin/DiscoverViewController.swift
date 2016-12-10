@@ -47,7 +47,7 @@ extension DiscoverViewController {
         for result in realmResponse {
             Songs.append(result)
         }
-        self.playlist = Songs
+        self.playlist = Songs//.sorted(by: {$0.0.title < $0.1.title} )
         self.tableView.reloadData()
     }
 }
@@ -74,7 +74,6 @@ extension DiscoverViewController {
             player.pause()
         }
         let song = playlist[indexPath.row]
-        print(song.trackSource)
         player.song = song
         player.play()
     }

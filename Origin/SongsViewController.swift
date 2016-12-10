@@ -32,7 +32,11 @@ class SongsViewController: UITableViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
     }
+    
+    
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -15,7 +15,7 @@ class UserSong: Object {
 }
 
 class Album: Object {
-    dynamic var id = 0
+    dynamic var id = ""
     dynamic var artwork:Data?
     dynamic var albumTitle = ""
     dynamic var artistName = ""
@@ -23,7 +23,7 @@ class Album: Object {
 }
 
 class Artist: Object {
-    dynamic var id = 0
+    dynamic var id = ""
     dynamic var artwork:Data?
     dynamic var artistName = ""
     var albums = List<Album>()

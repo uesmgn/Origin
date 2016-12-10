@@ -36,10 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // デフォルトのプレビューデータをRealmに保存
         let songs = realm.objects(OtherSong.self)
         if songs.count == 0 {
-            setItems("Avicii")
-            setItems("Sia")
-            setItems("The chainsmorkers")
+            setRss()
         }
+        
         return true
     }
     
@@ -95,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(artistNameArray)
         for artistName in artistNameArray {
             let artist = Artist()
-            let objects = self.realm.objects(Album.self).filter("artistName contains '\(artistName)'")
+            let objects = self.realm.objects(Album.self).filter("artistName = '\(artistName)'") // Change: 12/09 by Gen
             print("\(artistName):\(objects.count)")
             artist.albums.append(objectsIn: objects)
             artist.artistName = artistName
@@ -105,6 +104,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         let nc = NotificationCenter.default
         nc.post(name: NSNotification.Name(rawValue: "setArtist"), object: nil)
+    }
+    
+    func setRss() {
+        realm = try! Realm()
+        let request = RssRequest()
+        request.getRss()
     }
     
     func setItems(_ term: String) {
