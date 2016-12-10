@@ -1,20 +1,23 @@
 //
-//  DiscoverViewController.swift
+//  RaBSoulViewController.swift
 //  Origin
 //
-//  Created by Gen on 2016/11/28.
+//  Created by Gen on 2016/12/10.
 //  Copyright © 2016年 Gen. All rights reserved.
 //
 
-
+//15
 import Foundation
 import UIKit
 import RealmSwift
 
-class DiscoverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    @IBOutlet weak var tableView: UITableView!
+class RaBSoulViewController: UITableViewController{
     
+    class func instantiateFromStoryboard() -> RaBSoulViewController {
+        let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! RaBSoulViewController
+    }
+        
     let realm = try! Realm()
     var playlist = [OtherSong]()
     
@@ -38,12 +41,12 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     
 }
 
-extension DiscoverViewController {
+extension RaBSoulViewController {
     func loadPlaylistData() {
         playlist.removeAll()
         
         var Songs: [OtherSong] = []
-        let realmResponse = realm.objects(OtherSong.self)
+        let realmResponse = realm.objects(OtherSong.self).filter("genre == '15'")
         for result in realmResponse {
             Songs.append(result)
         }
@@ -51,14 +54,13 @@ extension DiscoverViewController {
         self.tableView.reloadData()
     }
 }
-
-extension DiscoverViewController {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension RaBSoulViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.playlist.count
     }
     
     // MARK: - UITableViewDelegate
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let nowIndex = (indexPath as NSIndexPath).row
         cell.tag = nowIndex
@@ -68,7 +70,7 @@ extension DiscoverViewController {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let player = AudioPlayer.shared
         if player.isPlaying() {
             player.pause()
@@ -76,10 +78,5 @@ extension DiscoverViewController {
         let song = playlist[indexPath.row]
         player.song = song
         player.play()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "detail") {
-        }
     }
 }

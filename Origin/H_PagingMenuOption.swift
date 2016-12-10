@@ -8,13 +8,13 @@
 
 import Foundation
 import PagingMenuController
-
+import UIKit
 
 struct MenuItemSong: MenuItemViewCustomizable {}
 struct MenuItemArtist: MenuItemViewCustomizable {}
 struct MenuItemAlbum: MenuItemViewCustomizable {}
 
-struct PagingMenuOption: PagingMenuControllerCustomizable {
+struct H_PagingMenuOption: PagingMenuControllerCustomizable {
     let songViewController = SongsViewController.instantiateFromStoryboard()
     let artistViewController = ArtistViewController.instantiateFromStoryboard()
     let albumViewController = AlbumViewController.instantiateFromStoryboard()
@@ -22,18 +22,24 @@ struct PagingMenuOption: PagingMenuControllerCustomizable {
     var componentType: ComponentType {
         return .all(menuOptions: MenuOptions(), pagingControllers: [songViewController, artistViewController, albumViewController])
     }
-    var menuControllerSet: MenuControllerSet {
-        return .single
-    }
+    
     var backgroundColor: UIColor {
         return .black
     }
     
     
     struct MenuOptions: MenuViewCustomizable {
+        
+        let width: CGFloat = (UIScreen.main.bounds.size.width.divided(by: 3).binade + 4.0)
+        
         var displayMode: MenuDisplayMode {
-            return .segmentedControl
+            return  .standard(widthMode: .fixed(width: width), centerItem: false, scrollingMode: .scrollEnabled)
         }
+        
+        var lazyLoadingPage: LazyLoadingPage {
+            return .three
+        }
+        
         var height: CGFloat {
             return 30
         }

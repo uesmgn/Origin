@@ -36,7 +36,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // デフォルトのプレビューデータをRealmに保存
         let songs = realm.objects(OtherSong.self)
         if songs.count == 0 {
-            setRss()
+            let genreDict = ["Pop":"14","R&B/Soul":"15","Dance":"17","Hip-Hop/Rap":"18","Alternative":"20","Rock":"21","J-POP":"27"]
+            for genre in genreDict.values {
+                setRss(genre)
+            }
+            //setRss()
         }
         
         return true
@@ -107,8 +111,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setRss() {
-        realm = try! Realm()
         let request = RssRequest()
+        request.getRss()
+    }
+    
+    func setRss(_ genre: String) {
+        let request = RssGenreRequest(genre: genre)
         request.getRss()
     }
     
