@@ -160,33 +160,36 @@ extension MainViewController {
 // --------------- Private Method -------------------
 extension MainViewController {
     func updatePlayinfo() {
-        if let song = player.nowPlayingItem() {
-            miniPlayerView.isHidden = false
-            const.constant = 0
-            if song as? UserSong != nil {
-                nextButton.isHidden = false
-                plusButton.isHidden = true
-                let item = song as! UserSong
-                currentTitle.text = item.title
-                currentDetail.text = item.artist
-                currentArtwork.image = UIImage(data: item.artwork!)
-                ratingBar.rating = Double(item.rating)
-            } else if song as? OtherSong != nil {
-                nextButton.isHidden = true
-                plusButton.isHidden = false
-                let item = song as! OtherSong
-                currentTitle.text = item.title
-                currentDetail.text = item.artistName
-                currentArtwork.image = UIImage(named: "artwork_default")
-                ratingBar.rating = Double(item.rating)
+        DispatchQueue.main.async {
+            if let song = self.player.nowPlayingItem() {
+                self.miniPlayerView.isHidden = false
+                self.const.constant = 0
+                if song as? UserSong != nil {
+                    self.nextButton.isHidden = false
+                    self.plusButton.isHidden = true
+                    let item = song as! UserSong
+                    self.currentTitle.text = item.title
+                    self.currentDetail.text = item.artist
+                    self.currentArtwork.image = UIImage(data: item.artwork!)
+                    self.ratingBar.rating = Double(item.rating)
+                } else if song as? OtherSong != nil {
+                    self.nextButton.isHidden = true
+                    self.plusButton.isHidden = false
+                    let item = song as! OtherSong
+                    self.currentTitle.text = item.title
+                    self.currentDetail.text = item.artistName
+                    self.currentArtwork.image = UIImage(named: "artwork_default")
+                    self.ratingBar.rating = Double(item.rating)
+                }
+                self.toggleButton.imageView?.image = UIImage(named: "pause-1")
+            } else {
+                self.miniPlayerView.isHidden = true
+                self.setUI()
+                self.toggleButton.imageView?.image = UIImage(named: "play-1")
             }
-            self.toggleButton.imageView?.image = UIImage(named: "pause-1")
-        } else {
-            miniPlayerView.isHidden = true
-            setUI()
-            self.toggleButton.imageView?.image = UIImage(named: "play-1")
+            self.updateModeButton()
+            self.nc.post(name: NSNotification.Name(rawValue: "updateCell"), object: nil)
         }
-        updateModeButton()
     }
     
     /// トグルボタンを押した時以外で再生状況が変化した時に呼び出し
@@ -250,6 +253,15 @@ extension MainViewController {
                     Progress.showAlertWithRating(rating)
                     self.realm.add(ratingsong!)
                     print(comment!)
+                }
+                let objects = realm.objects(RatedSong.self)
+                if objects.count % 10 == 0 {
+                    DispatchQueue.global().async {
+                        Progress.showProgressWithMessage("評価した楽曲データからあなたへのプレイリストを作成しています")
+                        // Task: 読み込み
+                        let jsonpost = JsonPost(userId: 12345)
+                        jsonpost.post()
+                    }
                 }
             }
             try! realm.write {

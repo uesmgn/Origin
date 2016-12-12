@@ -75,6 +75,8 @@ class AudioPlayer: NSObject {
         }
         self.O_Playlist = array
         self.O_PlaylistDict = dict
+        super.init()
+        self.updatePlaylist()
     }
     
     var  Library:[UserSong] {
@@ -137,13 +139,14 @@ class AudioPlayer: NSObject {
                 } catch {
                     player = nil
                     Progress.showAlert("再生に失敗しました")
-                    viewController?.updatePlayinfo()
                 }
             }
-            player.delegate = self
-            player.prepareToPlay()
+            if player != nil {
+                player.delegate = self
+                player.prepareToPlay()
+                play()
+            }
             viewController?.updatePlayinfo()
-            play()
         }
     }
     
@@ -166,7 +169,6 @@ class AudioPlayer: NSObject {
                     } catch {
                         self.player = nil
                         Progress.showAlert("再生に失敗しました")
-                        self.viewController?.updatePlayinfo()
                     }
                 }
                 if self.player != nil {
@@ -174,6 +176,7 @@ class AudioPlayer: NSObject {
                     self.player.prepareToPlay()
                     self.play()
                 }
+                self.viewController?.updatePlayinfo()
             }
         }
     }
@@ -252,6 +255,7 @@ class AudioPlayer: NSObject {
             let id = O_PlaylistDict[url]!
             othersong = realm.object(ofType: OtherSong.self, forPrimaryKey: id)
         }
+        
     }
     
     func skipToPreviousItem() {

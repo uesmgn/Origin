@@ -8,7 +8,7 @@ class UserSong: Object {
     dynamic var artwork:Data?
     dynamic var trackSource = ""
     dynamic var rating = 0
-    dynamic var isKnown = 0
+    dynamic var isKnown = 1 //既知
     override static func primaryKey() -> String? {
         return "id"
     }
@@ -24,7 +24,7 @@ class OtherSong: Object {
     dynamic var trackSource = ""
     dynamic var genre = "1"
     dynamic var rating = 0
-    dynamic var isKnown = 0
+    dynamic var isKnown = 0 //未知
     override static func primaryKey() -> String? {
         return "itunesId"
     }

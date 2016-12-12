@@ -35,6 +35,8 @@ struct SaveRatedSongRequest: SaveRatedSongsHelper {
             song.artist = item.artistName
             song.album = item.albumTitle
             song.itunesId = item.itunesId
+            song.rating = item.rating
+            song.isKnown = item.isKnown
             song.artwork = UIImagePNGRepresentation(UIImage(named:"artwork_default")!)
             song.trackSource = item.trackSource
             Songs = song
@@ -48,6 +50,8 @@ struct SaveRatedSongRequest: SaveRatedSongsHelper {
             song.itunesId = item.id
             song.artwork = item.artwork
             song.trackSource = item.trackSource
+            song.rating = item.rating
+            song.isKnown = item.isKnown
             Songs = song
         }
         return Songs

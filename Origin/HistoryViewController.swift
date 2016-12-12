@@ -17,7 +17,7 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     
     let realm = try! Realm()
-    var playlist = [Record]()
+    var history = [Record]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,13 +35,13 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        playlist.removeAll()
+        history.removeAll()
         var Songs: [Record] = []
         let realmResponse = realm.objects(Record.self)
         for result in realmResponse {
             Songs.append(result)
         }
-        self.playlist = Songs.reversed()
+        self.history = Songs.reversed()
         
         self.tableView.reloadData()
     }
@@ -54,21 +54,20 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
 extension HistoryViewController {
     
     func reload(notify: NSNotification) {
-        playlist.removeAll()
+        history.removeAll()
         var Songs: [Record] = []
         let realmResponse = realm.objects(Record.self)
         for result in realmResponse {
             Songs.append(result)
         }
-        self.playlist = Songs.reversed()
-        
+        self.history = Songs.reversed()
         self.tableView.reloadData()
     }
 }
 
 extension HistoryViewController {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.playlist.count
+        return self.history.count
     }
     
     // MARK: - UITableViewDelegate
@@ -77,7 +76,7 @@ extension HistoryViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let nowIndex = (indexPath as NSIndexPath).row
         cell.tag = nowIndex
-        let item = playlist[nowIndex]
+        let item = history[nowIndex]
         cell.textLabel?.text = item.datestring
         cell.detailTextLabel?.text = item.comment
         return cell

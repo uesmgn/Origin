@@ -47,6 +47,7 @@
 		B286272D1DF09DC3007A333D /* ArtistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286272C1DF09DC3007A333D /* ArtistViewController.swift */; };
 		B286272F1DF09DCF007A333D /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286272E1DF09DCF007A333D /* AlbumViewController.swift */; };
 		B28627311DF09E3A007A333D /* MenuViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B28627301DF09E3A007A333D /* MenuViewController.storyboard */; };
+		B28EE8DC1DFF091500A54175 /* JsonPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28EE8DB1DFF091500A54175 /* JsonPost.swift */; };
 		B2AEDDEC1DF4008E00320A2D /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AEDDEB1DF4008E00320A2D /* Song.swift */; };
 		B2AEDDEE1DF4027600320A2D /* LibraryAccessHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AEDDED1DF4027600320A2D /* LibraryAccessHelper.swift */; };
 		B2AEDDF01DF4107B00320A2D /* SongsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AEDDEF1DF4107B00320A2D /* SongsViewController.swift */; };
@@ -107,6 +108,7 @@
 		B286272C1DF09DC3007A333D /* ArtistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistViewController.swift; sourceTree = "<group>"; };
 		B286272E1DF09DCF007A333D /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
 		B28627301DF09E3A007A333D /* MenuViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MenuViewController.storyboard; sourceTree = "<group>"; };
+		B28EE8DB1DFF091500A54175 /* JsonPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonPost.swift; sourceTree = "<group>"; };
 		B2AEDDEB1DF4008E00320A2D /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		B2AEDDED1DF4027600320A2D /* LibraryAccessHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryAccessHelper.swift; sourceTree = "<group>"; };
 		B2AEDDEF1DF4107B00320A2D /* SongsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsViewController.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				B20C551C1DEBAD9700C1F4A8 /* JsonAdmin.swift */,
+				B28EE8DB1DFF091500A54175 /* JsonPost.swift */,
 				B209F7221DFBCA2F0036AD37 /* RssRequest.swift */,
 				B2B425D11DF29D12002B47D5 /* SearchRequestHelper.swift */,
 				B2AEDDED1DF4027600320A2D /* LibraryAccessHelper.swift */,
@@ -526,6 +529,7 @@
 				B286272F1DF09DCF007A333D /* AlbumViewController.swift in Sources */,
 				B25F8BF61DF5F0EE006DC304 /* HistoryViewController.swift in Sources */,
 				B2AEDDF41DF4F76500320A2D /* SaveFavoriteSongsHelper.swift in Sources */,
+				B28EE8DC1DFF091500A54175 /* JsonPost.swift in Sources */,
 				B24EED3A1DE6D0C300F5F5E8 /* CollectionViewController.swift in Sources */,
 				B2AEDDEC1DF4008E00320A2D /* Song.swift in Sources */,
 				B24EED7C1DE6F84200F5F5E8 /* CollectionViewCell.swift in Sources */,
