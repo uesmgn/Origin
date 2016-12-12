@@ -6,6 +6,13 @@
 //  Copyright © 2016年 Gen. All rights reserved.
 //
 
+//
+//  player.swift
+//  Origin
+//
+//  Created by Gen on 2016/12/03.
+//  Copyright © 2016年 Gen. All rights reserved.
+//
 import Foundation
 import AVFoundation
 import UIKit
@@ -40,6 +47,10 @@ class AudioPlayer: NSObject {
     // 再生中のプレイリスト
     var L_Playlist:[String]
     var O_Playlist:[String]
+    
+    var L_PlaylistDict:[String:Int]
+    var O_PlaylistDict:[String:Int]
+    
     var status:Status
     var mode:Mode
     
@@ -47,15 +58,21 @@ class AudioPlayer: NSObject {
         self.mode = .Default
         self.status = .LibraryPlaying
         var array = [String]()
+        var dict = [String:Int]()
         for song in realm.objects(UserSong.self) {
             array.append(song.trackSource)
+            dict[song.trackSource] = song.id
         }
         self.L_Playlist = array
+        self.L_PlaylistDict = dict
         array.removeAll()
+        dict.removeAll()
         for song in realm.objects(OtherSong.self) {
             array.append(song.trackSource)
+            dict[song.trackSource] = song.itunesId
         }
         self.O_Playlist = array
+        self.O_PlaylistDict = dict
     }
     
     var  Library:[UserSong] {
@@ -136,7 +153,7 @@ class AudioPlayer: NSObject {
             }
         }
     }
-
+    
     private func playerBeginInterruption(_ player: AVAudioPlayer) {
         print("interruption")
         player.pause()
@@ -154,6 +171,7 @@ class AudioPlayer: NSObject {
             self.viewController?.updatePlayinfo()
             self.viewController?.updateToggle()
         }
+        print(O_Playlist)
     }
     
     func stop() {
@@ -199,10 +217,8 @@ class AudioPlayer: NSObject {
             }
             libraryIndex += i
             let url = L_Playlist[libraryIndex]
-            let fileUrl = URL(string: url)
-            player = try! AVAudioPlayer(contentsOf: fileUrl!)
-            player.prepareToPlay()
-            self.play()
+            let id = L_PlaylistDict[url]!
+            usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
         case .PreviewPlaying:
             guard incrOtherIndex(i) else {
                 stop()
@@ -210,13 +226,8 @@ class AudioPlayer: NSObject {
             }
             otherIndex += i
             let url = O_Playlist[otherIndex]
-            DispatchQueue.global().async {
-                let fileUrl = URL(string: url)
-                let soundData = try! Data(contentsOf: fileUrl!)
-                self.player = try! AVAudioPlayer(data: soundData)
-                self.player.prepareToPlay()
-                self.play()
-            }
+            let id = O_PlaylistDict[url]!
+            othersong = realm.object(ofType: OtherSong.self, forPrimaryKey: id)
         }
     }
     
@@ -251,10 +262,10 @@ class AudioPlayer: NSObject {
     func nowPlayingItem() -> Any? {
         if player != nil {
             switch (status) {
-                case .LibraryPlaying:
-                    return usersong
-                case .PreviewPlaying:
-                    return othersong
+            case .LibraryPlaying:
+                return usersong
+            case .PreviewPlaying:
+                return othersong
             }
         }
         return nil
@@ -298,6 +309,7 @@ extension AudioPlayer: AVAudioPlayerDelegate {
         }
     }
 }
+
 /*
 import Foundation
 import AVFoundation
