@@ -103,11 +103,12 @@ extension MainViewController {
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos
         
         updatePlayinfo()
-                
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         self.modalVC = storyboard.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController
         self.modalVC.modalPresentationStyle = .overFullScreen
         self.setupAnimator()
+        
     }
 }
 
@@ -339,7 +340,7 @@ extension MainViewController {
             self.nextButton.duration = 0.4
             self.nextButton.animate()
         }
-        player.skipToNextItem()
+        player.skipToNextItem(1)
     }
 }
 

@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class JPopViewController: BasePageMenuController {
+class JPopViewController: D_BasePageMenuController {
     
     class func instantiateFromStoryboard() -> JPopViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)

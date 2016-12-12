@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class AlternativeViewController: BasePageMenuController {
+class AlternativeViewController: D_BasePageMenuController {
     
     class func instantiateFromStoryboard() -> AlternativeViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)

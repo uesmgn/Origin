@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class DanceViewController: BasePageMenuController {
+class DanceViewController: D_BasePageMenuController {
     
     class func instantiateFromStoryboard() -> DanceViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)

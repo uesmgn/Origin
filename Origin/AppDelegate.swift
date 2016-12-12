@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var navigationController: UINavigationController?
-    
+    let nc = NotificationCenter.default
     var realm:Realm
     var library = [MPMediaItem]()
     
@@ -30,19 +30,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // ライブラリーの曲をRealmに保存
         let Songs = realm.objects(UserSong.self)
         if Songs.count == 0 {
+            Progress.showProgressWithMessage("メディアライブラリーの曲を読み込んでいます")
             authorize()
         }
         
         // デフォルトのプレビューデータをRealmに保存
         let songs = realm.objects(OtherSong.self)
         if songs.count == 0 {
-            let genreDict = ["Pop":"14","R&B/Soul":"15","Dance":"17","Hip-Hop/Rap":"18","Alternative":"20","Rock":"21","J-POP":"27"]
-            for genre in genreDict.values {
-                setRss(genre)
-            }
-            //setRss()
+            setGenreRss()
         }
-        
         return true
     }
     
@@ -70,7 +66,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         if library.count != 0 {
-            Progress.showProgressWithMessage("メディアライブラリーの曲を読み込んでいます")
             let albumReq = AlbumsRequest()
             let albums = try! albumReq.response()
             realm = try! Realm()// 入れないとエラー
@@ -82,7 +77,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Progress.showAlert("ライブラリーに曲がありません")
         }
         
-        let nc = NotificationCenter.default
         nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
         
     }
@@ -106,18 +100,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.realm.add(artist)
             }
         }
-        let nc = NotificationCenter.default
         nc.post(name: NSNotification.Name(rawValue: "setArtist"), object: nil)
     }
     
-    func setRss() {
+    func setAllRss() {
         let request = ALlRssRequest()
         request.getRss()
+        nc.post(name: NSNotification.Name(rawValue: "setRss"), object: nil)
     }
     
-    func setRss(_ genre: String) {
-        let request = GenreRssRequest(genre: genre)
-        request.getRss()
+    func setGenreRss() {
+        let genreDict = ["Pop":"14","R&B/Soul":"15","Dance":"17","Hip-Hop/Rap":"18","Alternative":"20","Rock":"21","J-POP":"27"]
+        for genre in genreDict.values {
+            let request = GenreRssRequest(genre: genre)
+            request.getRss()
+        }
+        nc.post(name: NSNotification.Name(rawValue: "setRss"), object: nil)
     }
     
     func setItems(_ term: String) {

@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class PopViewController: BasePageMenuController{
+class PopViewController: D_BasePageMenuController{
     
     class func instantiateFromStoryboard() -> PopViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
@@ -24,7 +24,9 @@ class PopViewController: BasePageMenuController{
         loadPlaylistData()
         self.tableView.reloadData()
     }
-    
+}
+
+extension PopViewController {
     func loadPlaylistData() {
         playlist.removeAll()
         

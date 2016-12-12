@@ -856,6 +856,10 @@
         <scene sceneID="sUF-5N-fDK">
             <objects>
                 <viewController id="xYj-Qn-gkQ" customClass="PagingMenuController" customModule="PagingMenuController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wxc-0D-Jxb"/>
+                        <viewControllerLayoutGuide type="bottom" id="aEh-oW-zpr"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="klS-t2-5pR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="454"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

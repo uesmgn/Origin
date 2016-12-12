@@ -47,7 +47,6 @@ extension RssRequest {
                     song.artwork = (entry["im:image"].arrayValue[0].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.title = (entry["im:name"].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.genre = (entry["category"].dictionary?["attributes"]?.dictionaryObject?["im:id"] as? String ?? "1")!
-                    print(song.genre)
                     if realm.object(ofType: OtherSong.self, forPrimaryKey: song.itunesId) == nil {
                         try! realm.write {
                             realm.add(song)
@@ -74,6 +73,6 @@ struct GenreRssRequest:RssRequest {
     }
     
     var URLString: String {
-        return "https://itunes.apple.com/jp/rss/topsongs/genre=\(genre)/limit=20/json"
+        return "https://itunes.apple.com/us/rss/topsongs/genre=\(genre)/limit=30/json"
     }
 }

@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class HipHopViewController: BasePageMenuController {
+class HipHopViewController: D_BasePageMenuController {
     
     class func instantiateFromStoryboard() -> HipHopViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)

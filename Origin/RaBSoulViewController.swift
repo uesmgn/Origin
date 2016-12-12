@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class RaBSoulViewController: BasePageMenuController {
+class RaBSoulViewController: D_BasePageMenuController {
     
     class func instantiateFromStoryboard() -> RaBSoulViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
@@ -20,7 +20,6 @@ class RaBSoulViewController: BasePageMenuController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         self.loadPlaylistData()
         self.tableView.reloadData()
     }

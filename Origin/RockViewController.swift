@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class RockViewController: BasePageMenuController {
+class RockViewController: D_BasePageMenuController {
     
     class func instantiateFromStoryboard() -> RockViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
