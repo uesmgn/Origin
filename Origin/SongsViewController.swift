@@ -103,7 +103,6 @@ extension SongsViewController {
             player.pause()
         }
         let song = playlist[indexPath.row]
-        print(song.trackSource)
         player.usersong = song
         player.play()
     }

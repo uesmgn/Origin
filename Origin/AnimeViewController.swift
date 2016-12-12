@@ -1,5 +1,5 @@
 //
-//  RaBSoulViewController.swift
+//  AnimeViewController.swift
 //  Origin
 //
 //  Created by Gen on 2016/12/10.
@@ -11,11 +11,11 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class RaBSoulViewController: D_BasePageMenuController {
+class AnimeViewController: D_BasePageMenuController {
     
-    class func instantiateFromStoryboard() -> RaBSoulViewController {
+    class func instantiateFromStoryboard() -> AnimeViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
-        return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! RaBSoulViewController
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! AnimeViewController
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -26,12 +26,12 @@ class RaBSoulViewController: D_BasePageMenuController {
     
 }
 
-extension RaBSoulViewController {
+extension AnimeViewController {
     func loadPlaylistData() {
         playlist.removeAll()
         
         var Songs: [OtherSong] = []
-        let realmResponse = realm.objects(OtherSong.self).filter("genre == '15'")
+        let realmResponse = realm.objects(OtherSong.self).filter("genre == '29'")
         for result in realmResponse {
             Songs.append(result)
         }

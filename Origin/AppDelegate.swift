@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let songs = realm.objects(OtherSong.self)
         if songs.count == 0 {
             setAllRss()
-            setGenreRss()
+            //setGenreRss()
         }
         return true
     }
@@ -49,11 +49,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             case .authorized:
                 Progress.showProgressWithMessage("メディアライブラリーの曲を読み込んでいます")
                 let query = MPMediaQuery.songs()
-                print("query: \(query.items?.count)")
                 if query.items?.count == 0  {
                     self.library = []
                 } else {
-                    print(query.items!.count)
                     for item in query.items! {
                         library.append(item)
                     }
@@ -91,11 +89,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 artistNameArray.append(album.artistName)
             }
         }
-        print(artistNameArray)
         for artistName in artistNameArray {
             let artist = Artist()
             let objects = self.realm.objects(Album.self).filter("artistName = '\(artistName)'") // Change: 12/09 by Gen
-            print("\(artistName):\(objects.count)")
             artist.albums.append(objectsIn: objects)
             artist.artistName = artistName
             try! self.realm.write {

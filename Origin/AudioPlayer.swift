@@ -44,7 +44,7 @@ class AudioPlayer: NSObject {
     var L_Index = 0
     var O_Index = 0
     
-    // 再生中のプレイリスト
+    //  song url in playlist
     var L_Playlist:[String]
     var O_Playlist:[String]
     
@@ -54,8 +54,10 @@ class AudioPlayer: NSObject {
     var status:Status
     var mode:Mode
     
+    
+    // 初期化
     override init() {
-        self.mode = .Default
+        self.mode = .Shuffle
         self.status = .LibraryPlaying
         var array = [String]()
         var dict = [String:Int]()
@@ -126,11 +128,18 @@ class AudioPlayer: NSObject {
         didSet {
             let url = usersong!.trackSource
             let playlist = L_Playlist
-            libraryIndex = playlist.index(of: url)!
+            libraryIndex = playlist.index(of: url) ?? 0
             status = .LibraryPlaying
             self.initRemoteControl()
-            let fileUrl = URL(string: url)
-            player = try! AVAudioPlayer(contentsOf: fileUrl!)
+            if let fileUrl = URL(string: url) {
+                do {
+                    player = try AVAudioPlayer(contentsOf: fileUrl)
+                } catch {
+                    player = nil
+                    Progress.showAlert("再生に失敗しました")
+                    viewController?.updatePlayinfo()
+                }
+            }
             player.delegate = self
             player.prepareToPlay()
             viewController?.updatePlayinfo()
@@ -142,16 +151,29 @@ class AudioPlayer: NSObject {
         didSet {
             let url = othersong!.trackSource
             let playlist = O_Playlist
-            otherIndex = playlist.index(of: url)!
+            if let index = playlist.index(of: url) {
+                otherIndex = index
+            } else {
+                
+            }
             status = .PreviewPlaying
             self.initRemoteControl()
             DispatchQueue.global().async {
-                let fileUrl = URL(string: url)
-                let soundData = try! Data(contentsOf: fileUrl!)
-                self.player = try! AVAudioPlayer(data: soundData)
-                self.player.delegate = self
-                self.player.prepareToPlay()
-                self.play()
+                if let fileUrl = URL(string: url) {
+                    do {
+                        let soundData = try Data(contentsOf: fileUrl)
+                        self.player = try AVAudioPlayer(data: soundData)
+                    } catch {
+                        self.player = nil
+                        Progress.showAlert("再生に失敗しました")
+                        self.viewController?.updatePlayinfo()
+                    }
+                }
+                if self.player != nil {
+                    self.player.delegate = self
+                    self.player.prepareToPlay()
+                    self.play()
+                }
             }
         }
     }
@@ -173,7 +195,6 @@ class AudioPlayer: NSObject {
             self.viewController?.updatePlayinfo()
             self.viewController?.updateToggle()
         }
-        print(O_Playlist)
     }
     
     func stop() {
@@ -275,7 +296,7 @@ class AudioPlayer: NSObject {
 }
 
 extension AudioPlayer: AVAudioPlayerDelegate {
-    
+
     func initRemoteControl() {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         //self.becomeFirstResponder()
@@ -311,4 +332,5 @@ extension AudioPlayer: AVAudioPlayerDelegate {
         }
     }
 }
+
 

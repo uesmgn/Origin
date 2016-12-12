@@ -21,7 +21,6 @@ class FindViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("history did load")
         // NotificationCenterに登録する。
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(self.reload(notify:)), name: NSNotification.Name(rawValue: "AddFavorite"), object: nil)
@@ -36,7 +35,6 @@ class FindViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("history did appear")
         playlist.removeAll()
         var Songs: [FavoriteSong] = []
         let realmResponse = realm.objects(FavoriteSong.self)

@@ -48,7 +48,6 @@ struct AlbumsRequest: LibraryAccessHelper {
                 song.rating = 0
                 song.trackSource = "\(item.assetURL!)"
                 songs.append(song)
-                print(song.title)
             }
             let first = collection.items[0]
             album.songs.append(objectsIn: songs)
@@ -57,11 +56,8 @@ struct AlbumsRequest: LibraryAccessHelper {
             let size = CGSize(width: 100, height: 100)
             album.artwork = UIImagePNGRepresentation(first.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)
             albums.append(album)
-            print("---------------------")
             print(album.albumTitle)
-            print("---------------------")
         }
-        print("----------------------------------------")
         return albums
     }
     

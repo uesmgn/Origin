@@ -58,9 +58,8 @@ extension RssRequest {
 }
 
 struct ALlRssRequest: RssRequest {
-    
     var URLString: String {
-        return "https://itunes.apple.com/us/rss/topsongs/limit=100/json"
+        return "https://itunes.apple.com/jp/rss/topsongs/limit=300/json"
     }
 }
 
@@ -73,6 +72,6 @@ struct GenreRssRequest:RssRequest {
     }
     
     var URLString: String {
-        return "https://itunes.apple.com/us/rss/topsongs/genre=\(genre)/limit=20/json"
+        return "https://itunes.apple.com/jp/rss/topsongs/genre=\(genre)/limit=20/json"
     }
 }

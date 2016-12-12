@@ -110,7 +110,6 @@ extension AlbumViewController {
             player.pause()
         }
         let song = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
-        print(song.trackSource)
         player.usersong = song
         player.play()
     }

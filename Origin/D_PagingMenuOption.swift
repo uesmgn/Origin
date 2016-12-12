@@ -11,24 +11,26 @@ import PagingMenuController
 
 struct MenuItemAll: MenuItemViewCustomizable {}
 struct MenuItemPop: MenuItemViewCustomizable {}
-struct MenuItemRaBSoul: MenuItemViewCustomizable {}
+struct MenuItemAnime: MenuItemViewCustomizable {}
 struct MenuItemDance: MenuItemViewCustomizable {}
 struct MenuItemHipHop: MenuItemViewCustomizable {}
 struct MenuItemRock: MenuItemViewCustomizable {}
 struct MenuItemJPop: MenuItemViewCustomizable {}
+struct MenuItemOther: MenuItemViewCustomizable {}
 
 struct D_PagingMenuOption: PagingMenuControllerCustomizable {
     
     let allViewController = AllViewController.instantiateFromStoryboard()
     let popViewController = PopViewController.instantiateFromStoryboard()
-    let rabViewController = RaBSoulViewController.instantiateFromStoryboard()
+    let aniViewController = AnimeViewController.instantiateFromStoryboard()
     let danViewController = DanceViewController.instantiateFromStoryboard()
     let hipViewController = HipHopViewController.instantiateFromStoryboard()
     let rocViewController = RockViewController.instantiateFromStoryboard()
     let jpoViewController = JPopViewController.instantiateFromStoryboard()
+    let otherViewController = OtherViewController.instantiateFromStoryboard()
     
     var componentType: ComponentType {
-        return .all(menuOptions: MenuOptions(), pagingControllers: [allViewController, popViewController, rabViewController,danViewController, hipViewController, rocViewController, jpoViewController])
+        return .all(menuOptions: MenuOptions(), pagingControllers: [allViewController, jpoViewController, rocViewController, popViewController, aniViewController,danViewController, hipViewController, otherViewController])
     }
     
     var lazyLoadingPage: LazyLoadingPage {
@@ -54,7 +56,7 @@ struct D_PagingMenuOption: PagingMenuControllerCustomizable {
             return .black
         }
         var itemsOptions: [MenuItemViewCustomizable] {
-            return [MenuItemAll(), MenuItemPop(), MenuItemRaBSoul(), MenuItemDance(), MenuItemHipHop(),MenuItemRock(), MenuItemJPop(),]
+            return [MenuItemAll(), MenuItemJPop(), MenuItemRock(), MenuItemPop(), MenuItemAnime(), MenuItemDance(), MenuItemHipHop(),MenuItemOther(),]
         }
         var focusMode: MenuFocusMode {
             return .underline(height: 1.5, color: UIColor(hex: "4caf50"), horizontalPadding: 0, verticalPadding: 0)
@@ -77,11 +79,11 @@ struct D_PagingMenuOption: PagingMenuControllerCustomizable {
             return .text(title: title)
         }
     }
-    struct MenuItemRaBSoul: MenuItemViewCustomizable {
+    struct MenuItemAnime: MenuItemViewCustomizable {
         let font = UIFont(name: "HelveticaNeue", size: 12)
         let selectedfont = UIFont(name: "HelveticaNeue-Bold", size: 12)
         var displayMode: MenuItemDisplayMode {
-            let title = MenuItemText(text: "R&B/Soul", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
+            let title = MenuItemText(text: "Anime", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
             return .text(title: title)
         }
     }
@@ -114,6 +116,15 @@ struct D_PagingMenuOption: PagingMenuControllerCustomizable {
         let selectedfont = UIFont(name: "HelveticaNeue-Bold", size: 12)
         var displayMode: MenuItemDisplayMode {
             let title = MenuItemText(text: "JPop", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
+            return .text(title: title)
+        }
+    }
+    
+    struct MenuItemOther: MenuItemViewCustomizable {
+        let font = UIFont(name: "HelveticaNeue", size: 12)
+        let selectedfont = UIFont(name: "HelveticaNeue-Bold", size: 12)
+        var displayMode: MenuItemDisplayMode {
+            let title = MenuItemText(text: "Other", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
             return .text(title: title)
         }
     }

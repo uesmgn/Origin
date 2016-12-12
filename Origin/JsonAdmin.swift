@@ -41,17 +41,12 @@ class JsonAdmin: NSObject {
                 self.tableDetail.append(item["publisher"].stringValue)
             }
             
-            print(self.tableTitle)
-            print(self.tableDetail)
-            
             tableView.reloadData()
         }
     }
     
     func getResponse() {
         Alamofire.request(url).responseJSON { response in
-            
-            print(response.result)
             if let JSON = response.result.value {
                 print("JSON: \(JSON)")
             }

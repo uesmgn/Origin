@@ -159,7 +159,6 @@ extension CollectionViewController {
     
     // cellのスワイプ(上方向，下方向)を監視
     func swipeHandler(_ sender: UISwipeGestureRecognizer) {
-        print("first")/**/
         let indexPath = IndexPath(row: currentIndex, section: 0)
         guard let cell  = collectionView?.cellForItem(at: indexPath) as? CollectionViewCell else { return }
         // 上に一回スワイプしたらcellをオープン
@@ -224,8 +223,6 @@ extension CollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let index = indexPath.row
-
-        print("\(indexPath.item),\(indexPath.section)")
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CollectionViewCell.self), for: indexPath)
         cell.tag = index
