@@ -27,16 +27,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // 初回起動時実行
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // ライブラリーの曲をRealmに保存
+        // ライブラリーの曲をRealmに保存            
         let Songs = realm.objects(UserSong.self)
         if Songs.count == 0 {
-            Progress.showProgressWithMessage("メディアライブラリーの曲を読み込んでいます")
             authorize()
         }
         
         // デフォルトのプレビューデータをRealmに保存
         let songs = realm.objects(OtherSong.self)
         if songs.count == 0 {
+            setAllRss()
             setGenreRss()
         }
         return true
@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let authorizationStatus = MPMediaLibrary.authorizationStatus()
             switch authorizationStatus {
             case .authorized:
+                Progress.showProgressWithMessage("メディアライブラリーの曲を読み込んでいます")
                 let query = MPMediaQuery.songs()
                 print("query: \(query.items?.count)")
                 if query.items?.count == 0  {
@@ -74,9 +75,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             setArtist()
         } else {
+            Progress.stopProgress()
             Progress.showAlert("ライブラリーに曲がありません")
         }
-        
+        Progress.stopProgress()
         nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
         
     }

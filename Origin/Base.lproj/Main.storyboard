@@ -72,12 +72,27 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vft-EO-VLp" customClass="SpringButton" customModule="Spring">
+                                                <rect key="frame" x="12" y="8" width="16" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="16" id="Dx9-m3-b46"/>
+                                                    <constraint firstAttribute="width" constant="16" id="oiO-OQ-j95"/>
+                                                </constraints>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="shuffle"/>
+                                                <connections>
+                                                    <action selector="tapModeButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XAC-5b-u7e"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="26" id="0vv-CJ-5OO"/>
+                                            <constraint firstItem="Vft-EO-VLp" firstAttribute="top" secondItem="RmA-bc-lgl" secondAttribute="top" constant="8" id="5MO-vi-1JE"/>
                                             <constraint firstAttribute="bottom" secondItem="kJI-mC-yS1" secondAttribute="bottom" constant="-4" id="B8g-nP-d9W"/>
                                             <constraint firstItem="kJI-mC-yS1" firstAttribute="centerX" secondItem="RmA-bc-lgl" secondAttribute="centerX" id="Frh-C0-SaJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="Vft-EO-VLp" secondAttribute="bottom" constant="2" id="cHy-QN-AYX"/>
+                                            <constraint firstItem="Vft-EO-VLp" firstAttribute="leading" secondItem="RmA-bc-lgl" secondAttribute="leading" constant="12" id="dPr-sK-Qxl"/>
                                             <constraint firstItem="kJI-mC-yS1" firstAttribute="top" secondItem="RmA-bc-lgl" secondAttribute="top" constant="4" id="u3f-OF-Dnv"/>
                                         </constraints>
                                     </view>
@@ -305,6 +320,7 @@
                         <outlet property="homeContainer" destination="4QM-O8-Y6K" id="ArC-cQ-H90"/>
                         <outlet property="homeTab" destination="Ddp-RJ-uY3" id="GXx-1G-KID"/>
                         <outlet property="miniPlayerView" destination="nbf-W0-O7k" id="MGP-WN-Min"/>
+                        <outlet property="modeButton" destination="Vft-EO-VLp" id="c4X-At-XQA"/>
                         <outlet property="nextButton" destination="5QS-l0-uzx" id="7NW-D9-dYY"/>
                         <outlet property="plusButton" destination="JMg-uA-NVk" id="TKK-Ah-Epe"/>
                         <outlet property="ratingBar" destination="kJI-mC-yS1" id="qMj-CV-Mt8"/>

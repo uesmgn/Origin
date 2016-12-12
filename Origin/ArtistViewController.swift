@@ -75,7 +75,6 @@ class ArtistViewController: UITableViewController {
                 self.sections.append(Section(name: artistName, items: songs))
             }
             self.tableView.reloadData()
-            Progress.stopProgress()
         }
     }
     func reloadTable() {

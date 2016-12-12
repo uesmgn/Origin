@@ -20,7 +20,6 @@
 		B209F7321DFBD7210036AD37 /* AllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B209F7311DFBD7210036AD37 /* AllViewController.swift */; };
 		B209F7341DFBDF300036AD37 /* DanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B209F7331DFBDF300036AD37 /* DanceViewController.swift */; };
 		B209F7361DFBDF3F0036AD37 /* HipHopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B209F7351DFBDF3F0036AD37 /* HipHopViewController.swift */; };
-		B209F7381DFBDF5F0036AD37 /* AlternativeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B209F7371DFBDF5F0036AD37 /* AlternativeViewController.swift */; };
 		B209F73A1DFBDF830036AD37 /* JPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B209F7391DFBDF830036AD37 /* JPopViewController.swift */; };
 		B209F73C1DFBF9F70036AD37 /* D_BasePageMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B209F73B1DFBF9F70036AD37 /* D_BasePageMenuController.swift */; };
 		B20C551D1DEBAD9700C1F4A8 /* JsonAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C551C1DEBAD9700C1F4A8 /* JsonAdmin.swift */; };
@@ -79,7 +78,6 @@
 		B209F7311DFBD7210036AD37 /* AllViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllViewController.swift; sourceTree = "<group>"; };
 		B209F7331DFBDF300036AD37 /* DanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DanceViewController.swift; sourceTree = "<group>"; };
 		B209F7351DFBDF3F0036AD37 /* HipHopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HipHopViewController.swift; sourceTree = "<group>"; };
-		B209F7371DFBDF5F0036AD37 /* AlternativeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlternativeViewController.swift; sourceTree = "<group>"; };
 		B209F7391DFBDF830036AD37 /* JPopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPopViewController.swift; sourceTree = "<group>"; };
 		B209F73B1DFBF9F70036AD37 /* D_BasePageMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = D_BasePageMenuController.swift; sourceTree = "<group>"; };
 		B20C551C1DEBAD9700C1F4A8 /* JsonAdmin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonAdmin.swift; sourceTree = "<group>"; };
@@ -166,7 +164,6 @@
 				B209F72D1DFBD24F0036AD37 /* RaBSoulViewController.swift */,
 				B209F7331DFBDF300036AD37 /* DanceViewController.swift */,
 				B209F7351DFBDF3F0036AD37 /* HipHopViewController.swift */,
-				B209F7371DFBDF5F0036AD37 /* AlternativeViewController.swift */,
 				B209F72B1DFBD2430036AD37 /* RockViewController.swift */,
 				B209F7391DFBDF830036AD37 /* JPopViewController.swift */,
 			);
@@ -537,7 +534,6 @@
 				B2BCA0D01DF79F6B00498C2A /* SectionHeader.swift in Sources */,
 				B209F7231DFBCA2F0036AD37 /* RssRequest.swift in Sources */,
 				B20C551D1DEBAD9700C1F4A8 /* JsonAdmin.swift in Sources */,
-				B209F7381DFBDF5F0036AD37 /* AlternativeViewController.swift in Sources */,
 				B286272D1DF09DC3007A333D /* ArtistViewController.swift in Sources */,
 				B2BCA0D21DF79FD800498C2A /* Extension.swift in Sources */,
 			);

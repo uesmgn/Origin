@@ -60,7 +60,6 @@ class AlbumViewController: UITableViewController {
                 self.sections.append(Section(name: albumTitle, items: songs))
             }
             self.tableView.reloadData()
-            Progress.stopProgress()
         }
     }
     func reloadTable() {

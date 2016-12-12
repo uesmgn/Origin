@@ -46,7 +46,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var nextButton: SpringButton!
     @IBOutlet weak var const: NSLayoutConstraint!
     @IBOutlet weak var plusButton: SpringButton!
-
+    @IBOutlet weak var modeButton: SpringButton!
     
     //-------------- Property --------------------
     weak var containerView: UIView!
@@ -88,6 +88,50 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
             print("\(song.id),\(song.rating),\(song.title),\(song.artist),\(song.album)")
         }
     }
+    
+    @IBAction func tapModeButton(_ sender: Any) {
+        let mode = AudioPlayer.shared.mode
+        print(mode)
+        switch (mode) {
+        case .Default:
+            AudioPlayer.shared.mode = .Shuffle
+            Progress.showMessage("Shuffle Mode")
+        case .Shuffle:
+            AudioPlayer.shared.mode = .Repeat
+            Progress.showMessage("Repeat Mode")
+        default:
+            AudioPlayer.shared.mode = .Default
+            Progress.showMessage("Streaming Mode")
+            break
+        }
+        AudioPlayer.shared.updatePlaylist()
+        self.updateModeButton()
+    }
+    
+    func updateModeButton() {
+        modeButton.animation = "pop"
+        let mode = AudioPlayer.shared.mode
+        switch (mode) {
+        case .Default:
+            DispatchQueue.main.async {
+                self.modeButton.imageView?.image = UIImage(named: "stream")
+                self.toggleButton.duration = 0.4
+                self.toggleButton.animate()
+            }
+        case .Shuffle:
+            DispatchQueue.main.async {
+                self.modeButton.imageView?.image = UIImage(named: "shuffle")
+                self.toggleButton.duration = 0.4
+                self.toggleButton.animate()
+            }
+        case .Repeat:
+            DispatchQueue.main.async {
+                self.modeButton.imageView?.image = UIImage(named: "repeat")
+                self.toggleButton.duration = 0.4
+                self.toggleButton.animate()
+            }
+        }
+    }
 }
 
 extension MainViewController {
@@ -95,7 +139,7 @@ extension MainViewController {
         super.viewDidLoad()
         
         // Task: 他のアプリで再生中の音声を停止
-        
+
         // delegate
         tabBar.delegate = self
         player.viewController = self
@@ -103,7 +147,7 @@ extension MainViewController {
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos
         
         updatePlayinfo()
-        
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         self.modalVC = storyboard.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController
         self.modalVC.modalPresentationStyle = .overFullScreen
@@ -142,6 +186,7 @@ extension MainViewController {
             setUI()
             self.toggleButton.imageView?.image = UIImage(named: "play-1")
         }
+        updateModeButton()
     }
     
     /// トグルボタンを押した時以外で再生状況が変化した時に呼び出し
@@ -288,6 +333,7 @@ extension MainViewController {
 
 // ------------ Action ----------------
 extension MainViewController {
+    
     @IBAction func tapToggleButton(_ sender: Any) {
         toggleButton.animation = "pop"
         if player.isPlaying() {

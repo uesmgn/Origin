@@ -14,7 +14,6 @@ struct MenuItemPop: MenuItemViewCustomizable {}
 struct MenuItemRaBSoul: MenuItemViewCustomizable {}
 struct MenuItemDance: MenuItemViewCustomizable {}
 struct MenuItemHipHop: MenuItemViewCustomizable {}
-struct MenuItemAlternative: MenuItemViewCustomizable {}
 struct MenuItemRock: MenuItemViewCustomizable {}
 struct MenuItemJPop: MenuItemViewCustomizable {}
 
@@ -25,12 +24,11 @@ struct D_PagingMenuOption: PagingMenuControllerCustomizable {
     let rabViewController = RaBSoulViewController.instantiateFromStoryboard()
     let danViewController = DanceViewController.instantiateFromStoryboard()
     let hipViewController = HipHopViewController.instantiateFromStoryboard()
-    let altViewController = AlternativeViewController.instantiateFromStoryboard()
     let rocViewController = RockViewController.instantiateFromStoryboard()
     let jpoViewController = JPopViewController.instantiateFromStoryboard()
     
     var componentType: ComponentType {
-        return .all(menuOptions: MenuOptions(), pagingControllers: [allViewController, popViewController, rabViewController,danViewController, hipViewController, altViewController,rocViewController, jpoViewController])
+        return .all(menuOptions: MenuOptions(), pagingControllers: [allViewController, popViewController, rabViewController,danViewController, hipViewController, rocViewController, jpoViewController])
     }
     
     var lazyLoadingPage: LazyLoadingPage {
@@ -56,7 +54,7 @@ struct D_PagingMenuOption: PagingMenuControllerCustomizable {
             return .black
         }
         var itemsOptions: [MenuItemViewCustomizable] {
-            return [MenuItemAll(), MenuItemPop(), MenuItemRaBSoul(), MenuItemDance(),MenuItemAlternative(), MenuItemHipHop(),MenuItemRock(), MenuItemJPop(),]
+            return [MenuItemAll(), MenuItemPop(), MenuItemRaBSoul(), MenuItemDance(), MenuItemHipHop(),MenuItemRock(), MenuItemJPop(),]
         }
         var focusMode: MenuFocusMode {
             return .underline(height: 1.5, color: UIColor(hex: "4caf50"), horizontalPadding: 0, verticalPadding: 0)
@@ -100,14 +98,6 @@ struct D_PagingMenuOption: PagingMenuControllerCustomizable {
         let selectedfont = UIFont(name: "HelveticaNeue-Bold", size: 12)
         var displayMode: MenuItemDisplayMode {
             let title = MenuItemText(text: "HipHop/Rap", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
-            return .text(title: title)
-        }
-    }
-    struct MenuItemAlternative: MenuItemViewCustomizable {
-        let font = UIFont(name: "HelveticaNeue", size: 12)
-        let selectedfont = UIFont(name: "HelveticaNeue-Bold", size: 12)
-        var displayMode: MenuItemDisplayMode {
-            let title = MenuItemText(text: "Alternative", color: .lightGray, selectedColor: UIColor(hex: "4caf50"), font: font!, selectedFont: selectedfont!)
             return .text(title: title)
         }
     }

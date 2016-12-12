@@ -64,7 +64,6 @@ extension SongsViewController {
                 self.playlist.append(result)
             }
             self.tableView.reloadData()
-            Progress.stopProgress()
         }
     }
     
