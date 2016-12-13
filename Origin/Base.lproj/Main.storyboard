@@ -73,7 +73,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vft-EO-VLp" customClass="SpringButton" customModule="Spring">
-                                                <rect key="frame" x="12" y="8" width="16" height="16"/>
+                                                <rect key="frame" x="72" y="8" width="16" height="16"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="Dx9-m3-b46"/>
                                                     <constraint firstAttribute="width" constant="16" id="oiO-OQ-j95"/>
@@ -84,6 +84,17 @@
                                                     <action selector="tapModeButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XAC-5b-u7e"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVD-qN-TST" customClass="SpringButton" customModule="Spring">
+                                                <rect key="frame" x="288" y="4" width="26" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="26" id="M24-SY-V0h"/>
+                                                    <constraint firstAttribute="width" constant="26" id="lrP-Vv-wCG"/>
+                                                </constraints>
+                                                <state key="normal" title="Button" image="off"/>
+                                                <connections>
+                                                    <action selector="tapRadiButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7j5-dH-ScW"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -91,8 +102,11 @@
                                             <constraint firstItem="Vft-EO-VLp" firstAttribute="top" secondItem="RmA-bc-lgl" secondAttribute="top" constant="8" id="5MO-vi-1JE"/>
                                             <constraint firstAttribute="bottom" secondItem="kJI-mC-yS1" secondAttribute="bottom" constant="-4" id="B8g-nP-d9W"/>
                                             <constraint firstItem="kJI-mC-yS1" firstAttribute="centerX" secondItem="RmA-bc-lgl" secondAttribute="centerX" id="Frh-C0-SaJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="TVD-qN-TST" secondAttribute="bottom" constant="-4" id="Q3I-UY-zEA"/>
+                                            <constraint firstItem="kJI-mC-yS1" firstAttribute="leading" secondItem="Vft-EO-VLp" secondAttribute="trailing" constant="30" id="bnj-lq-3u2"/>
                                             <constraint firstAttribute="bottom" secondItem="Vft-EO-VLp" secondAttribute="bottom" constant="2" id="cHy-QN-AYX"/>
-                                            <constraint firstItem="Vft-EO-VLp" firstAttribute="leading" secondItem="RmA-bc-lgl" secondAttribute="leading" constant="12" id="dPr-sK-Qxl"/>
+                                            <constraint firstItem="TVD-qN-TST" firstAttribute="top" secondItem="RmA-bc-lgl" secondAttribute="top" constant="4" id="jHW-9D-VV9"/>
+                                            <constraint firstItem="TVD-qN-TST" firstAttribute="leading" secondItem="kJI-mC-yS1" secondAttribute="trailing" constant="30" id="kuK-Su-jcE"/>
                                             <constraint firstItem="kJI-mC-yS1" firstAttribute="top" secondItem="RmA-bc-lgl" secondAttribute="top" constant="4" id="u3f-OF-Dnv"/>
                                         </constraints>
                                     </view>
@@ -323,6 +337,7 @@
                         <outlet property="modeButton" destination="Vft-EO-VLp" id="c4X-At-XQA"/>
                         <outlet property="nextButton" destination="5QS-l0-uzx" id="7NW-D9-dYY"/>
                         <outlet property="plusButton" destination="JMg-uA-NVk" id="TKK-Ah-Epe"/>
+                        <outlet property="radioButton" destination="TVD-qN-TST" id="JhH-Qm-uVq"/>
                         <outlet property="ratingBar" destination="kJI-mC-yS1" id="qMj-CV-Mt8"/>
                         <outlet property="ratingView" destination="RmA-bc-lgl" id="OJM-HG-Usx"/>
                         <outlet property="tabBar" destination="9NZ-fh-6CN" id="I1k-5c-wfY"/>
@@ -537,7 +552,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b68-uY-WAh" id="keD-YC-kBu">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg-p" translatesAutoresizingMaskIntoConstraints="NO" id="BoY-HX-0Rw">
@@ -557,7 +572,7 @@
                                         <rect key="frame" x="0.0" y="120" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0If-oi-OkT" id="OJd-so-kvY">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Songs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iGy-WD-JNs">
@@ -586,7 +601,7 @@
                                         <rect key="frame" x="0.0" y="240" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nxW-mJ-4Ff" id="N9C-Ex-Gpd">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artists" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNe-gg-T2S">
@@ -615,7 +630,7 @@
                                         <rect key="frame" x="0.0" y="360" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pK5-0a-Jju" id="FAi-8T-hIT">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Albums" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCQ-Sf-fPM">
@@ -644,7 +659,7 @@
                                         <rect key="frame" x="0.0" y="480" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TWK-k7-H96" id="oUD-EN-ieg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playlists" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6x4-lz-F5N">
@@ -898,6 +913,7 @@
         <image name="home-green" width="30" height="30"/>
         <image name="home-green-m" width="24" height="24"/>
         <image name="light-green-m" width="18" height="24"/>
+        <image name="off" width="512" height="512"/>
         <image name="play" width="852" height="852"/>
         <image name="play-1" width="512" height="512"/>
         <image name="plus" width="512" height="512"/>

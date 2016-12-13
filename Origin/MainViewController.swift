@@ -47,7 +47,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var const: NSLayoutConstraint!
     @IBOutlet weak var plusButton: SpringButton!
     @IBOutlet weak var modeButton: SpringButton!
-    
+    @IBOutlet weak var radioButton: SpringButton!
     //-------------- Property --------------------
     weak var containerView: UIView!
     fileprivate var animator : ARNTransitionAnimator?
@@ -76,6 +76,78 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
         }
     }
     
+    @IBAction func tapRadiButton(_ sender: Any) {
+        if let song = player.nowPlayingItem() {
+            radioButton.animation = "pop"
+            var isKnown = 0
+            if radioButton.isSelected {
+                DispatchQueue.main.async {
+                    isKnown = 0
+                    self.updateRadioButton(isKnown)
+                    self.radioButton.duration = 0.4
+                    self.radioButton.animate()
+                    Progress.showMessage("あなたはこの曲を知りませんでした")
+                }
+            } else {
+                DispatchQueue.main.async {
+                    isKnown = 1
+                    self.updateRadioButton(isKnown)
+                    self.radioButton.duration = 0.4
+                    self.radioButton.animate()
+                    Progress.showMessage("あなたはこの曲を知っています")
+                }
+            }
+        }
+    }
+    
+    func updateRadioButton(_ isKnown:Int) {
+        if let song = player.nowPlayingItem() {
+            if isKnown == 0 {
+                radioButton.isSelected = false
+                radioButton.imageView?.image = UIImage(named:"off")
+            } else {
+                radioButton.isSelected = true
+                radioButton.imageView?.image = UIImage(named:"success")
+            }
+            var id:Int?
+            // ライブラリーの曲に評価
+            if let item = (song as? UserSong) {
+                id = item.id
+                if let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id) {
+                    try! realm.write() {
+                        usersong.isKnown = isKnown
+                    }
+                }
+            }
+            // プレビューに評価
+            else if let item = (song as? OtherSong) {
+                id = item.itunesId
+                if let song = realm.object(ofType: OtherSong.self, forPrimaryKey: id) {
+                    try! realm.write() {
+                        song.isKnown = isKnown
+                    }
+                }
+            }
+            guard id != nil else {
+                return
+            }
+            // 更新
+            if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
+                try! realm.write() {
+                    ratingsong.isKnown = isKnown
+                }
+            }
+            // 新規追加
+            else {
+                let request = SaveRatedSongRequest(item: song)
+                let ratingsong = try! request.response()
+                try! self.realm.write {
+                    self.realm.add(ratingsong!)
+                }
+            }
+        }
+    }
+
     // display song data
     @IBAction func tappedInfo(_ sender: Any) {
         let othersongs = realm.objects(OtherSong.self)
@@ -88,6 +160,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
             print("\(song.id),\(song.rating),\(song.title),\(song.artist),\(song.album)")
         }
     }
+    
     
     @IBAction func tapModeButton(_ sender: Any) {
         let mode = AudioPlayer.shared.mode
@@ -154,6 +227,7 @@ extension MainViewController {
         self.setupAnimator()
         
     }
+    
 }
 
 
@@ -172,6 +246,7 @@ extension MainViewController {
                     self.currentDetail.text = item.artist
                     self.currentArtwork.image = UIImage(data: item.artwork!)
                     self.ratingBar.rating = Double(item.rating)
+                    self.updateRadioButton(item.isKnown)
                 } else if song as? OtherSong != nil {
                     self.nextButton.isHidden = true
                     self.plusButton.isHidden = false
@@ -180,6 +255,7 @@ extension MainViewController {
                     self.currentDetail.text = item.artistName
                     self.currentArtwork.image = UIImage(named: "artwork_default")
                     self.ratingBar.rating = Double(item.rating)
+                    self.updateRadioButton(item.isKnown)
                 }
                 self.toggleButton.imageView?.image = UIImage(named: "pause-1")
             } else {

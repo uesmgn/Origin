@@ -45,12 +45,12 @@ class  JsonPost {
             // Dict -> JSON
             let jsonData = try JSONSerialization.data(withJSONObject: Dictionary, options: .prettyPrinted) //(*)options??
             json = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue) as! String
+            Progress.showMessage("データを送信しました")
         } catch {
             print("Error!: \(error)")
         }
         let strData = json.data(using: String.Encoding.utf8)
         print(json)
-        Progress.stopProgress()
         /*request.HTTPBody = strData
         
         do {
