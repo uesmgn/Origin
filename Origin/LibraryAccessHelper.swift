@@ -9,6 +9,7 @@ import MediaPlayer
 import Foundation
 import RealmSwift
 
+// メディアライブラリーの曲を取得
 protocol LibraryAccessHelper {
     
     associatedtype Response

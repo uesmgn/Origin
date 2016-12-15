@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import ARNTransitionAnimator
 
+// ライブラリ改良
 final class TransitionAnimation : TransitionAnimatable {
     
     fileprivate weak var rootVC: MainViewController!
@@ -26,7 +27,7 @@ final class TransitionAnimation : TransitionAnimatable {
     deinit {
         print("deinit TransitionAnimation")
     }
-    // 初期化
+    
     init(rootVC: MainViewController, modalVC: CollectionViewController) {
         self.rootVC = rootVC
         self.modalVC = modalVC
@@ -38,10 +39,8 @@ final class TransitionAnimation : TransitionAnimatable {
     func prepareContainer(_ transitionType: TransitionType, containerView: UIView, from fromVC: UIViewController, to toVC: UIViewController) {
         self.containerView = containerView
         if transitionType.isPresenting {
-            //            self.modalVC.view.removeFromSuperview()
             self.rootVC.view.insertSubview(self.modalVC.view, belowSubview: self.rootVC.tabBar)
         } else {
-            //            self.modalVC.view.removeFromSuperview()
             self.rootVC.view.insertSubview(self.modalVC.view, belowSubview: self.rootVC.tabBar)
         }
         self.rootVC.view.setNeedsLayout()
@@ -95,7 +94,7 @@ final class TransitionAnimation : TransitionAnimatable {
             let endOriginY = self.miniPlayerStartFrame.origin.y
             let diff = -startOriginY + endOriginY
             // tabBar
-            // CHANGE -> containerView -> view
+            // CHANGE: containerView -> view
             let tabStartOriginY = self.rootVC.view.bounds.size.height
             let tabEndOriginY = self.tabBarStartFrame.origin.y
             let tabDiff = tabStartOriginY - tabEndOriginY

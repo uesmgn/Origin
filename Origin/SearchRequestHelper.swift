@@ -7,7 +7,7 @@
 //
 import APIKit
 
-// Define request protocol
+// 楽曲検索
 protocol iTunesRequest: Request {
 }
 
@@ -26,9 +26,15 @@ struct GetSearchRequest: iTunesRequest {
     }
     
     let term: String
+    let limit: Int
+    let country: String
+    let lang: String
     
-    init(term: String) {
+    init(term: String, limit: Int = 20, country: String = "jp", lang: String = "ja_jp") {
         self.term = term
+        self.limit = limit
+        self.country = country
+        self.lang = lang
     }
     
     var path: String {
@@ -38,10 +44,10 @@ struct GetSearchRequest: iTunesRequest {
     var parameters: Any? {
         return [
             "term": term,
-            "limit": 20,
-            "country": "jp",
+            "limit": limit,
+            "country": country,
             "media": "music",
-            "lang": "ja_jp"
+            "lang": lang
         ]
     }
     

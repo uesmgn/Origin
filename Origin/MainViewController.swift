@@ -79,19 +79,16 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBAction func tapRadiButton(_ sender: Any) {
         if let song = player.nowPlayingItem() {
             radioButton.animation = "pop"
-            var isKnown = 0
             if radioButton.isSelected {
                 DispatchQueue.main.async {
-                    isKnown = 0
-                    self.updateRadioButton(isKnown)
+                    self.updateRadioButton(0)
                     self.radioButton.duration = 0.4
                     self.radioButton.animate()
                     Progress.showMessage("あなたはこの曲を知りませんでした")
                 }
             } else {
                 DispatchQueue.main.async {
-                    isKnown = 1
-                    self.updateRadioButton(isKnown)
+                    self.updateRadioButton(1)
                     self.radioButton.duration = 0.4
                     self.radioButton.animate()
                     Progress.showMessage("あなたはこの曲を知っています")
@@ -103,11 +100,9 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     func updateRadioButton(_ isKnown:Int) {
         if let song = player.nowPlayingItem() {
             if isKnown == 0 {
-                radioButton.isSelected = false
-                radioButton.imageView?.image = UIImage(named:"off")
+                radioButton.unknown()
             } else {
-                radioButton.isSelected = true
-                radioButton.imageView?.image = UIImage(named:"success")
+                radioButton.know()
             }
             var id:Int?
             // ライブラリーの曲に評価
@@ -150,15 +145,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
 
     // display song data
     @IBAction func tappedInfo(_ sender: Any) {
-        let othersongs = realm.objects(OtherSong.self)
-        for song in othersongs {
-            print("\(song.itunesId),\(song.rating),\(song.title),\(song.artistName),\(song.albumTitle)")
-        }
-        print("\n")
-        let usersongs = realm.objects(UserSong.self)
-        for song in usersongs {
-            print("\(song.id),\(song.rating),\(song.title),\(song.artist),\(song.album)")
-        }
+    
     }
     
     
@@ -211,8 +198,10 @@ extension MainViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Task: 他のアプリで再生中の音声を停止
-
+        var timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(MainViewController.animation), userInfo: nil, repeats: false)
+        
+        var timer2 = Timer.scheduledTimer(timeInterval: 3.5, target: self, selector: #selector(MainViewController.viewLoad), userInfo: nil, repeats: false)
+        
         // delegate
         tabBar.delegate = self
         player.viewController = self
@@ -220,14 +209,16 @@ extension MainViewController {
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos
         
         updatePlayinfo()
-
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        self.modalVC = storyboard.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController
-        self.modalVC.modalPresentationStyle = .overFullScreen
-        self.setupAnimator()
-        
     }
     
+    func viewLoad() {
+        
+        
+    }
+    func animation() {
+        
+        
+    }
 }
 
 
@@ -245,8 +236,7 @@ extension MainViewController {
                     self.currentTitle.text = item.title
                     self.currentDetail.text = item.artist
                     self.currentArtwork.image = UIImage(data: item.artwork!)
-                    self.ratingBar.rating = Double(item.rating)
-                    self.updateRadioButton(item.isKnown)
+                    self.radioButton.know()
                 } else if song as? OtherSong != nil {
                     self.nextButton.isHidden = true
                     self.plusButton.isHidden = false
@@ -255,7 +245,7 @@ extension MainViewController {
                     self.currentDetail.text = item.artistName
                     self.currentArtwork.image = UIImage(named: "artwork_default")
                     self.ratingBar.rating = Double(item.rating)
-                    self.updateRadioButton(item.isKnown)
+                    self.radioButton.know()
                 }
                 self.toggleButton.imageView?.image = UIImage(named: "pause-1")
             } else {

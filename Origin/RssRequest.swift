@@ -11,6 +11,7 @@ import Alamofire
 import SwiftyJSON
 import RealmSwift
 
+// ランキング情報取得
 protocol RssRequest {
     
     var method: Alamofire.HTTPMethod { get }
@@ -34,7 +35,7 @@ extension RssRequest {
                     return
                 }
                 let feed = JSON(object).dictionary?["feed"]
-                //let it_link = feed?.dictionary?["link"]?.arrayValue[0].dictionary?["attributes"]?.dictionaryObject?["href"]
+                //let it_link = feed?.dictionary?["link"]?.arrayValue[0].dictionary?["attributes"]?.dictionaryObject?["href"]   //iTunesへのリンク
                 let entries = feed?.dictionary?["entry"]?.arrayValue
                 for entry in entries! {
                     let song = OtherSong()
@@ -47,6 +48,7 @@ extension RssRequest {
                     song.artwork = (entry["im:image"].arrayValue[0].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.title = (entry["im:name"].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.genre = (entry["category"].dictionary?["attributes"]?.dictionaryObject?["im:id"] as? String ?? "1")!
+                    // Realmに存在しなかったら追加
                     if realm.object(ofType: OtherSong.self, forPrimaryKey: song.itunesId) == nil {
                         try! realm.write {
                             realm.add(song)
@@ -57,21 +59,25 @@ extension RssRequest {
     }
 }
 
-struct ALlRssRequest: RssRequest {
+// 総合ランキング
+struct AllRssRequest: RssRequest {
     var URLString: String {
         return "https://itunes.apple.com/jp/rss/topsongs/limit=200/json"
     }
 }
 
+// ジャンルごとのランキング
 struct GenreRssRequest:RssRequest {
     
     var genre:String
+    var limit:Int
     
-    init(genre:String) {
+    init(genre:String, limit:Int = 20) {
         self.genre = genre
+        self.limit = limit
     }
     
     var URLString: String {
-        return "https://itunes.apple.com/jp/rss/topsongs/genre=\(genre)/limit=20/json"
+        return "https://itunes.apple.com/jp/rss/topsongs/genre=\(genre)/limit=\(limit)/json"
     }
 }

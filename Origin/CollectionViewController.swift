@@ -14,7 +14,7 @@ import Spring
 import RealmSwift
 
 //------------------------------------------
-// スクロール型View
+// スクロール画面
 //------------------------------------------
 
 class CollectionViewController: ExpandingViewController {
@@ -84,7 +84,7 @@ extension CollectionViewController {
     
     // artworkArray配列セット
     fileprivate func fillArtworkArray() {
-        let size = CGSize(width: 200, height: 200)
+        //let size = CGSize(width: 200, height: 200)
         for song in items! {
             let image = UIImage(data: song.artwork!)
             artworkArray.append(image!)
@@ -189,7 +189,7 @@ extension CollectionViewController {
         super.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
         guard let cell = cell as? CollectionViewCell else { return }
         
-        //let index = (indexPath as NSIndexPath).row % items.count
+        //let index = (indexPath as NSIndexPath).row % items.count　// 末端が0
         let index = (indexPath as NSIndexPath).row
         let info = items?[index]
         cell.artworkImage?.image = UIImage(data: (info?.artwork)!)
@@ -202,11 +202,11 @@ extension CollectionViewController {
         guard let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell
             , currentIndex == (indexPath as NSIndexPath).row else { return }
         
-        // １回めタップされた
+        // １回めタップ
         if cell.isOpened == false {
             cell.cellIsOpen(true)
         }
-        // ２回目タップされた
+        // ２回目タップ
         else {
             cell.cellIsOpen(false)
         }

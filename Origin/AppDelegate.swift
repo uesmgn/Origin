@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         Progress.stopProgress()
         nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
-        
+        nc.post(name: NSNotification.Name(rawValue: "viewOpen"), object: nil)
     }
     
     func setArtist() {
@@ -102,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setAllRss() {
-        let request = ALlRssRequest()
+        let request = AllRssRequest()
         request.getRss()
         nc.post(name: NSNotification.Name(rawValue: "setRss"), object: nil)
     }
