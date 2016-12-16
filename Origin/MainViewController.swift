@@ -196,9 +196,6 @@ extension MainViewController {
         }
         DispatchQueue.main.async {
             let (usersong, othersong) = self.player.nowPlayingItem()
-            let s = usersong ?? othersong //
-            print(s ?? "nil")
-            print(self.player.status) //
             if let song = usersong {
                 self.miniPlayerView.isHidden = false
                 self.const.constant = 0
@@ -279,7 +276,6 @@ extension MainViewController {
                 comment = "\((ratingsong?.title)!)に評価値\(Int(rating))をつけました"
                 Progress.showAlertWithRating(rating)
                 self.realm.add(ratingsong!)
-                print(comment!)
             }
             let objects = realm.objects(RatedSong.self)
             if objects.count % 10 == 0 {
@@ -391,39 +387,10 @@ extension MainViewController {
         }
     }
     
-    /// お気に入り追加
-    @IBAction func plusButtonTapped(_ sender: Any) {
-        /*
-        let (usersong, othersong) = player.nowPlayingItem()
-        if let song = usersong {
-            let request = SaveFavoriteRequest(item: song)
-            let song = try! request.response()
-            let id = song?.itunesId
-            guard realm.object(ofType: FavoriteSong.self, forPrimaryKey: id) == nil else {
-                let message = "すでに追加されています"
-                Progress.showAlert(message)
-                return
-            }
-            if song != nil {
-                guard song?.rating != 0 else {
-                    let message = "評価してください"
-                    Progress.showAlert(message)
-                    return
-                }
-                try! self.realm.write {
-                    self.realm.add(song!)
-                    let message = "\((song?.title)!)をお気に入りに追加しました"
-                    Progress.showMessage(message)
-                }
-                nc.post(name: NSNotification.Name(rawValue: "AddFavorite"), object: nil)
-            }
-        }*/
-    }
-    
     @IBAction func tapNextButton(_ sender: Any) {
         m_queue.async {
             self.nextButton.animation = "pop"
-            self.nextButton.duration = 0.4
+            self.nextButton.duration = 0.3
             self.nextButton.animate()
         }
         player.skipToNextItem(1)

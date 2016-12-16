@@ -171,8 +171,8 @@ class AudioPlayer: NSObject {
             }
             DispatchQueue.main.async {
                 self.status = .Pause(0)
-                self.updatePlaylist()
                 self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
+                self.updatePlaylist()
             }
         }
         didSet {
@@ -201,8 +201,8 @@ class AudioPlayer: NSObject {
             Progress.showProgress()
             DispatchQueue.main.async {
                 self.status = .Pause(1)
-                self.updatePlaylist()
                 self.O_Index = self.O_Playlist.index(of: song.trackSource) ?? 0
+                self.updatePlaylist()
             }
         }
         didSet {
@@ -302,8 +302,6 @@ class AudioPlayer: NSObject {
     func incrCurrentIndex(_ i:Int) -> Bool {
         switch (status) {
         case .Play(0), .Pause(0):
-            print(L_Index)
-            print(L_Playlist.count)
             return (L_Index + i < L_Playlist.count)
         case .Play(1), .Pause(1):
             return (O_Index + i < O_Playlist.count)
@@ -320,8 +318,6 @@ class AudioPlayer: NSObject {
                 return // Task:はじめに戻る　or 終了
             }
             L_Index += i
-            print(L_Index)
-            print(L_Playlist.count)
             let url = L_Playlist[L_Index]
             let id = L_PlaylistDict[url]!
             usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
