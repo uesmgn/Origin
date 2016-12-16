@@ -16,6 +16,7 @@ import Cosmos
 import RealmSwift
 import Alamofire
 import SVProgressHUD
+import Firebase
 
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBarDelegate {
     
@@ -24,6 +25,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     var m_queue = DispatchQueue.main
     /// BackgroundQueue
     var b_queue = DispatchQueue.global()
+    
     
     //--------------- Outlet --------------------
     @IBOutlet weak var topView: UIView!
@@ -98,40 +100,6 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
             }
         }
     }
-    /*
-            // ライブラリーの曲に評価
-            if let item = (song as? UserSong) {
-                id = item.id
-                if let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id) {
-                    
-                }
-            }
-            // プレビューに評価
-            else if let item = (song as? OtherSong) {
-                id = item.itunesId
-                if let song = realm.object(ofType: OtherSong.self, forPrimaryKey: id) {
-                    try! realm.write() {
-                        song.isKnown = isKnown
-                    }
-                }
-            }
-            // 更新
-            if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
-                try! realm.write() {
-                    ratingsong.isKnown = isKnown
-                }
-            }
-            // 新規追加
-            else {
-                let request = SaveRatedSongRequest(item: song)
-                let ratingsong = try! request.response()
-                try! self.realm.write {
-                    self.realm.add(ratingsong!)
-                }
-            }
-        }
-    }*/
-
     // display song data
     @IBAction func tappedInfo(_ sender: Any) {
     
@@ -165,26 +133,15 @@ extension MainViewController {
         super.viewDidLoad()
         
         activityView.isHidden = true
-
-        var timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(MainViewController.animation), userInfo: nil, repeats: false)
-        
-        var timer2 = Timer.scheduledTimer(timeInterval: 3.5, target: self, selector: #selector(MainViewController.viewLoad), userInfo: nil, repeats: false)
-        
         // delegate
         tabBar.delegate = self
         player.viewController = self
-        
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos
-        
         updatePlayinfo()
     }
     
-    func viewLoad() {
-        
-        
-    }
-    func animation() {
-        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         
     }
 }
@@ -287,7 +244,7 @@ extension MainViewController {
                 DispatchQueue.global().async {
                     Progress.showProgressWithMessage("評価した楽曲データからあなたへのプレイリストを作成しています")
                     // Task: 読み込み
-                    let jsonpost = JsonPost(userId: 12345)
+                    let jsonpost = JsonPost(userId: 13434)
                     jsonpost.post()
                 }
             }

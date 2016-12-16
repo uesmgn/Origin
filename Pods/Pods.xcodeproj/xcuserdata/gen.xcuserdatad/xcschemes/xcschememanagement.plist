@@ -34,6 +34,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>GoogleToolboxForMac.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Jukebox.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -97,22 +102,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>25D08FB3712116B2DEA24BD0522892F9</key>
+		<key>043F5DEB92371E66AEE71B8BC53FFC68</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>295D5B5994B42980E70136F1A8D7D624</key>
+		<key>1A43BEC876050744ADB693114DB0C6AA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>30F5E3CE8D920738F9627E4CE18C124B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3CD25D8B361CC7E5989A85F48BE06BD6</key>
+		<key>1B9404F4B0C0CD76D8EC1499A3B2ACC7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -127,17 +127,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4E1CA382D0B78D05D4ADA7F0B478689F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>608B49B5DDACC601EE8044A1931993F9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6B8186D53538C80B15C9A9418F488C8A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -152,7 +142,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>82A793898E6D678085DA96FD32103A2E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8C37BF7A1A6917B8988A7EE3EA3957B8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>92BB131FA876445E027D20AE23EA7B5F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,12 +162,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>98598662A112BDFA4B8ECFBEA153AD4A</key>
+		<key>9B7F4A4BF1C7BEC8DB0C81121B551046</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9B7F4A4BF1C7BEC8DB0C81121B551046</key>
+		<key>A8B09C6E79174F8DD087711839F926D3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B1AEB0BD5D1290230331118747B980A7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B8F9DB9F3F8AFA0D47CBF35BA6A536E3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -177,7 +187,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E570CDC0F11EBAB14D8F64B8478743A6</key>
+		<key>D0BB166F2010255C411E7AB8F9EF38A8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

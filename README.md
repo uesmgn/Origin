@@ -11,7 +11,7 @@ I’m doing research on recommendation system.The overall of my recommendation s
 ・Basic music player features  
 ・MediaItem access  
 ・iTunes ranking access (top 200 in Japan)  
-・The songs of ranking are able to trial listening.(It takes time to load)
+・The songs of ranking are able to trial listening.(It takes time to load)  
 ・Save 1 to 5 preferences and known/unknown to Realm and visualize  
 ・Save history of evaluation to Realm and visualize  
 

@@ -7,6 +7,32 @@ PODS:
   - Cosmos (7.0.0)
   - DynamicButton (3.1.0)
   - expanding-collection (1.0.4)
+  - Firebase (3.10.0):
+    - Firebase/Core (= 3.10.0)
+  - Firebase/Core (3.10.0):
+    - FirebaseAnalytics (= 3.6.0)
+    - FirebaseCore (= 3.4.5)
+  - Firebase/Database (3.10.0):
+    - Firebase/Core
+    - FirebaseDatabase (= 3.1.1)
+  - FirebaseAnalytics (3.6.0):
+    - FirebaseCore (~> 3.4)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseCore (3.4.5):
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseDatabase (3.1.1):
+    - FirebaseAnalytics (~> 3.5)
+  - FirebaseInstanceID (1.0.8)
+  - GoogleInterchangeUtilities (1.2.2):
+    - GoogleSymbolUtilities (~> 1.1)
+  - GoogleSymbolUtilities (1.1.2)
+  - GoogleToolboxForMac/Defines (2.1.0)
+  - GoogleToolboxForMac/NSData+zlib (2.1.0):
+    - GoogleToolboxForMac/Defines (= 2.1.0)
   - Jukebox (0.2.1)
   - PagingMenuController (2.0.0)
   - Realm (2.1.1):
@@ -31,6 +57,8 @@ DEPENDENCIES:
   - Cosmos (~> 7.0)
   - DynamicButton (~> 3.1.0)
   - expanding-collection (~> 1.0.3)
+  - Firebase
+  - Firebase/Database
   - Jukebox
   - PagingMenuController
   - RealmSwift
@@ -64,6 +92,14 @@ SPEC CHECKSUMS:
   Cosmos: 2c8299147138758f6ebbb247cf1aeed77998bdf9
   DynamicButton: 37968af761a31274aeac427f40204688fa810342
   expanding-collection: be78b5822d7382d3da02b52d52273f4661567a64
+  Firebase: 387f37c7dca894a02708da9ff35ba147040eae9e
+  FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
+  FirebaseCore: 1e383fdfe37b6b5d6ff88e84204bdee30276af0f
+  FirebaseDatabase: 6de92187481ff0e8e124064f21742e95ee883b02
+  FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
+  GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
+  GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
+  GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   Jukebox: 81db618ccd3a1cc9b154f4ae0f5c4b54638666dd
   PagingMenuController: 60602bfb5421d6536c1e3097baeed601dec1d85b
   Realm: a55959c0b171a5fe5267406d17f314fec3cefaae
@@ -75,6 +111,6 @@ SPEC CHECKSUMS:
   SwiftDate: 9aa3259d8850d818bec02802f8f05aa9a8c26fdb
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
 
-PODFILE CHECKSUM: e7cd56e88bdb7352c3d8e04d34a8297cf8ae1ed7
+PODFILE CHECKSUM: 6690e9cb481710bbf045adaa5d774d53fcbc3ea3
 
 COCOAPODS: 1.1.0.rc.2

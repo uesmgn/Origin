@@ -11,6 +11,7 @@ import CoreData
 import RealmSwift
 import APIKit
 import MediaPlayer
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,10 +24,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     override init() {
         realm = try! Realm()
+        // firebase初期化
+        FIRApp.configure()
+        // オフライン永続化
+        FIRDatabase.database().persistenceEnabled = true
     }
     
     // 初回起動時実行
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        
         // ライブラリーの曲をRealmに保存            
         let Songs = realm.objects(UserSong.self)
         if Songs.count == 0 {

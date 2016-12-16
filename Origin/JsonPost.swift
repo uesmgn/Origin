@@ -10,11 +10,14 @@ import UIKit
 import RealmSwift
 import SwiftyJSON
 import Alamofire
+import Firebase
 
 class  JsonPost {
     
     let userId:Int
     
+    let ref = FIRDatabase.database().reference()
+
     init(userId:Int) {
         self.userId = userId
     }
@@ -24,22 +27,20 @@ class  JsonPost {
         let realm = try! Realm()
         
         // dictionaryで送信するJSONデータを生成.
-        var Dictionary:[String:Any] = [:]
-        var Array:[Any] = []
+        var Dict:[String:Any] = [:]
         let objects = realm.objects(RatedSong.self)
        
-        Dictionary["user_id"] = userId
-        
         for object in objects {
-            var dict:[String:Any] = [:]
-            dict = ["id":object.itunesId,"title":object.title, "artist":object.artist,
-                    "album":object.album, "rate":object.rating, "isKnown":object.isKnown]
-            Array.append(["song":dict])
+            var dicts:[String:Any] = [:]
+            dicts = ["title":object.title,"artist":object.artist,"album":object.album,"like":object.rating, "isKnown":object.isKnown]
+            Dict["\(object.itunesId)"] = dicts
         }
-        Dictionary["songs"] = Array
+        let childUpdates = ["/users/\(userId)/songs": Dict]
+        ref.updateChildValues(childUpdates)
+        Progress.showMessage("データを送信しました")
         
-        print(Dictionary)
         
+        /*
         var json = ""
         do {
             // Dict -> JSON
@@ -50,7 +51,7 @@ class  JsonPost {
             print("Error!: \(error)")
         }
         let strData = json.data(using: String.Encoding.utf8)
-        print(json)
+        print(json)*/
         /*request.HTTPBody = strData
         
         do {

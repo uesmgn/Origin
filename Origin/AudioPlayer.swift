@@ -20,6 +20,7 @@ class AudioPlayer: NSObject {
     // delegate
     weak var viewController:MainViewController!
     
+    
     let realm = try! Realm()
     var player: AVAudioPlayer! {
         didSet {
