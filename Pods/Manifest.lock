@@ -7,6 +7,7 @@ PODS:
   - Cosmos (7.0.0)
   - DynamicButton (3.1.0)
   - expanding-collection (1.0.4)
+  - Jukebox (0.2.1)
   - PagingMenuController (2.0.0)
   - Realm (2.1.1):
     - Realm/Headers (= 2.1.1)
@@ -30,6 +31,7 @@ DEPENDENCIES:
   - Cosmos (~> 7.0)
   - DynamicButton (~> 3.1.0)
   - expanding-collection (~> 1.0.3)
+  - Jukebox
   - PagingMenuController
   - RealmSwift
   - SDWebImage (~> 3.8)
@@ -62,6 +64,7 @@ SPEC CHECKSUMS:
   Cosmos: 2c8299147138758f6ebbb247cf1aeed77998bdf9
   DynamicButton: 37968af761a31274aeac427f40204688fa810342
   expanding-collection: be78b5822d7382d3da02b52d52273f4661567a64
+  Jukebox: 81db618ccd3a1cc9b154f4ae0f5c4b54638666dd
   PagingMenuController: 60602bfb5421d6536c1e3097baeed601dec1d85b
   Realm: a55959c0b171a5fe5267406d17f314fec3cefaae
   RealmSwift: 749fd955bf8d6471c21d218b9389a47aaeccfe3f
@@ -72,6 +75,6 @@ SPEC CHECKSUMS:
   SwiftDate: 9aa3259d8850d818bec02802f8f05aa9a8c26fdb
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
 
-PODFILE CHECKSUM: e3fa4b181bd4f57342a8c40be48d651af1d75370
+PODFILE CHECKSUM: e7cd56e88bdb7352c3d8e04d34a8297cf8ae1ed7
 
 COCOAPODS: 1.1.0.rc.2

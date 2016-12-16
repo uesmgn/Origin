@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Spring
 
 extension UIColor {
     
@@ -45,27 +46,50 @@ extension Array {
     }
 }
 
-extension UIButton {
+extension UIImage {
     
     enum image: String {
-        case on = "success"
-        case off = "off"
+        case Shuffle = "shuffle"
+        case Repeat = "repeat"
+        case Stream = "stream"
+        case Play = "play-1"
+        case Pause = "pause-1"
+        case Next = "fastforward"
+        case Known = "known"
+        case Unknown = "unknown"
     }
     
+    convenience init(image: image) {
+        self.init(named: image.rawValue)!
+    }
+}
+
+extension UIButton {
+    
     func know() {
-        self.imageView?.image = UIImage(named: image.on.rawValue)
         self.isKnown = true
+        self.imageView?.image = UIImage(image: .Known)
     }
     
     func unknown() {
-        self.imageView?.image = UIImage(named: image.off.rawValue)
         self.isKnown = false
+        self.imageView?.image = UIImage(image: .Unknown)
     }
     
     var isKnown:Bool {
         get {
-            return self.isKnown
+            return self.isSelected
         }
-        set{ }
+        set {
+            self.isSelected = newValue
+            if self.isSelected {
+                self.imageView?.image = UIImage(image: .Known)
+            } else {
+                self.imageView?.image = UIImage(image: .Unknown)
+            }
+        }
     }
+    
 }
+
+

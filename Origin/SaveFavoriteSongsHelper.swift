@@ -32,9 +32,9 @@ struct SaveFavoriteRequest: SaveFavoriteSongsHelper {
             let item = self.item as! OtherSong
             let song = FavoriteSong()
             song.title = item.title
-            song.artist = item.artistName
-            song.album = item.albumTitle
-            song.itunesId = item.itunesId
+            song.artist = item.artist
+            song.album = item.album
+            song.itunesId = item.id
             song.artwork = UIImagePNGRepresentation(UIImage(named:"artwork_default")!)
             song.rating = item.rating
             song.trackSource = item.trackSource

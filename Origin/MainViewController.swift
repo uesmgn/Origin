@@ -13,7 +13,6 @@ import MediaPlayer
 import APIKit
 import Spring
 import Cosmos
-import ARNTransitionAnimator
 import RealmSwift
 import Alamofire
 import SVProgressHUD
@@ -21,8 +20,10 @@ import SVProgressHUD
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBarDelegate {
     
     //--------------- Dispatch_queue ------------------
-    /// main queue: for UI
-    open var m_queue = DispatchQueue.main
+    /// DispatchQueue for UI
+    var m_queue = DispatchQueue.main
+    /// BackgroundQueue
+    var b_queue = DispatchQueue.global()
     
     //--------------- Outlet --------------------
     @IBOutlet weak var topView: UIView!
@@ -45,13 +46,10 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var toggleButton: SpringButton!
     @IBOutlet weak var nextButton: SpringButton!
     @IBOutlet weak var const: NSLayoutConstraint!
-    @IBOutlet weak var plusButton: SpringButton!
     @IBOutlet weak var modeButton: SpringButton!
     @IBOutlet weak var radioButton: SpringButton!
     //-------------- Property --------------------
     weak var containerView: UIView!
-    fileprivate var animator : ARNTransitionAnimator?
-    fileprivate var modalVC : CollectionViewController!
     fileprivate let vcArray = [UIViewController]()
     let player = AudioPlayer.shared
     let history = HistoryViewController.shared
@@ -60,58 +58,50 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     let nc = NotificationCenter.default // Notification Center
     var realm = try! Realm()
     
-    // clear rating
-    @IBAction func tappedClear(_ sender: Any) {
-        let othersongs = realm.objects(OtherSong.self)
-        try! self.realm.write {
-            for song in othersongs {
-                song.rating = 0
+    func reset() {
+        radioButton.isKnown = false
+    }
+    
+    
+    @IBAction func tapRadioButton(_ sender: Any) {
+        radioButton.animation = "pop"
+        let isKnown = radioButton.isKnown
+        self.saveIsKnown(isKnown)
+        if radioButton.isKnown {
+            DispatchQueue.main.async {
+                self.radioButton.unknown()
+                self.radioButton.duration = 0.3
+                self.radioButton.animate()
+                Progress.showMessage("あなたはこの曲を知りませんでした")
             }
-        }
-        let usersongs = realm.objects(UserSong.self)
-        try! self.realm.write {
-            for song in usersongs {
-                song.rating = 0
+        } else {
+            DispatchQueue.main.async {
+                self.radioButton.know()
+                self.radioButton.duration = 0.3
+                self.radioButton.animate()
+                Progress.showMessage("あなたはこの曲を知っています")
             }
         }
     }
     
-    @IBAction func tapRadiButton(_ sender: Any) {
-        if let song = player.nowPlayingItem() {
-            radioButton.animation = "pop"
-            if radioButton.isSelected {
-                DispatchQueue.main.async {
-                    self.updateRadioButton(0)
-                    self.radioButton.duration = 0.4
-                    self.radioButton.animate()
-                    Progress.showMessage("あなたはこの曲を知りませんでした")
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.updateRadioButton(1)
-                    self.radioButton.duration = 0.4
-                    self.radioButton.animate()
-                    Progress.showMessage("あなたはこの曲を知っています")
-                }
+    func saveIsKnown(_ isKnown:Bool) {
+        let (usersong, othersong) = player.nowPlayingItem()
+        if let song = usersong {
+            try! realm.write {
+                song.isKnown = isKnown
+            }
+        } else if let song = othersong {
+            try! realm.write {
+                song.isKnown = isKnown
             }
         }
     }
-    
-    func updateRadioButton(_ isKnown:Int) {
-        if let song = player.nowPlayingItem() {
-            if isKnown == 0 {
-                radioButton.unknown()
-            } else {
-                radioButton.know()
-            }
-            var id:Int?
+    /*
             // ライブラリーの曲に評価
             if let item = (song as? UserSong) {
                 id = item.id
                 if let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id) {
-                    try! realm.write() {
-                        usersong.isKnown = isKnown
-                    }
+                    
                 }
             }
             // プレビューに評価
@@ -122,9 +112,6 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
                         song.isKnown = isKnown
                     }
                 }
-            }
-            guard id != nil else {
-                return
             }
             // 更新
             if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
@@ -141,56 +128,33 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
                 }
             }
         }
-    }
+    }*/
 
     // display song data
     @IBAction func tappedInfo(_ sender: Any) {
     
     }
     
-    
     @IBAction func tapModeButton(_ sender: Any) {
-        let mode = AudioPlayer.shared.mode
-        print(mode)
-        switch (mode) {
-        case .Default:
-            AudioPlayer.shared.mode = .Shuffle
-            Progress.showMessage("Shuffle Mode")
+        var image: UIImage?
+        switch (player.mode) {
         case .Shuffle:
-            AudioPlayer.shared.mode = .Repeat
-            Progress.showMessage("Repeat Mode")
-        default:
-            AudioPlayer.shared.mode = .Default
-            Progress.showMessage("Streaming Mode")
-            break
+            player.updateMode(to: .Repeat)
+            image = UIImage(image: .Repeat)
+        case .Repeat:
+            player.updateMode(to: .Stream)
+            image = UIImage(image: .Stream)
+        case .Stream:
+            player.updateMode(to: .Shuffle)
+            image = UIImage(image: .Shuffle)
+        }
+        modeButton.animation = "pop"
+        DispatchQueue.main.async {
+            self.modeButton.imageView?.image = image
+            self.modeButton.duration = 0.3
+            self.modeButton.animate()
         }
         AudioPlayer.shared.updatePlaylist()
-        self.updateModeButton()
-    }
-    
-    func updateModeButton() {
-        modeButton.animation = "pop"
-        let mode = AudioPlayer.shared.mode
-        switch (mode) {
-        case .Default:
-            DispatchQueue.main.async {
-                self.modeButton.imageView?.image = UIImage(named: "stream")
-                self.toggleButton.duration = 0.4
-                self.toggleButton.animate()
-            }
-        case .Shuffle:
-            DispatchQueue.main.async {
-                self.modeButton.imageView?.image = UIImage(named: "shuffle")
-                self.toggleButton.duration = 0.4
-                self.toggleButton.animate()
-            }
-        case .Repeat:
-            DispatchQueue.main.async {
-                self.modeButton.imageView?.image = UIImage(named: "repeat")
-                self.toggleButton.duration = 0.4
-                self.toggleButton.animate()
-            }
-        }
     }
 }
 
@@ -225,35 +189,36 @@ extension MainViewController {
 // --------------- Private Method -------------------
 extension MainViewController {
     func updatePlayinfo() {
+        guard (player.player) != nil else {
+            self.miniPlayerView.isHidden = true
+            self.setUI()
+            return
+        }
         DispatchQueue.main.async {
-            if let song = self.player.nowPlayingItem() {
+            let (usersong, othersong) = self.player.nowPlayingItem()
+            let s = usersong ?? othersong //
+            print(s ?? "nil")
+            print(self.player.status) //
+            if let song = usersong {
                 self.miniPlayerView.isHidden = false
                 self.const.constant = 0
-                if song as? UserSong != nil {
-                    self.nextButton.isHidden = false
-                    self.plusButton.isHidden = true
-                    let item = song as! UserSong
-                    self.currentTitle.text = item.title
-                    self.currentDetail.text = item.artist
-                    self.currentArtwork.image = UIImage(data: item.artwork!)
-                    self.radioButton.know()
-                } else if song as? OtherSong != nil {
-                    self.nextButton.isHidden = true
-                    self.plusButton.isHidden = false
-                    let item = song as! OtherSong
-                    self.currentTitle.text = item.title
-                    self.currentDetail.text = item.artistName
-                    self.currentArtwork.image = UIImage(named: "artwork_default")
-                    self.ratingBar.rating = Double(item.rating)
-                    self.radioButton.know()
-                }
-                self.toggleButton.imageView?.image = UIImage(named: "pause-1")
+                self.currentTitle.text = song.title
+                self.currentDetail.text = song.artist
+                self.currentArtwork.image = UIImage(data: song.artwork!)
+                self.radioButton.isKnown = song.isKnown
+                self.ratingBar.rating = Double(song.rating)
+            } else if let song = othersong {
+                self.miniPlayerView.isHidden = false
+                self.const.constant = 0
+                self.currentTitle.text = song.title
+                self.currentDetail.text = song.artist
+                self.currentArtwork.image = UIImage(named: "artwork_default")
+                self.radioButton.isKnown = song.isKnown
+                self.ratingBar.rating = Double(song.rating)
             } else {
                 self.miniPlayerView.isHidden = true
                 self.setUI()
-                self.toggleButton.imageView?.image = UIImage(named: "play-1")
             }
-            self.updateModeButton()
             self.nc.post(name: NSNotification.Name(rawValue: "updateCell"), object: nil)
         }
     }
@@ -261,9 +226,9 @@ extension MainViewController {
     /// トグルボタンを押した時以外で再生状況が変化した時に呼び出し
     func updateToggle() {
         if player.isPlaying() {
-            self.toggleButton.imageView?.image = UIImage(named: "pause-1")
+            self.toggleButton.imageView?.image = UIImage(image: .Pause)
         } else {
-            self.toggleButton.imageView?.image = UIImage(named: "play-1")
+            self.toggleButton.imageView?.image = UIImage(image: .Play)
         }
     }
     
@@ -271,72 +236,67 @@ extension MainViewController {
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         setUI()
     }
-    
 
     fileprivate func didFinishTouchingCosmos(_ rating: Double) {
-        if let song = player.nowPlayingItem() {
-            var id:Int?
-            // ライブラリーの曲に評価
-            if let item = (song as? UserSong) {
-                id = item.id
-                if let usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id) {
-                    try! realm.write() {
-                        usersong.rating = Int(rating)
-                    }
-                }
+        let (usersong, othersong) = self.player.nowPlayingItem()
+        var id:Int?
+        var item:Any?
+        // ライブラリーの曲に評価
+        if let song = usersong {
+            id = song.id
+            item = song
+            try! realm.write() {
+                song.rating = Int(rating)
             }
-            // プレビューに評価
-            else if let item = (song as? OtherSong) {
-                id = item.itunesId
-                if let song = realm.object(ofType: OtherSong.self, forPrimaryKey: id) {
-                    try! realm.write() {
-                        song.rating = Int(rating)
-                    }
-                }
-            }
-            guard id != nil else {
-                return
-            }
-            
-            let record = Record()
-            var comment:String?
-            // 更新
-            if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
-                try! realm.write() {
-                    ratingsong.rating = Int(rating)
-                    let newValue = ratingsong.rating
-                    comment = "\(ratingsong.title)の評価値を\(newValue)に更新しました"
-                    Progress.showAlertWithRating(rating)
-                    print(comment!)
-                }
-            }
-            // 新規追加
-            else {
-                let request = SaveRatedSongRequest(item: song)
-                let ratingsong = try! request.response()
-                try! self.realm.write {
-                    comment = "\((ratingsong?.title)!)に評価値\(Int(rating))をつけました"
-                    Progress.showAlertWithRating(rating)
-                    self.realm.add(ratingsong!)
-                    print(comment!)
-                }
-                let objects = realm.objects(RatedSong.self)
-                if objects.count % 10 == 0 {
-                    DispatchQueue.global().async {
-                        Progress.showProgressWithMessage("評価した楽曲データからあなたへのプレイリストを作成しています")
-                        // Task: 読み込み
-                        let jsonpost = JsonPost(userId: 12345)
-                        jsonpost.post()
-                    }
-                }
-            }
-            try! realm.write {
-                record.comment = comment!
-                record.date = Date()
-                realm.add(record)
-            }
-            nc.post(name: NSNotification.Name(rawValue: "AddHistory"), object: nil)
         }
+        // プレビューに評価
+        else if let song = othersong {
+            id = song.id
+            item = song
+            try! realm.write() {
+                song.rating = Int(rating)
+            }
+        }
+        guard id != nil else {
+            return
+        }
+        let record = Record()
+        var comment:String?
+        // 更新
+        if let ratingsong = realm.object(ofType: RatedSong.self, forPrimaryKey: id) {
+            try! realm.write() {
+                ratingsong.rating = Int(rating)
+                let newValue = ratingsong.rating
+                comment = "\(ratingsong.title)の評価値を\(newValue)に更新しました"
+                Progress.showAlertWithRating(rating)
+            }
+        }
+        // 新規追加
+        else {
+            let request = SaveRatedSongRequest(item: item!)
+            let ratingsong = try! request.response()
+            try! self.realm.write {
+                comment = "\((ratingsong?.title)!)に評価値\(Int(rating))をつけました"
+                Progress.showAlertWithRating(rating)
+                self.realm.add(ratingsong!)
+                print(comment!)
+            }
+            let objects = realm.objects(RatedSong.self)
+            if objects.count % 10 == 0 {
+                DispatchQueue.global().async {
+                    Progress.showProgressWithMessage("評価した楽曲データからあなたへのプレイリストを作成しています")
+                    // Task: 読み込み
+                    let jsonpost = JsonPost(userId: 12345)
+                    jsonpost.post()
+                }
+            }
+        }
+        try! realm.write {
+            record.comment = comment!
+            record.date = Date()
+            realm.add(record)
+        }
+        nc.post(name: NSNotification.Name(rawValue: "AddHistory"), object: nil)
     }
     
     /// 各種UI設定
@@ -397,8 +357,8 @@ extension MainViewController {
         default:
             return
         }
-        
-        if player.nowPlayingItem() != nil {
+        let (usersong, othersong) = player.nowPlayingItem()
+        if usersong != nil || othersong != nil {
             miniPlayerView.isHidden = false
             const.constant = 0
         } else {
@@ -433,7 +393,9 @@ extension MainViewController {
     
     /// お気に入り追加
     @IBAction func plusButtonTapped(_ sender: Any) {
-        if let song = player.nowPlayingItem() {
+        /*
+        let (usersong, othersong) = player.nowPlayingItem()
+        if let song = usersong {
             let request = SaveFavoriteRequest(item: song)
             let song = try! request.response()
             let id = song?.itunesId
@@ -455,7 +417,7 @@ extension MainViewController {
                 }
                 nc.post(name: NSNotification.Name(rawValue: "AddFavorite"), object: nil)
             }
-        }
+        }*/
     }
     
     @IBAction func tapNextButton(_ sender: Any) {
@@ -468,44 +430,3 @@ extension MainViewController {
     }
 }
 
-// ---------------- Library ----------------
-extension MainViewController {
-    
-    func setupAnimator() {
-        let animation = TransitionAnimation(rootVC: self, modalVC: self.modalVC)
-        animation.completion = { [weak self] isPresenting in
-            if isPresenting {
-                guard let _self = self else { return }
-                let modalGestureHandler = TransitionGestureHandler(targetVC: _self, direction: .bottom)
-                modalGestureHandler.registerGesture(_self.modalVC.view)
-                modalGestureHandler.panCompletionThreshold = 15.0
-                _self.animator?.registerInteractiveTransitioning(.dismiss, gestureHandler: modalGestureHandler)
-            } else {
-                self?.setupAnimator()
-            }
-        }
-        
-        let gestureHandler = TransitionGestureHandler(targetVC: self, direction: .top)
-        gestureHandler.registerGesture(self.miniPlayerView)
-        gestureHandler.panCompletionThreshold = 15.0
-        
-        self.animator = ARNTransitionAnimator(duration: 0.5, animation: animation)
-        self.animator?.registerInteractiveTransitioning(.present, gestureHandler: gestureHandler)
-        
-        self.modalVC.transitioningDelegate = self.animator
-    }
-    
-    fileprivate func generateImageWithColor(_ color: UIColor) -> UIImage {
-        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        
-        UIGraphicsBeginImageContext(rect.size)
-        let context = UIGraphicsGetCurrentContext()
-        
-        context?.setFillColor(color.cgColor)
-        context?.fill(rect)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image!
-    }
-}

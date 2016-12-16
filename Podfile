@@ -16,6 +16,7 @@ pod 'SwiftyJSON'
 pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
 pod 'Cosmos', '~> 7.0'
 pod 'DynamicButton', '~> 3.1.0' #ラジオボタン
+pod 'Jukebox'
 
 target 'Origin' do
 end

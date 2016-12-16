@@ -39,17 +39,17 @@ extension RssRequest {
                 let entries = feed?.dictionary?["entry"]?.arrayValue
                 for entry in entries! {
                     let song = OtherSong()
-                    song.artistName = (entry["im:artist"].dictionaryObject?["label"] as? String ?? "unknown")!
+                    song.artist = (entry["im:artist"].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.artistUrl = (entry["im:artist"].dictionary?["attributes"]?.dictionaryObject?["href"] as? String ?? "unknown")!
                     song.trackSource  = (entry["link"].arrayValue[1].dictionary?["attributes"]?.dictionaryObject?["href"] as? String ?? "unknown")!
                     //releaseDate = entry["im:releaseDate"].dictionaryObject?["label"] as? String
-                    song.itunesId = Int(entry["id"].dictionary?["attributes"]?.dictionaryObject?["im:id"] as! String)!
-                    song.albumTitle = (entry["im:collection"].dictionary?["im:name"]?.dictionaryObject?["label"] as? String ?? "unknown")!
+                    song.id = Int(entry["id"].dictionary?["attributes"]?.dictionaryObject?["im:id"] as! String)!
+                    song.album = (entry["im:collection"].dictionary?["im:name"]?.dictionaryObject?["label"] as? String ?? "unknown")!
                     song.artwork = (entry["im:image"].arrayValue[0].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.title = (entry["im:name"].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.genre = (entry["category"].dictionary?["attributes"]?.dictionaryObject?["im:id"] as? String ?? "1")!
                     // Realmに存在しなかったら追加
-                    if realm.object(ofType: OtherSong.self, forPrimaryKey: song.itunesId) == nil {
+                    if realm.object(ofType: OtherSong.self, forPrimaryKey: song.id) == nil {
                         try! realm.write {
                             realm.add(song)
                         }

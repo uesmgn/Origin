@@ -8,25 +8,25 @@ class UserSong: Object {
     dynamic var artwork:Data?
     dynamic var trackSource = ""
     dynamic var rating = 0
-    dynamic var isKnown = 1 //既知
+    dynamic var isKnown:Bool = true //既知
     override static func primaryKey() -> String? {
         return "id"
     }
 }
 
 class OtherSong: Object {
-    dynamic var itunesId = 0
+    dynamic var id = 0
     dynamic var title = ""
-    dynamic var artistName = ""
+    dynamic var artist = ""
     dynamic var artistUrl = ""
-    dynamic var albumTitle = ""
+    dynamic var album = ""
     dynamic var artwork = ""
     dynamic var trackSource = ""
     dynamic var genre = "1"
     dynamic var rating = 0
-    dynamic var isKnown = 0 //未知
+    dynamic var isKnown:Bool = false //未知
     override static func primaryKey() -> String? {
-        return "itunesId"
+        return "id"
     }
 }
 

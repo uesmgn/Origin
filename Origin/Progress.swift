@@ -16,6 +16,10 @@ class Progress {
         SVProgressHUD.show(withStatus: message)
     }
     
+    class func showProgress() {
+        SVProgressHUD.show()
+    }
+    
     class func stopProgress(){
         SVProgressHUD.dismiss()
     }

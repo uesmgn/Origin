@@ -20,6 +20,7 @@ import MediaPlayer
 import RealmSwift
 
 class AudioPlayer: NSObject {
+    
     // singleton
     static let shared = AudioPlayer()
     static let nc = MPNowPlayingInfoCenter.default()
@@ -29,58 +30,78 @@ class AudioPlayer: NSObject {
     let realm = try! Realm()
     var player: AVAudioPlayer!
     
-    // status of player
+    // STATUS
     enum Status {
-        case LibraryPlaying
-        case PreviewPlaying
+        case Play(Int) // Library:0 iTunes:1
+        case Pause(Int) // Library:0 iTunes:1
+        case Stop
     }
     
     enum Mode {
         case Shuffle
         case Repeat
-        case Default
+        case Stream
     }
-    
-    var L_Index = 0
-    var O_Index = 0
-    
-    //  song url in playlist
-    var L_Playlist:[String]
-    var O_Playlist:[String]
-    
-    var L_PlaylistDict:[String:Int]
-    var O_PlaylistDict:[String:Int]
     
     var status:Status
     var mode:Mode
     
+    func nowPlayingItem() -> (UserSong?, OtherSong?) {
+        if (player) != nil {
+            switch (status) {
+            case .Play(0), .Pause(0):
+                return (usersong, nil)
+            case .Play(1), .Pause(1):
+                return (nil, othersong)
+            default:
+                return (nil,nil)
+            }
+        }
+        return (nil,nil)
+    }
     
-    // 初期化
+    func isPlaying() -> Bool {
+        if let player = player {
+            return player.isPlaying
+        }
+        return false
+    }
+    
+    // current index
+    var L_Index = 0
+    var O_Index = 0
+    // url:index
+    var L_Playlist:[String]
+    var O_Playlist:[String]
+    // url:id
+    var L_PlaylistDict:[String:Int]
+    var O_PlaylistDict:[String:Int]
+    
     override init() {
         self.mode = .Shuffle
-        self.status = .LibraryPlaying
+        self.status = .Stop
+        
         var array = [String]()
-        var dict = [String:Int]()
+        var idDict = [String:Int]()
         for song in realm.objects(UserSong.self) {
             array.append(song.trackSource)
-            dict[song.trackSource] = song.id
+            idDict[song.trackSource] = song.id
         }
         self.L_Playlist = array
-        self.L_PlaylistDict = dict
+        self.L_PlaylistDict = idDict
         array.removeAll()
-        dict.removeAll()
+        idDict.removeAll()
         for song in realm.objects(OtherSong.self) {
             array.append(song.trackSource)
-            dict[song.trackSource] = song.itunesId
+            idDict[song.trackSource] = song.id
         }
         self.O_Playlist = array
-        self.O_PlaylistDict = dict
+        self.O_PlaylistDict = idDict
         super.init()
         self.updatePlaylist()
     }
     
     var  Library:[UserSong] {
-        status = .LibraryPlaying
         var songs: [UserSong] = []
         let realmResponse = realm.objects(UserSong.self)
         for result in realmResponse {
@@ -90,7 +111,6 @@ class AudioPlayer: NSObject {
     }
     
     var Other:[OtherSong] {
-        status = .PreviewPlaying
         var songs: [OtherSong] = []
         let realmResponse = realm.objects(OtherSong.self)
         for result in realmResponse {
@@ -99,163 +119,225 @@ class AudioPlayer: NSObject {
         return songs
     }
     
+    // Do in main thread
     func updatePlaylist() {
         var array = [String]()
         L_Playlist.removeAll()
         O_Playlist.removeAll()
         switch (status) {
-        case .LibraryPlaying:
-            for song in Library {
-                array.append(song.trackSource)
-            }
-            L_Playlist = array
-        case .PreviewPlaying:
-            for song in Other {
-                array.append(song.trackSource)
-            }
-            O_Playlist = array
+            case .Play(0), .Pause(0):
+                for song in Library {
+                    array.append(song.trackSource)
+                }
+                L_Playlist = array
+            case .Play(1), .Pause(1):
+                for song in Other {
+                    array.append(song.trackSource)
+                }
+                O_Playlist = array
+            default: break
+        }
+        if let song = usersong {
+            L_Index = L_Playlist.index(of: song.trackSource) ?? 0
+        } else if let song = othersong {
+            O_Index = O_Playlist.index(of: song.trackSource) ?? 0
         }
         switch (mode) {
-        case .Shuffle:
-            L_Playlist.shuffle()
-            O_Playlist.shuffle()
-        default: break
+            case .Shuffle:
+                L_Playlist.shuffle()
+                O_Playlist.shuffle()
+            default: break
         }
     }
     
-    var libraryIndex:Int = 0
-    var otherIndex:Int = 0
+    func updateMode(to mode: Mode) {
+        switch (mode) {
+        case .Shuffle:
+            self.mode = .Shuffle
+            Progress.showMessage("Shuffle Mode")
+        case .Repeat:
+            self.mode = .Repeat
+            Progress.showMessage("Repeat Mode")
+        case .Stream:
+            self.mode = .Stream
+            Progress.showMessage("Streaming Mode")
+        }
+    }
     
     var usersong:UserSong? {
+        willSet {
+            guard let song = self.usersong else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.status = .Pause(0)
+                self.updatePlaylist()
+                self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
+            }
+        }
         didSet {
-            let url = usersong!.trackSource
-            let playlist = L_Playlist
-            libraryIndex = playlist.index(of: url) ?? 0
-            status = .LibraryPlaying
-            self.initRemoteControl()
-            if let fileUrl = URL(string: url) {
+            guard let song = self.usersong else {
+                return
+            }
+            let url = URL(string: song.trackSource)
+            DispatchQueue.global().async {
                 do {
-                    player = try AVAudioPlayer(contentsOf: fileUrl)
+                    self.player = try AVAudioPlayer(contentsOf: url!)
+                    self.prepareToPlay()
                 } catch {
-                    player = nil
-                    Progress.showAlert("再生に失敗しました")
+                    Progress.showAlert("Sorry, missed to play")
+                    self.player = nil
+                    self.viewController.updatePlayinfo()
                 }
             }
-            if player != nil {
-                player.delegate = self
-                player.prepareToPlay()
-                play()
-            }
-            viewController?.updatePlayinfo()
         }
     }
     
     var othersong:OtherSong? {
-        didSet {
-            let url = othersong!.trackSource
-            let playlist = O_Playlist
-            if let index = playlist.index(of: url) {
-                otherIndex = index
-            } else {
-                
+        willSet {
+            guard let song = self.othersong else {
+                return
             }
-            status = .PreviewPlaying
-            self.initRemoteControl()
+            Progress.showProgress()
+            DispatchQueue.main.async {
+                self.status = .Pause(1)
+                self.updatePlaylist()
+                self.O_Index = self.O_Playlist.index(of: song.trackSource) ?? 0
+            }
+        }
+        didSet {
+            guard let song = self.othersong else {
+                return
+            }
+            let url = URL(string: song.trackSource)
             DispatchQueue.global().async {
-                if let fileUrl = URL(string: url) {
-                    do {
-                        let soundData = try Data(contentsOf: fileUrl)
-                        self.player = try AVAudioPlayer(data: soundData)
-                    } catch {
-                        self.player = nil
-                        Progress.showAlert("再生に失敗しました")
-                    }
+                do {
+                    let soundData = try Data(contentsOf: url!)
+                    self.player = try AVAudioPlayer(data: soundData)
+                    self.prepareToPlay()
+                } catch {
+                    Progress.stopProgress()
+                    Progress.showAlert("Sorry, missed to play")
+                    self.player = nil
+                    self.viewController.updatePlayinfo()
                 }
-                if self.player != nil {
-                    self.player.delegate = self
-                    self.player.prepareToPlay()
-                    self.play()
-                }
-                self.viewController?.updatePlayinfo()
             }
         }
     }
     
+    
+    func prepareToPlay() {
+        if let player = self.player {
+            player.prepareToPlay()
+            player.delegate = self
+            play()
+            Progress.stopProgress()
+        } else {
+            self.status = .Stop
+        }
+        Progress.stopProgress()
+    }
+
     private func playerBeginInterruption(_ player: AVAudioPlayer) {
-        print("interruption")
-        player.pause()
+        pause()
     }
     
     private func playerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
-        print("end interruption")
-        player.play()
+        play()
     }
     
     func play() {
-        print("play")
-        player.play()
-        DispatchQueue.main.async {
-            self.viewController?.updatePlayinfo()
-            self.viewController?.updateToggle()
-        }
-    }
-    
-    func stop() {
-        print("stop")
-        player.stop()
-        DispatchQueue.main.async {
-            self.viewController?.updatePlayinfo()
-            self.viewController?.updateToggle()
+        if let player = player {
+            player.play()
+            switch (status) {
+            case .Pause(0):
+                status = .Play(0)
+                othersong = nil
+            case .Pause(1):
+                status = .Play(1)
+                usersong = nil
+            default:
+                status = .Stop
+                usersong = nil
+                othersong = nil
+            }
+            DispatchQueue.main.async {
+                self.viewController?.updatePlayinfo()
+                self.viewController?.updateToggle()
+            }
+        } else {
+            status = .Stop
+            usersong = nil
+            othersong = nil
         }
     }
     
     func pause() {
-        print("pause")
-        player.pause()
-    }
-    
-    func pos(_ time: Double) {
         if let player = player {
-            player.currentTime = time
+            player.pause()
+            switch (status) {
+            case .Play(0):
+                status = .Pause(0)
+            case .Play(1):
+                status = .Pause(1)
+            default:
+                break
+            }
+        } else {
+            status = .Stop
         }
     }
     
-    func incrLibraryIndex(_ i:Int) -> Bool {
-        if libraryIndex + i < L_Playlist.count {
-            return true
-        }
-        return false
+    func stop() {
+        status = .Stop
+        if let player = player {
+            player.stop()
+            DispatchQueue.main.async {
+                self.viewController?.updatePlayinfo()
+                self.viewController?.updateToggle()
+            }
+        } 
     }
     
-    func incrOtherIndex(_ i:Int) -> Bool {
-        if otherIndex + i < O_Playlist.count {
-            return true
+    func incrCurrentIndex(_ i:Int) -> Bool {
+        switch (status) {
+        case .Play(0), .Pause(0):
+            print(L_Index)
+            print(L_Playlist.count)
+            return (L_Index + i < L_Playlist.count)
+        case .Play(1), .Pause(1):
+            return (O_Index + i < O_Playlist.count)
+        default:
+            return false
         }
-        return false
     }
     
     func skipToNextItem(_ i:Int) {
         switch (status) {
-        case .LibraryPlaying:
-            guard incrLibraryIndex(i) else {
+        case .Play(0), .Pause(0):
+            guard incrCurrentIndex(i) else {
                 stop()
                 return // Task:はじめに戻る　or 終了
             }
-            libraryIndex += i
-            let url = L_Playlist[libraryIndex]
+            L_Index += i
+            print(L_Index)
+            print(L_Playlist.count)
+            let url = L_Playlist[L_Index]
             let id = L_PlaylistDict[url]!
             usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
-        case .PreviewPlaying:
-            guard incrOtherIndex(i) else {
+        case .Play(1), .Pause(1):
+            guard incrCurrentIndex(i) else {
                 stop()
                 return // Task:はじめに戻る　or 終了
             }
-            otherIndex += i
-            let url = O_Playlist[otherIndex]
+            O_Index += i
+            let url = O_Playlist[O_Index]
             let id = O_PlaylistDict[url]!
             othersong = realm.object(ofType: OtherSong.self, forPrimaryKey: id)
+        default:
+            stop()
+            break
         }
-        
     }
     
     func skipToPreviousItem() {
@@ -276,26 +358,6 @@ class AudioPlayer: NSObject {
             return "\(min):\(sec)"
         }
         return "0:00"
-    }
-    
-    func isPlaying() -> Bool {
-        if let player = player {
-            return player.isPlaying
-        }
-        return false
-    }
-    
-    // 再生中の曲
-    func nowPlayingItem() -> Any? {
-        if player != nil {
-            switch (status) {
-            case .LibraryPlaying:
-                return usersong
-            case .PreviewPlaying:
-                return othersong
-            }
-        }
-        return nil
     }
 }
 

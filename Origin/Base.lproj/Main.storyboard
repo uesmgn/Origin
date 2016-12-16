@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -140,9 +140,9 @@
                                                     <constraint firstAttribute="height" constant="26" id="M24-SY-V0h"/>
                                                     <constraint firstAttribute="width" constant="26" id="lrP-Vv-wCG"/>
                                                 </constraints>
-                                                <state key="normal" title="Button" image="off"/>
+                                                <state key="normal" title="Button" image="unknown"/>
                                                 <connections>
-                                                    <action selector="tapRadiButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7j5-dH-ScW"/>
+                                                    <action selector="tapRadioButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pYM-p8-mk1"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -210,29 +210,14 @@
                                                     <action selector="tapToggleButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cgx-ff-CcN"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JMg-uA-NVk" customClass="SpringButton" customModule="Spring">
-                                                <rect key="frame" x="337" y="20" width="34" height="34"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" secondItem="JMg-uA-NVk" secondAttribute="height" multiplier="1:1" id="4PJ-Si-bpF"/>
-                                                    <constraint firstAttribute="height" constant="34" id="E1K-3N-Rp0"/>
-                                                    <constraint firstAttribute="width" constant="34" id="Swf-xE-zPa"/>
-                                                </constraints>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <state key="normal" title="Button" image="plus"/>
-                                                <connections>
-                                                    <action selector="plusButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cx7-9k-xJb"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="J7v-AW-20Y" firstAttribute="leading" secondItem="OEK-aE-gWd" secondAttribute="leading" constant="4" id="1vj-qr-YAr"/>
                                             <constraint firstAttribute="bottom" secondItem="J7v-AW-20Y" secondAttribute="bottom" constant="4" id="4hs-DZ-WAH"/>
-                                            <constraint firstItem="JMg-uA-NVk" firstAttribute="centerY" secondItem="OEK-aE-gWd" secondAttribute="centerY" id="6fa-og-wB6"/>
                                             <constraint firstItem="D15-G9-icg" firstAttribute="leading" secondItem="1cF-a6-uW8" secondAttribute="trailing" constant="4" id="6rA-en-oaL"/>
                                             <constraint firstItem="D15-G9-icg" firstAttribute="centerY" secondItem="OEK-aE-gWd" secondAttribute="centerY" id="GUy-G8-b5m"/>
                                             <constraint firstAttribute="trailing" secondItem="5QS-l0-uzx" secondAttribute="trailing" constant="4" id="Jgp-TF-Q0Z"/>
-                                            <constraint firstAttribute="trailing" secondItem="JMg-uA-NVk" secondAttribute="trailing" constant="4" id="N7M-If-Ngf"/>
                                             <constraint firstItem="J7v-AW-20Y" firstAttribute="top" secondItem="OEK-aE-gWd" secondAttribute="top" constant="4" id="PYz-jD-cMM"/>
                                             <constraint firstAttribute="bottom" secondItem="SAc-Oo-YX0" secondAttribute="bottom" constant="8" id="WY9-84-9vT"/>
                                             <constraint firstItem="SAc-Oo-YX0" firstAttribute="leading" secondItem="J7v-AW-20Y" secondAttribute="trailing" constant="4" id="Wpq-Fa-QE4"/>
@@ -240,7 +225,6 @@
                                             <constraint firstItem="D15-G9-icg" firstAttribute="leading" secondItem="SAc-Oo-YX0" secondAttribute="trailing" constant="4" id="byF-HB-OYz"/>
                                             <constraint firstItem="SAc-Oo-YX0" firstAttribute="top" secondItem="1cF-a6-uW8" secondAttribute="bottom" id="dla-CR-9B1"/>
                                             <constraint firstItem="5QS-l0-uzx" firstAttribute="centerY" secondItem="OEK-aE-gWd" secondAttribute="centerY" id="fkS-P3-RAd"/>
-                                            <constraint firstItem="JMg-uA-NVk" firstAttribute="leading" secondItem="D15-G9-icg" secondAttribute="trailing" constant="8" id="jTc-2z-ibR"/>
                                             <constraint firstItem="5QS-l0-uzx" firstAttribute="leading" secondItem="D15-G9-icg" secondAttribute="trailing" constant="8" id="oNe-PS-bDK"/>
                                             <constraint firstItem="1cF-a6-uW8" firstAttribute="top" secondItem="OEK-aE-gWd" secondAttribute="top" constant="8" id="q2N-Bd-zKH"/>
                                         </constraints>
@@ -270,17 +254,6 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DzQ-rH-z9H">
-                                        <rect key="frame" x="350" y="37" width="17" height="17"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="17" id="9Vc-Ty-JaU"/>
-                                            <constraint firstAttribute="width" constant="17" id="ouS-sv-Gcn"/>
-                                        </constraints>
-                                        <state key="normal" title="Button" image="error"/>
-                                        <connections>
-                                            <action selector="tappedClear:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gQ1-EV-5rm"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Csm-Aj-Xuo">
                                         <rect key="frame" x="8" y="37" width="17" height="17"/>
                                         <constraints>
@@ -299,8 +272,6 @@
                                     <constraint firstAttribute="bottom" secondItem="Csm-Aj-Xuo" secondAttribute="bottom" constant="10" id="AtJ-we-iBJ"/>
                                     <constraint firstItem="viH-3G-56R" firstAttribute="centerX" secondItem="ICh-fH-ffX" secondAttribute="centerX" id="EmJ-gP-wkE"/>
                                     <constraint firstAttribute="height" constant="64" id="Kyz-wp-IdH"/>
-                                    <constraint firstAttribute="trailing" secondItem="DzQ-rH-z9H" secondAttribute="trailing" constant="8" id="XGw-oE-mgE"/>
-                                    <constraint firstAttribute="bottom" secondItem="DzQ-rH-z9H" secondAttribute="bottom" constant="10" id="l3K-h6-Ajq"/>
                                     <constraint firstAttribute="bottom" secondItem="viH-3G-56R" secondAttribute="bottom" constant="10" id="wDu-PS-Nai"/>
                                     <constraint firstItem="Csm-Aj-Xuo" firstAttribute="leading" secondItem="ICh-fH-ffX" secondAttribute="leading" constant="8" id="xSb-U0-Izv"/>
                                 </constraints>
@@ -386,7 +357,6 @@
                         <outlet property="miniPlayerView" destination="nbf-W0-O7k" id="MGP-WN-Min"/>
                         <outlet property="modeButton" destination="Vft-EO-VLp" id="c4X-At-XQA"/>
                         <outlet property="nextButton" destination="5QS-l0-uzx" id="7NW-D9-dYY"/>
-                        <outlet property="plusButton" destination="JMg-uA-NVk" id="TKK-Ah-Epe"/>
                         <outlet property="radioButton" destination="TVD-qN-TST" id="JhH-Qm-uVq"/>
                         <outlet property="ratingBar" destination="kJI-mC-yS1" id="qMj-CV-Mt8"/>
                         <outlet property="ratingView" destination="RmA-bc-lgl" id="OJM-HG-Usx"/>
@@ -797,18 +767,16 @@
         <image name="bg5" width="750" height="1334"/>
         <image name="discover-green-m" width="24" height="24"/>
         <image name="down" width="512" height="512"/>
-        <image name="error" width="512" height="512"/>
         <image name="fastforward" width="512" height="512"/>
         <image name="history-black-m" width="24" height="22"/>
         <image name="home-green" width="30" height="30"/>
         <image name="home-green-m" width="24" height="24"/>
         <image name="light-green-m" width="18" height="24"/>
-        <image name="off" width="512" height="512"/>
         <image name="play" width="852" height="852"/>
         <image name="play-1" width="512" height="512"/>
-        <image name="plus" width="512" height="512"/>
         <image name="repeat" width="512" height="512"/>
         <image name="shuffle" width="512" height="512"/>
+        <image name="unknown" width="512" height="512"/>
         <image name="warning" width="512" height="512"/>
     </resources>
 </document>

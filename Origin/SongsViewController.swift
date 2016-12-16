@@ -104,19 +104,10 @@ extension SongsViewController {
         }
         let song = playlist[indexPath.row]
         player.usersong = song
-        player.play()
     }
     
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40.0
-    }
-    
-    func sclollToCurrentItem(animated: Bool) {
-        if let song = player.nowPlayingItem() as? UserSong {
-            let index = player.Library.index(of: song)
-            let indexPathOfCurrentItem = IndexPath(item: index!, section: 0)
-            tableView.scrollToRow(at: indexPathOfCurrentItem, at: UITableViewScrollPosition.top, animated: animated)
-        }
     }
 }

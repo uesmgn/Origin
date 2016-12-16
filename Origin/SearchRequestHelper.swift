@@ -57,11 +57,11 @@ struct GetSearchRequest: iTunesRequest {
         if let dictionaries = obj["results"] as? [NSDictionary] {
             for dictionary in dictionaries {
                 let song = OtherSong()
-                song.itunesId = dictionary["trackId"] as! Int
+                song.id = dictionary["trackId"] as! Int
                 song.title = dictionary["trackName"] as? String ?? "unknown"
                 song.artwork = dictionary["artworkUrl100"] as? String ?? "unknown"
-                song.artistName = dictionary["artistName"] as? String ?? "unknown"
-                song.albumTitle = dictionary["collectionName"] as? String ?? "unknown"
+                song.artist = dictionary["artistName"] as? String ?? "unknown"
+                song.album = dictionary["collectionName"] as? String ?? "unknown"
                 song.trackSource = dictionary["previewUrl"] as? String ?? "unknown"
                 song.rating = 0
                 Songs.append(song)
