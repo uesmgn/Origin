@@ -6,13 +6,6 @@
 //  Copyright © 2016年 Gen. All rights reserved.
 //
 
-//
-//  player.swift
-//  Origin
-//
-//  Created by Gen on 2016/12/03.
-//  Copyright © 2016年 Gen. All rights reserved.
-//
 import Foundation
 import AVFoundation
 import UIKit
@@ -28,7 +21,15 @@ class AudioPlayer: NSObject {
     weak var viewController:MainViewController!
     
     let realm = try! Realm()
-    var player: AVAudioPlayer!
+    var player: AVAudioPlayer! {
+        didSet {
+            if !setuped {
+                DispatchQueue.main.async {
+                    self.setup()
+                } 
+            }
+        }
+    }
     
     // STATUS
     enum Status {
@@ -70,17 +71,21 @@ class AudioPlayer: NSObject {
     // current index
     var L_Index = 0
     var O_Index = 0
-    // url:index
-    var L_Playlist:[String]
-    var O_Playlist:[String]
+    // url
+    var L_Playlist:[String] = []
+    var O_Playlist:[String] = []
     // url:id
-    var L_PlaylistDict:[String:Int]
-    var O_PlaylistDict:[String:Int]
+    var L_PlaylistDict:[String:Int] = [:]
+    var O_PlaylistDict:[String:Int] = [:]
+    
+    var setuped:Bool = false
     
     override init() {
         self.mode = .Shuffle
         self.status = .Stop
-        
+    }
+    
+    func setup() {
         var array = [String]()
         var idDict = [String:Int]()
         for song in realm.objects(UserSong.self) {
@@ -97,8 +102,7 @@ class AudioPlayer: NSObject {
         }
         self.O_Playlist = array
         self.O_PlaylistDict = idDict
-        super.init()
-        self.updatePlaylist()
+        setuped = true
     }
     
     var  Library:[UserSong] {
@@ -119,7 +123,7 @@ class AudioPlayer: NSObject {
         return songs
     }
     
-    // Do in main thread
+    // * Do this method in main thread
     func updatePlaylist() {
         var array = [String]()
         L_Playlist.removeAll()
@@ -173,6 +177,7 @@ class AudioPlayer: NSObject {
                 self.status = .Pause(0)
                 self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
                 self.updatePlaylist()
+                self.viewController.updatePlayinfo()
             }
         }
         didSet {
@@ -187,7 +192,9 @@ class AudioPlayer: NSObject {
                 } catch {
                     Progress.showAlert("Sorry, missed to play")
                     self.player = nil
-                    self.viewController.updatePlayinfo()
+                    DispatchQueue.main.async {
+                        self.viewController.updatePlayinfo()
+                    }
                 }
             }
         }
@@ -203,6 +210,7 @@ class AudioPlayer: NSObject {
                 self.status = .Pause(1)
                 self.O_Index = self.O_Playlist.index(of: song.trackSource) ?? 0
                 self.updatePlaylist()
+                self.viewController.updatePlayinfo()
             }
         }
         didSet {
@@ -219,7 +227,9 @@ class AudioPlayer: NSObject {
                     Progress.stopProgress()
                     Progress.showAlert("Sorry, missed to play")
                     self.player = nil
-                    self.viewController.updatePlayinfo()
+                    DispatchQueue.main.async {
+                        self.viewController.updatePlayinfo()
+                    }
                 }
             }
         }
@@ -319,6 +329,8 @@ class AudioPlayer: NSObject {
             }
             L_Index += i
             let url = L_Playlist[L_Index]
+            print(url)
+            print(L_PlaylistDict)
             let id = L_PlaylistDict[url]!
             usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
         case .Play(1), .Pause(1):

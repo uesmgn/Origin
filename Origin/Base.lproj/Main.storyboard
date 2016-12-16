@@ -210,14 +210,24 @@
                                                     <action selector="tapToggleButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cgx-ff-CcN"/>
                                                 </connections>
                                             </button>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="c8Y-9U-QYu">
+                                                <rect key="frame" x="295" y="20.5" width="34" height="34"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="34" id="K1S-f1-JEz"/>
+                                                    <constraint firstAttribute="width" constant="34" id="Ucq-5Z-rPQ"/>
+                                                </constraints>
+                                                <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="J7v-AW-20Y" firstAttribute="leading" secondItem="OEK-aE-gWd" secondAttribute="leading" constant="4" id="1vj-qr-YAr"/>
                                             <constraint firstAttribute="bottom" secondItem="J7v-AW-20Y" secondAttribute="bottom" constant="4" id="4hs-DZ-WAH"/>
                                             <constraint firstItem="D15-G9-icg" firstAttribute="leading" secondItem="1cF-a6-uW8" secondAttribute="trailing" constant="4" id="6rA-en-oaL"/>
+                                            <constraint firstItem="5QS-l0-uzx" firstAttribute="leading" secondItem="c8Y-9U-QYu" secondAttribute="trailing" constant="8" id="9le-Ma-psv"/>
                                             <constraint firstItem="D15-G9-icg" firstAttribute="centerY" secondItem="OEK-aE-gWd" secondAttribute="centerY" id="GUy-G8-b5m"/>
                                             <constraint firstAttribute="trailing" secondItem="5QS-l0-uzx" secondAttribute="trailing" constant="4" id="Jgp-TF-Q0Z"/>
+                                            <constraint firstItem="c8Y-9U-QYu" firstAttribute="centerY" secondItem="OEK-aE-gWd" secondAttribute="centerY" id="Nhw-0h-bt6"/>
                                             <constraint firstItem="J7v-AW-20Y" firstAttribute="top" secondItem="OEK-aE-gWd" secondAttribute="top" constant="4" id="PYz-jD-cMM"/>
                                             <constraint firstAttribute="bottom" secondItem="SAc-Oo-YX0" secondAttribute="bottom" constant="8" id="WY9-84-9vT"/>
                                             <constraint firstItem="SAc-Oo-YX0" firstAttribute="leading" secondItem="J7v-AW-20Y" secondAttribute="trailing" constant="4" id="Wpq-Fa-QE4"/>
@@ -342,6 +352,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
                     <connections>
                         <outlet property="PageTitle" destination="viH-3G-56R" id="bde-OD-RIM"/>
+                        <outlet property="activityView" destination="c8Y-9U-QYu" id="H7N-RN-afj"/>
                         <outlet property="const" destination="Lc8-ny-Ckv" id="IBh-uN-C8G"/>
                         <outlet property="currentArtwork" destination="J7v-AW-20Y" id="UA1-YT-76i"/>
                         <outlet property="currentDetail" destination="SAc-Oo-YX0" id="h3V-q9-oN2"/>

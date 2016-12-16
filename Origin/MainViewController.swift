@@ -48,6 +48,8 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var const: NSLayoutConstraint!
     @IBOutlet weak var modeButton: SpringButton!
     @IBOutlet weak var radioButton: SpringButton!
+    @IBOutlet weak var activityView: UIActivityIndicatorView!
+    
     //-------------- Property --------------------
     weak var containerView: UIView!
     fileprivate let vcArray = [UIViewController]()
@@ -162,6 +164,8 @@ extension MainViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        activityView.isHidden = true
+
         var timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(MainViewController.animation), userInfo: nil, repeats: false)
         
         var timer2 = Timer.scheduledTimer(timeInterval: 3.5, target: self, selector: #selector(MainViewController.viewLoad), userInfo: nil, repeats: false)
@@ -216,6 +220,7 @@ extension MainViewController {
                 self.miniPlayerView.isHidden = true
                 self.setUI()
             }
+            self.updateToggle()
             self.nc.post(name: NSNotification.Name(rawValue: "updateCell"), object: nil)
         }
     }

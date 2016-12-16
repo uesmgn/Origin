@@ -114,6 +114,7 @@ extension ArtistViewController {
         let song = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
         cell.textLabel?.text = song.title
         cell.detailTextLabel?.text = song.album
+        cell.imageView?.image = UIImage(data: song.artwork!)
         return cell
     }
     

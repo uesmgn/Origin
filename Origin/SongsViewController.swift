@@ -60,10 +60,7 @@ extension SongsViewController {
                 Progress.stopProgress()
                 Progress.showAlert("楽曲が読み込めませんでした")
             }
-            for result in realmResponse {
-                self.playlist.append(result)
-            }
-            self.tableView.reloadData()
+            self.reloadTable()
         }
     }
     
@@ -93,6 +90,7 @@ extension SongsViewController {
         let item = playlist[nowIndex]
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = "\(item.artist)-\(item.album)"
+        cell.imageView?.image = UIImage(data: item.artwork!)
         return cell
         
     }
