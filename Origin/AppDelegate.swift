@@ -15,7 +15,7 @@ import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
     var navigationController: UINavigationController?
     let nc = NotificationCenter.default
@@ -33,6 +33,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // 初回起動時実行
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        let uuid = UserDefaults.standard.string(forKey: "uuid")
+        if uuid != nil {
+            print("uuid:"+uuid!)
+        }else{
+            // uidを端末に記録
+            UserDefaults.standard.set(NSUUID().uuidString,forKey:"uuid")
+        }
         
         // ライブラリーの曲をRealmに保存            
         let Songs = realm.objects(UserSong.self)

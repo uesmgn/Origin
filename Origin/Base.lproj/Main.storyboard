@@ -88,6 +88,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nbf-W0-O7k" customClass="MiniPlayerView" customModule="Origin" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="527" width="375" height="100"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg2" translatesAutoresizingMaskIntoConstraints="NO" id="GWp-sk-yEz">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                    </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RmA-bc-lgl">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="26"/>
                                         <subviews>
@@ -240,11 +243,15 @@
                                 <constraints>
                                     <constraint firstItem="OEK-aE-gWd" firstAttribute="leading" secondItem="nbf-W0-O7k" secondAttribute="leading" id="5J2-8F-bDl"/>
                                     <constraint firstAttribute="width" secondItem="nbf-W0-O7k" secondAttribute="height" multiplier="15:4" id="8QA-pb-Tgj"/>
+                                    <constraint firstItem="GWp-sk-yEz" firstAttribute="leading" secondItem="nbf-W0-O7k" secondAttribute="leading" id="L0z-EO-7Ep"/>
                                     <constraint firstAttribute="trailing" secondItem="RmA-bc-lgl" secondAttribute="trailing" id="LQT-bn-2gU"/>
                                     <constraint firstItem="OEK-aE-gWd" firstAttribute="top" secondItem="RmA-bc-lgl" secondAttribute="bottom" id="Nyo-oa-laA"/>
                                     <constraint firstItem="RmA-bc-lgl" firstAttribute="leading" secondItem="nbf-W0-O7k" secondAttribute="leading" id="WEv-pd-6O3"/>
+                                    <constraint firstAttribute="trailing" secondItem="GWp-sk-yEz" secondAttribute="trailing" id="YeN-Y4-nrN"/>
                                     <constraint firstAttribute="bottom" secondItem="OEK-aE-gWd" secondAttribute="bottom" id="ZEH-4Q-d0z"/>
+                                    <constraint firstItem="GWp-sk-yEz" firstAttribute="top" secondItem="nbf-W0-O7k" secondAttribute="top" id="aLL-L2-2Wl"/>
                                     <constraint firstItem="RmA-bc-lgl" firstAttribute="top" secondItem="nbf-W0-O7k" secondAttribute="top" id="ebk-WM-bN9"/>
+                                    <constraint firstAttribute="bottom" secondItem="GWp-sk-yEz" secondAttribute="bottom" id="gn2-1X-zPM"/>
                                     <constraint firstAttribute="trailing" secondItem="OEK-aE-gWd" secondAttribute="trailing" id="hpp-cb-DV5"/>
                                 </constraints>
                             </view>
@@ -767,6 +774,7 @@
     </scenes>
     <resources>
         <image name="bg-g" width="750" height="1334"/>
+        <image name="bg2" width="750" height="1334"/>
         <image name="bg5" width="750" height="1334"/>
         <image name="discover-green-m" width="24" height="24"/>
         <image name="down" width="512" height="512"/>

@@ -12,6 +12,7 @@ import UIKit
 import MediaPlayer
 import RealmSwift
 
+
 class AudioPlayer: NSObject {
     
     // singleton
@@ -19,7 +20,6 @@ class AudioPlayer: NSObject {
     static let nc = MPNowPlayingInfoCenter.default()
     // delegate
     weak var viewController:MainViewController!
-    
     
     let realm = try! Realm()
     var player: AVAudioPlayer! {
@@ -31,6 +31,7 @@ class AudioPlayer: NSObject {
             }
         }
     }
+    
     
     // STATUS
     enum Status {
@@ -179,6 +180,7 @@ class AudioPlayer: NSObject {
                 self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
                 self.updatePlaylist()
                 self.viewController.updatePlayinfo()
+                self.player = nil
             }
         }
         didSet {
@@ -200,6 +202,8 @@ class AudioPlayer: NSObject {
             }
         }
     }
+    
+    let g_queue = DispatchQueue.global()
     
     var othersong:OtherSong? {
         willSet {
@@ -226,8 +230,6 @@ class AudioPlayer: NSObject {
                     self.prepareToPlay()
                 } catch {
                     Progress.stopProgress()
-                    Progress.showAlert("Sorry, missed to play")
-                    self.player = nil
                     DispatchQueue.main.async {
                         self.viewController.updatePlayinfo()
                     }
@@ -235,7 +237,6 @@ class AudioPlayer: NSObject {
             }
         }
     }
-    
     
     func prepareToPlay() {
         if let player = self.player {

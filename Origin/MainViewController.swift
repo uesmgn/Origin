@@ -151,35 +151,37 @@ extension MainViewController {
 extension MainViewController {
     func updatePlayinfo() {
         guard (player.player) != nil else {
+            print("guqrd")
             self.miniPlayerView.isHidden = true
             self.setUI()
             return
         }
-        DispatchQueue.main.async {
-            let (usersong, othersong) = self.player.nowPlayingItem()
-            if let song = usersong {
-                self.miniPlayerView.isHidden = false
-                self.const.constant = 0
-                self.currentTitle.text = song.title
-                self.currentDetail.text = song.artist
-                self.currentArtwork.image = UIImage(data: song.artwork!)
-                self.radioButton.isKnown = song.isKnown
-                self.ratingBar.rating = Double(song.rating)
-            } else if let song = othersong {
-                self.miniPlayerView.isHidden = false
-                self.const.constant = 0
-                self.currentTitle.text = song.title
-                self.currentDetail.text = song.artist
-                self.currentArtwork.image = UIImage(named: "artwork_default")
-                self.radioButton.isKnown = song.isKnown
-                self.ratingBar.rating = Double(song.rating)
-            } else {
-                self.miniPlayerView.isHidden = true
-                self.setUI()
-            }
-            self.updateToggle()
-            self.nc.post(name: NSNotification.Name(rawValue: "updateCell"), object: nil)
+        print("not guard")
+        let (usersong, othersong) = self.player.nowPlayingItem()
+        if let song = usersong {
+            print("u_song"+"\(song.title)")
+            self.miniPlayerView.isHidden = false
+            self.const.constant = 0
+            self.currentTitle.text = song.title
+            self.currentDetail.text = song.artist
+            self.currentArtwork.image = UIImage(data: song.artwork!)
+            self.radioButton.isKnown = song.isKnown
+            self.ratingBar.rating = Double(song.rating)
+        } else if let song = othersong {
+            print("o_song"+"\(song.title)")
+            self.miniPlayerView.isHidden = false
+            self.const.constant = 0
+            self.currentTitle.text = song.title
+            self.currentDetail.text = song.artist
+            self.currentArtwork.image = UIImage(named: "artwork_default")
+            self.radioButton.isKnown = song.isKnown
+            self.ratingBar.rating = Double(song.rating)
+        } else {
+            self.miniPlayerView.isHidden = true
+            self.setUI()
         }
+        self.updateToggle()
+        self.nc.post(name: NSNotification.Name(rawValue: "updateCell"), object: nil)
     }
     
     /// トグルボタンを押した時以外で再生状況が変化した時に呼び出し
@@ -244,7 +246,7 @@ extension MainViewController {
                 DispatchQueue.global().async {
                     Progress.showProgressWithMessage("評価した楽曲データからあなたへのプレイリストを作成しています")
                     // Task: 読み込み
-                    let jsonpost = JsonPost(userId: 13434)
+                    let jsonpost = JsonPost()
                     jsonpost.post()
                 }
             }

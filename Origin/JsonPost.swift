@@ -14,17 +14,12 @@ import Firebase
 
 class  JsonPost {
     
-    let userId:Int
-    
     let ref = FIRDatabase.database().reference()
-
-    init(userId:Int) {
-        self.userId = userId
-    }
     
     func post() {
         
         let realm = try! Realm()
+        let userId = UserDefaults.standard.string(forKey: "uuid")
         
         // dictionaryで送信するJSONデータを生成.
         var Dict:[String:Any] = [:]
@@ -35,7 +30,7 @@ class  JsonPost {
             dicts = ["title":object.title,"artist":object.artist,"album":object.album,"like":object.rating, "isKnown":object.isKnown]
             Dict["\(object.itunesId)"] = dicts
         }
-        let childUpdates = ["/users/\(userId)/songs": Dict]
+        let childUpdates = ["/users/\(userId!)/songs": Dict]
         ref.updateChildValues(childUpdates)
         Progress.showMessage("データを送信しました")
         
