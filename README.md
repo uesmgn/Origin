@@ -22,10 +22,15 @@ I’m doing research on recommendation system.The overall of my recommendation s
 ・評価した履歴はRealmデータ上に保存しテーブルビューで可視化しています.  
 
 ## Screen Shot
-<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/IMG_0842.PNG?raw=true" width="240px">
-<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/IMG_0843.PNG?raw=true" width="240px">
-<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/IMG_0844.PNG?raw=true" width="240px">
-<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/IMG_0845.PNG?raw=true" width="240px">
-<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/IMG_0846.PNG?raw=true" width="240px">
-<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/IMG_0847.PNG?raw=true" width="240px">
-<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/IMG_0848.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img1.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img2.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img3.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img4.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img5.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img6.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img7.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img8.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img9.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img10.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img11.PNG?raw=true" width="240px">
+<img src="https://github.com/uesmgn/Origin/blob/Origin1.6/Origin/img12.PNG?raw=true" width="240px">
