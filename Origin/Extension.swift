@@ -49,6 +49,7 @@ extension Array {
 extension UIImage {
     
     enum image: String {
+        case Icon = "icon"
         case Shuffle = "shuffle"
         case Repeat = "repeat"
         case Stream = "stream"

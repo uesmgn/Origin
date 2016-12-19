@@ -14,44 +14,45 @@ import RealmSwift
 
 
 class AudioPlayer: NSObject {
+   
+    // MARK: Types
     
-    // singleton
+    /// The singleton of the player to share throughout the application.
     static let shared = AudioPlayer()
-    static let nc = MPNowPlayingInfoCenter.default()
-    // delegate
-    weak var viewController:MainViewController!
     
-    let realm = try! Realm()
-    var player: AVAudioPlayer!
+    weak var viewController:MainViewController! // Task: revise to notification
     
-    let queue = OperationQueue()
-    let m_queue = DispatchQueue.main
-    let g_queue = DispatchQueue.global()
-    
-    
-    // STATUS
+    /// An enumeration of possible playback states that `AudioPlayer` can be in.
+    /// - Pause(Int): The playback state that `AudioPlayer` is in when a song is selected and being paused.
+    /// - Stop: The playback state that `AudioPlayer` is in when deselected an item.
+    /// - Loading(Int): The playback state that `AudioPlayer` is in when loading sound data.
+    /// - Play(Int): The playback state that `AudioPlayer` is in when a song is selected and being playbacked.
+    ///
+    /// - Int: 0 when the selected song is in the library, 1 when song is iTunes preview.
     enum Status {
-        case Play(Int) // Library:0 iTunes:1
-        case Pause(Int) // Library:0 iTunes:1
-        case Stop
-        case Loading(Int)
+        case Play(Int), Pause(Int), Stop, Loading(Int)
     }
     
+    /// An enumeration of possible playback mode that `AudioPlayer` can be in.
+    /// - Shuffle: The playback mode that set after sort playlist at random.
+    /// - Stream: The playback mode that playing the song in order of default playlist.
+    /// - Repeat: The playback mode that playing the song repeatedly unless operating. If operated the order of playback is the default.
     enum Mode {
-        case Shuffle
-        case Repeat
-        case Stream
+        case Shuffle, Stream, Repeat
     }
     
-    var status:Status {
+    /// The playback state that the internal 'player' is in.
+    /// - Updated information of song metadata when value is rewritten.
+    var status:Status = .Stop {
         didSet {
-            print("status change"+"\(oldValue)->\(status)")
             self.viewController?.updatePlayinfo()
         }
     }
     
-    var mode:Mode
+    /// The playback mode that the internal 'player' is in.
+    var mode:Mode = .Shuffle
     
+    /// Selected song as an optional tuple．
     func nowPlayingItem() -> (UserSong?, OtherSong?) {
         switch (status) {
         case .Play(0), .Pause(0), .Loading(0):
@@ -63,6 +64,7 @@ class AudioPlayer: NSObject {
         }
     }
     
+    /// A Bool for tracking playback state
     func isPlaying() -> Bool {
         if let player = player {
             switch (status) {
@@ -76,30 +78,100 @@ class AudioPlayer: NSObject {
         return false
     }
     
-    // current index
-    var L_Index = 0
-    var O_Index = 0
-    // url
-    var L_Playlist:[String] = []
-    var O_Playlist:[String] = []
-    // url:id
-    var L_PlaylistDict:[String:Int] = [:]
-    var O_PlaylistDict:[String:Int] = [:]
+    // MARK: Properties
     
+    /// The instance of AVAudioPlayer that will be used for playback of usersong and othersong.
+    var player: AVAudioPlayer!
+    /// The instance of `MPNowPlayingInfoCenter` that is used for updating metadata for the currently playing
+    fileprivate let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+    /// The instance of `NotificationCenter`
+    fileprivate let nc = NotificationCenter.default
+    /// The instance of AVAudioPlayer that will be used for data persistence using realm.
+    let realm = try! Realm()
+    /// Operation queue to be used when switching between usersong and othersong.
+    let queue = OperationQueue()
+    /// Main queue to be used for UI setting.
+    let m_queue = DispatchQueue.main
+    /// Global queues used for other purposes.
+    let g_queue = DispatchQueue.global()
+    /// A Bool for tracking initial setup state
     var setuped:Bool = false
-    var retry = 0
     
-    let nc = NotificationCenter.default // Notification Center
-
-    override init() {
-        self.mode = .Shuffle
-        self.status = .Stop
-    }
-    
+    /// Index of the library song that last played
+    var L_Index = 0
+    /// Index of the iTunes preview that last played
+    var O_Index = 0
+    /// Array containing the URL of the library songs in order according to mode
+    var L_Playlist:[String] = []
+    /// Array containing the URL of the iTunes previews in order according to mode
+    var O_Playlist:[String] = []
+    /// Dictionary associating  url and id(PersistentID) of library songs
+    var L_PlaylistDict:[String:Int] = [:]
+    /// Dictionary associating  url and id(iTunesID) of iTunes previews
+    var O_PlaylistDict:[String:Int] = [:]
+    /// Songs of the library stored in the default order
     var Library:[UserSong] = []
+    /// Songs of the iTunes preview stored in the default order
     var Other:[OtherSong] = []
     
-    // 起動時に実行
+    /// selected song of library
+    var usersong:UserSong? {
+        willSet {
+            initRemoteControl()
+            queue.cancelAllOperations()
+        }
+        didSet {
+            guard let song = self.usersong else {
+                return
+            }
+            status = .Loading(0)
+            self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
+            let url = URL(string: song.trackSource)
+            queue.addOperation {
+                do {
+                    self.player = try AVAudioPlayer(contentsOf: url!)
+                    self.prepareToPlay()
+                } catch {
+                    print("error")
+                }
+            }
+        }
+    }
+    
+    /// selected song of iTunes preview
+    var othersong:OtherSong? {
+        willSet {
+            initRemoteControl()
+            pause()
+            queue.cancelAllOperations()
+        }
+        didSet {
+            guard let song = self.othersong else {
+                return
+            }
+            self.status = .Loading(1)
+            self.O_Index = self.O_Playlist.index(of: song.trackSource) ?? 0
+            let url = URL(string: song.trackSource)
+            queue.addOperation {
+                do {
+                    let soundData = try Data(contentsOf: url!)
+                    self.player = try AVAudioPlayer(data: soundData)
+                    self.prepareToPlay()
+                } catch {
+                    print("error")
+                }
+            }
+        }
+    }
+}
+
+extension AudioPlayer {
+    
+    // MARK: Private methods.
+    
+    /// Methods that set default values for the properties to use.
+    /// - On first start
+    /// - When playback mode changes from shuffle to repeat
     func setup() {
         var array = [String]()
         var idDict = [String:Int]()
@@ -139,7 +211,7 @@ class AudioPlayer: NSObject {
         setuped = true
     }
     
-    // * Do this method in main thread
+    /// Change play list order　when playback mode is changed.
     func updatePlaylist() {
         switch (mode) {
         case .Shuffle:
@@ -153,59 +225,17 @@ class AudioPlayer: NSObject {
         }
     }
     
+    /// Change playback mode
     func updateMode(to mode: Mode) {
         self.mode = mode
         Progress.showWithMode(mode)
         updatePlaylist()
     }
+}
+
+extension AudioPlayer {
     
-    var usersong:UserSong? {
-        willSet {
-            initRemoteControl()
-            queue.cancelAllOperations()
-        }
-        didSet {
-            guard let song = self.usersong else {
-                return
-            }
-            status = .Loading(0)
-            self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
-            let url = URL(string: song.trackSource)
-            queue.addOperation {
-                do {
-                    self.player = try AVAudioPlayer(contentsOf: url!)
-                    self.prepareToPlay()
-                } catch {
-                    print("error")
-                }
-            }
-        }
-    }
-    
-    var othersong:OtherSong? {
-        willSet {
-            initRemoteControl()
-            pause()
-            queue.cancelAllOperations()
-        }
-        didSet {
-            guard let song = self.othersong else {
-                return
-            }
-            self.status = .Loading(1)
-            self.O_Index = self.O_Playlist.index(of: song.trackSource) ?? 0
-            let url = URL(string: song.trackSource)
-            queue.addOperation {
-                do {
-                    let soundData = try Data(contentsOf: url!)
-                    self.player = try AVAudioPlayer(data: soundData)
-                    self.prepareToPlay()
-                } catch {
-                    print("error")
-                }
-            }
-        }
-    }
+    // MARK: Playback Control Methods.
     
     func prepareToPlay() {
         guard let player = player else {
@@ -216,14 +246,6 @@ class AudioPlayer: NSObject {
         play()
         Progress.stopProgress()
         Progress.stopProgress()
-    }
-
-    private func playerBeginInterruption(_ player: AVAudioPlayer) {
-        pause()
-    }
-    
-    private func playerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
-        play()
     }
     
     func play() {
@@ -278,17 +300,6 @@ class AudioPlayer: NSObject {
         }
     }
     
-    func incrCurrentIndex(_ i:Int) -> Bool {
-        switch (status) {
-        case .Play(0), .Pause(0), .Loading(0):
-            return (L_Index + i < L_Playlist.count)
-        case .Play(1), .Pause(1), .Loading(1):
-            return (O_Index + i < O_Playlist.count)
-        default:
-            return false
-        }
-    }
-    
     func skipToNextItem(_ i:Int) {
         switch (status) {
         case .Pause(0),.Play(0),.Loading(0) :
@@ -318,6 +329,17 @@ class AudioPlayer: NSObject {
             let id = O_PlaylistDict[url]!
             othersong = realm.object(ofType: OtherSong.self, forPrimaryKey: id)
         default: break
+        }
+    }
+    
+    func incrCurrentIndex(_ i:Int) -> Bool {
+        switch (status) {
+        case .Play(0), .Pause(0), .Loading(0):
+            return (L_Index + i < L_Playlist.count)
+        case .Play(1), .Pause(1), .Loading(1):
+            return (O_Index + i < O_Playlist.count)
+        default:
+            return false
         }
     }
     
@@ -361,6 +383,7 @@ extension AudioPlayer: AVAudioPlayerDelegate {
         }
         
     }
+        
     /// Did finish. Finish means when music ended not when calling stop
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         switch mode {

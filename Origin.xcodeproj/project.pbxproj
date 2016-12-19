@@ -51,7 +51,6 @@
 		B2CC1B2E1DE6C6AE00356219 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2CC1B2D1DE6C6AE00356219 /* Assets.xcassets */; };
 		B2CC1B311DE6C6AE00356219 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2CC1B2F1DE6C6AE00356219 /* LaunchScreen.storyboard */; };
 		B2CC1B3F1DE6C84600356219 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B2CC1B3E1DE6C84600356219 /* Podfile */; };
-		B2F689AF1E06E64C00D5087E /* music-icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = B2F689AE1E06E64C00D5087E /* music-icon4.png */; };
 		B2F689B31E077FB900D5087E /* RealmSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F689B21E077FB900D5087E /* RealmSave.swift */; };
 		B2F689C01E08523900D5087E /* img1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = B2F689B41E08523900D5087E /* img1.PNG */; };
 		B2F689C11E08523900D5087E /* img2.PNG in Resources */ = {isa = PBXBuildFile; fileRef = B2F689B51E08523900D5087E /* img2.PNG */; };
@@ -65,6 +64,8 @@
 		B2F689C91E08523900D5087E /* img6.PNG in Resources */ = {isa = PBXBuildFile; fileRef = B2F689BD1E08523900D5087E /* img6.PNG */; };
 		B2F689CA1E08523900D5087E /* img11.PNG in Resources */ = {isa = PBXBuildFile; fileRef = B2F689BE1E08523900D5087E /* img11.PNG */; };
 		B2F689CB1E08523900D5087E /* img12.PNG in Resources */ = {isa = PBXBuildFile; fileRef = B2F689BF1E08523900D5087E /* img12.PNG */; };
+		B2F689CE1E085DCE00D5087E /* RemoteCommandManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F689CD1E085DCE00D5087E /* RemoteCommandManager.swift */; };
+		B2F689D01E08626F00D5087E /* PlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F689CF1E08626F00D5087E /* PlaybackManager.swift */; };
 		B2FD5A7A1DF1FC9A0040C2A1 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FD5A791DF1FC9A0040C2A1 /* AudioPlayer.swift */; };
 /* End PBXBuildFile section */
 
@@ -117,7 +118,6 @@
 		B2CC1B301DE6C6AE00356219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2CC1B321DE6C6AE00356219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2CC1B3E1DE6C84600356219 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		B2F689AE1E06E64C00D5087E /* music-icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "music-icon4.png"; sourceTree = "<group>"; };
 		B2F689B21E077FB900D5087E /* RealmSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmSave.swift; sourceTree = "<group>"; };
 		B2F689B41E08523900D5087E /* img1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img1.PNG; sourceTree = "<group>"; };
 		B2F689B51E08523900D5087E /* img2.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img2.PNG; sourceTree = "<group>"; };
@@ -131,6 +131,8 @@
 		B2F689BD1E08523900D5087E /* img6.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img6.PNG; sourceTree = "<group>"; };
 		B2F689BE1E08523900D5087E /* img11.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img11.PNG; sourceTree = "<group>"; };
 		B2F689BF1E08523900D5087E /* img12.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img12.PNG; sourceTree = "<group>"; };
+		B2F689CD1E085DCE00D5087E /* RemoteCommandManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandManager.swift; sourceTree = "<group>"; };
+		B2F689CF1E08626F00D5087E /* PlaybackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaybackManager.swift; sourceTree = "<group>"; };
 		B2FD5A791DF1FC9A0040C2A1 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		C4DEEF4F3E640A783E5AD659 /* Pods_Origin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Origin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -249,7 +251,6 @@
 			isa = PBXGroup;
 			children = (
 				B248D5DB1E03F060006F6984 /* GoogleService-Info.plist */,
-				B2F689AE1E06E64C00D5087E /* music-icon4.png */,
 				B2CC1B2D1DE6C6AE00356219 /* Assets.xcassets */,
 				B2CC1B2F1DE6C6AE00356219 /* LaunchScreen.storyboard */,
 				B2CC1B321DE6C6AE00356219 /* Info.plist */,
@@ -295,6 +296,7 @@
 		B2CC1B171DE6C6AE00356219 = {
 			isa = PBXGroup;
 			children = (
+				B2F689CC1E085DB300D5087E /* Manager */,
 				B248D5CB1E03E640006F6984 /* README.md */,
 				B27824A81DFA60330023405E /* Demo.playground */,
 				B2CC1B3E1DE6C84600356219 /* Podfile */,
@@ -359,6 +361,15 @@
 				B25F8BF71DF61677006DC304 /* Record.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		B2F689CC1E085DB300D5087E /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				B2F689CD1E085DCE00D5087E /* RemoteCommandManager.swift */,
+				B2F689CF1E08626F00D5087E /* PlaybackManager.swift */,
+			);
+			name = Manager;
 			sourceTree = "<group>";
 		};
 		EB02B1C57702E090A7BADCA7 /* Frameworks */ = {
@@ -445,7 +456,6 @@
 				B2F689C71E08523900D5087E /* img5.PNG in Resources */,
 				B248D5DC1E03F060006F6984 /* GoogleService-Info.plist in Resources */,
 				B2F689C61E08523900D5087E /* img9.PNG in Resources */,
-				B2F689AF1E06E64C00D5087E /* music-icon4.png in Resources */,
 				B2CC1B3F1DE6C84600356219 /* Podfile in Resources */,
 				B2CC1B311DE6C6AE00356219 /* LaunchScreen.storyboard in Resources */,
 				B2F689CB1E08523900D5087E /* img12.PNG in Resources */,
@@ -531,6 +541,7 @@
 				B24EED401DE6D7B900F5F5E8 /* MiniPlayerView.swift in Sources */,
 				B209F7261DFBD0710036AD37 /* DiscoverTableViewController.swift in Sources */,
 				B2AEDDF21DF4F5E500320A2D /* FavoriteSong.swift in Sources */,
+				B2F689CE1E085DCE00D5087E /* RemoteCommandManager.swift in Sources */,
 				B2AEDDEE1DF4027600320A2D /* LibraryAccessHelper.swift in Sources */,
 				B2AEDDF01DF4107B00320A2D /* SongsViewController.swift in Sources */,
 				B28627281DF09CCF007A333D /* H_PagingMenuOption.swift in Sources */,
@@ -551,6 +562,7 @@
 				B209F7341DFBDF300036AD37 /* DanceViewController.swift in Sources */,
 				B25F8BF01DF5724C006DC304 /* RatedSong.swift in Sources */,
 				B209F72E1DFBD24F0036AD37 /* AnimeViewController.swift in Sources */,
+				B2F689D01E08626F00D5087E /* PlaybackManager.swift in Sources */,
 				B2BCA0D01DF79F6B00498C2A /* SectionHeader.swift in Sources */,
 				B209F7231DFBCA2F0036AD37 /* RssRequest.swift in Sources */,
 				B286272D1DF09DC3007A333D /* ArtistViewController.swift in Sources */,

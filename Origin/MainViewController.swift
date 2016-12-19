@@ -50,7 +50,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     var m_queue = DispatchQueue.main
     /// BackgroundQueue
     var b_queue = DispatchQueue.global()
-    var revealingSplashView:RevealingSplashView = RevealingSplashView(iconImage: UIImage(named: "music-icon4")!,iconInitialSize: CGSize(width: 100, height: 100), backgroundColor: UIColor.black)
+    var revealingSplashView:RevealingSplashView = RevealingSplashView(iconImage: UIImage(image: .Icon),iconInitialSize: CGSize(width: 100, height: 100), backgroundColor: UIColor.black)
     //-------------- Property --------------------
     weak var containerView: UIView!
     fileprivate let vcArray = [UIViewController]()

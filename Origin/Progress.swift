@@ -9,8 +9,8 @@
 import Foundation
 import SVProgressHUD
 
+
 class Progress {
-    
     class func start(){
         SVProgressHUD.setFont(UIFont(name: "HelveticaNeue-Light", size: 14))
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 180))
