@@ -82,7 +82,6 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     }
     
     func set(_ notify: NSNotification) {
-        print("main_set")
         // セットアップされていなかったとき
         Progress.stopProgress()
         DispatchQueue.main.async {
@@ -95,7 +94,6 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
 extension MainViewController {
     // UI初期設定
     func setup() {
-        print("main_setup")
         tabBar.delegate = self
         player.viewController = self
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos

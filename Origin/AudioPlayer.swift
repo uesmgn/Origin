@@ -248,7 +248,6 @@ class AudioPlayer: NSObject {
             usersong = nil
         default:
             status = .Stop
-            print("1111")
             usersong = nil
             othersong = nil
         }
@@ -278,7 +277,6 @@ class AudioPlayer: NSObject {
             return
         }
         status = .Stop
-        print("1113")
         player.stop()
         DispatchQueue.main.async {
             self.viewController?.updatePlayinfo()
@@ -289,7 +287,6 @@ class AudioPlayer: NSObject {
     func incrCurrentIndex(_ i:Int) -> Bool {
         switch (status) {
         case .Play(0), .Pause(0):
-            print("\(L_Index)/\(L_Playlist.count)")
             return (L_Index + i < L_Playlist.count)
         case .Play(1), .Pause(1):
             return (O_Index + i < O_Playlist.count)
@@ -313,9 +310,7 @@ class AudioPlayer: NSObject {
                 }
                 return
             }
-            print(status)
             L_Index += i
-            print("\(L_Index)/\(L_Playlist.count)")
             let url = L_Playlist[L_Index]
             let id = L_PlaylistDict[url]!
             usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
@@ -325,7 +320,6 @@ class AudioPlayer: NSObject {
                 return // Task:はじめに戻る　or 終了
             }
             O_Index += i
-            print("\(O_Index)/\(O_Playlist.count)")
             let url = O_Playlist[O_Index]
             let id = O_PlaylistDict[url]!
             othersong = realm.object(ofType: OtherSong.self, forPrimaryKey: id)
@@ -375,7 +369,6 @@ extension AudioPlayer: AVAudioPlayerDelegate {
     }
     /// Did finish. Finish means when music ended not when calling stop
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        print("finish playing")
         switch mode {
         case .Repeat:
             skipToNextItem(0)
