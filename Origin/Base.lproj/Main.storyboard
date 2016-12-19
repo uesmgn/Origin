@@ -11,56 +11,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="lIf-GE-Uqr">
-            <objects>
-                <viewController storyboardIdentifier="initViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vQN-Uf-9E1" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="OCl-t8-TmG"/>
-                        <viewControllerLayoutGuide type="bottom" id="MP7-vR-Gjb"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="TYt-TW-VRP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg-g" translatesAutoresizingMaskIntoConstraints="NO" id="fOh-0y-Dg4">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Origin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5H-vX-QEG">
-                                <rect key="frame" x="36" y="220" width="303" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="sEM-aP-XBP"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="©︎ 2016 Gen. All rights reserved." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86H-NN-rNN">
-                                <rect key="frame" x="36" y="630" width="303" height="17"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="fOh-0y-Dg4" firstAttribute="leading" secondItem="TYt-TW-VRP" secondAttribute="leading" id="3YQ-05-Gvl"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="E5H-vX-QEG" secondAttribute="trailing" constant="20" id="6yH-eb-7Cl"/>
-                            <constraint firstItem="MP7-vR-Gjb" firstAttribute="top" secondItem="86H-NN-rNN" secondAttribute="bottom" constant="20" id="IKB-5W-DN6"/>
-                            <constraint firstItem="86H-NN-rNN" firstAttribute="leading" secondItem="TYt-TW-VRP" secondAttribute="leadingMargin" constant="20" id="WV9-KY-FN1"/>
-                            <constraint firstItem="E5H-vX-QEG" firstAttribute="top" secondItem="OCl-t8-TmG" secondAttribute="bottom" constant="200" id="ZkZ-wf-wjh"/>
-                            <constraint firstItem="MP7-vR-Gjb" firstAttribute="top" secondItem="fOh-0y-Dg4" secondAttribute="bottom" id="dAb-CH-CJD"/>
-                            <constraint firstAttribute="trailing" secondItem="fOh-0y-Dg4" secondAttribute="trailing" id="eH7-KH-TqB"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="86H-NN-rNN" secondAttribute="trailing" constant="20" id="fau-kR-a5N"/>
-                            <constraint firstItem="fOh-0y-Dg4" firstAttribute="top" secondItem="TYt-TW-VRP" secondAttribute="top" id="gKZ-cd-gOx"/>
-                            <constraint firstItem="E5H-vX-QEG" firstAttribute="leading" secondItem="TYt-TW-VRP" secondAttribute="leadingMargin" constant="20" id="unv-qH-FIy"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="94d-IV-EuK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1418" y="55"/>
-        </scene>
         <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -88,7 +38,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nbf-W0-O7k" customClass="MiniPlayerView" customModule="Origin" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="527" width="375" height="100"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg2" translatesAutoresizingMaskIntoConstraints="NO" id="GWp-sk-yEz">
+                                    <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GWp-sk-yEz">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RmA-bc-lgl">
@@ -773,8 +723,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bg-g" width="750" height="1334"/>
-        <image name="bg2" width="750" height="1334"/>
         <image name="bg5" width="750" height="1334"/>
         <image name="discover-green-m" width="24" height="24"/>
         <image name="down" width="512" height="512"/>

@@ -32,7 +32,6 @@ class  JsonPost {
         }
         let childUpdates = ["/users/\(userId!)/songs": Dict]
         ref.updateChildValues(childUpdates)
-        Progress.showMessage("データを送信しました")
         
         
         /*

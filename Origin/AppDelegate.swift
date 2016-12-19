@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let authorizationStatus = MPMediaLibrary.authorizationStatus()
             switch authorizationStatus {
             case .authorized:
-                Progress.showProgressWithMessage("メディアライブラリーの曲を読み込んでいます")
+                Progress.start()
                 let query = MPMediaQuery.songs()
                 if query.items?.count == 0  {
                     self.library = []
@@ -90,9 +90,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Progress.stopProgress()
             Progress.showAlert("ライブラリーに曲がありません")
         }
-        Progress.stopProgress()
         nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
-        nc.post(name: NSNotification.Name(rawValue: "viewOpen"), object: nil)
+        nc.post(name: NSNotification.Name(rawValue: "setup"), object: nil)
     }
     
     func setArtist() {

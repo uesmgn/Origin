@@ -2,6 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '10.1'
 use_frameworks!
+pod 'RevealingSplashView'
 pod 'Firebase'
 pod 'Firebase/Database'
 pod 'SVProgressHUD'

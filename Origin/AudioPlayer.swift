@@ -22,16 +22,7 @@ class AudioPlayer: NSObject {
     weak var viewController:MainViewController!
     
     let realm = try! Realm()
-    var player: AVAudioPlayer! {
-        didSet {
-            if !setuped {
-                DispatchQueue.main.async {
-                    self.setup()
-                } 
-            }
-        }
-    }
-    
+    var player: AVAudioPlayer!
     
     // STATUS
     enum Status {
@@ -87,6 +78,7 @@ class AudioPlayer: NSObject {
         self.status = .Stop
     }
     
+    // 起動時に実行
     func setup() {
         var array = [String]()
         var idDict = [String:Int]()

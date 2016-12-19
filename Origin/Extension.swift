@@ -82,14 +82,31 @@ extension UIButton {
         }
         set {
             self.isSelected = newValue
-            if self.isSelected {
-                self.imageView?.image = UIImage(image: .Known)
-            } else {
-                self.imageView?.image = UIImage(image: .Unknown)
+            print(self.isSelected)
+            DispatchQueue.main.async {
+                if self.isSelected {
+                    self.imageView?.image = UIImage(image: .Known)
+                } else {
+                    self.imageView?.image = UIImage(image: .Unknown)
+                }
             }
         }
     }
+}
+
+extension UITableViewCell {
     
+    @IBInspectable
+    var selectedBackgroundColor: UIColor? {
+        get {
+            return selectedBackgroundView?.backgroundColor
+        }
+        set(color) {
+            let background = UIView()
+            background.backgroundColor = color
+            selectedBackgroundView = background
+        }
+    }
 }
 
 

@@ -34,6 +34,7 @@ PODS:
   - GoogleToolboxForMac/NSData+zlib (2.1.0):
     - GoogleToolboxForMac/Defines (= 2.1.0)
   - Jukebox (0.2.1)
+  - NVActivityIndicatorView (3.0)
   - PagingMenuController (2.0.0)
   - Realm (2.1.1):
     - Realm/Headers (= 2.1.1)
@@ -41,6 +42,7 @@ PODS:
   - RealmSwift (2.1.1):
     - Realm (= 2.1.1)
   - Result (3.1.0)
+  - RevealingSplashView (0.1.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -60,8 +62,10 @@ DEPENDENCIES:
   - Firebase
   - Firebase/Database
   - Jukebox
+  - NVActivityIndicatorView
   - PagingMenuController
   - RealmSwift
+  - RevealingSplashView
   - SDWebImage (~> 3.8)
   - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
   - SVProgressHUD
@@ -101,16 +105,18 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   Jukebox: 81db618ccd3a1cc9b154f4ae0f5c4b54638666dd
+  NVActivityIndicatorView: 81953b5e65093ba79edf4fe7268e002039ca5268
   PagingMenuController: 60602bfb5421d6536c1e3097baeed601dec1d85b
   Realm: a55959c0b171a5fe5267406d17f314fec3cefaae
   RealmSwift: 749fd955bf8d6471c21d218b9389a47aaeccfe3f
   Result: 4e3ed5995ed94d0cd6a09be9a431fce3f3624bbf
+  RevealingSplashView: 501dd03d975ba2c4165dd463ea1c7c407fb9d13e
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SVProgressHUD: bfde85ed6c573ea802b9cb37894ed9b629034f1b
   SwiftDate: 9aa3259d8850d818bec02802f8f05aa9a8c26fdb
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
 
-PODFILE CHECKSUM: 6690e9cb481710bbf045adaa5d774d53fcbc3ea3
+PODFILE CHECKSUM: a81256148791e299d98a925c202241659dd5bfbc
 
 COCOAPODS: 1.1.0.rc.2

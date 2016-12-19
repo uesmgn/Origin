@@ -11,6 +11,11 @@ import SVProgressHUD
 
 class Progress {
     
+    class func start(){
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 140))
+        SVProgressHUD.show(withStatus: "Loading...")
+    }
+    
     class func showProgressWithMessage(_ message:String){
         SVProgressHUD.setBackgroundColor(UIColor.darkGray)
         SVProgressHUD.show(withStatus: message)
@@ -24,7 +29,7 @@ class Progress {
         SVProgressHUD.dismiss()
     }
     
-    class func showAlertWithRating(_ rating: Double) {
+    class func showMessageWithRating(_ rating: Double) {
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         switch rating {
@@ -34,6 +39,16 @@ class Progress {
             SVProgressHUD.show(UIImage(named:"like"), status: "Love")
         default:
             SVProgressHUD.show(UIImage(named:"like"), status: "Like")
+        }
+    }
+    
+    class func showMessageWithKnown(_ isKnown: Bool) {
+        SVProgressHUD.setMinimumDismissTimeInterval(0.1)
+        SVProgressHUD.setFadeOutAnimationDuration(0.3)
+        if isKnown {
+            SVProgressHUD.showSuccess(withStatus: "この曲を知っています")
+        } else {
+            SVProgressHUD.showSuccess(withStatus: "この曲を知りません")
         }
     }
     
