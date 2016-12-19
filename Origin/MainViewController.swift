@@ -50,7 +50,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     var m_queue = DispatchQueue.main
     /// BackgroundQueue
     var b_queue = DispatchQueue.global()
-    var revealingSplashView:RevealingSplashView?
+    var revealingSplashView:RevealingSplashView = RevealingSplashView(iconImage: UIImage(named: "music-icon4")!,iconInitialSize: CGSize(width: 100, height: 100), backgroundColor: UIColor.black)
     //-------------- Property --------------------
     weak var containerView: UIView!
     fileprivate let vcArray = [UIViewController]()
@@ -64,23 +64,30 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
         super.viewDidLoad()
         
         setup()
-        player.setup()
+        setNotification()
         
-        nc.addObserver(self, selector: #selector(self.set(_:)), name: NSNotification.Name(rawValue: "setup"), object: nil)
+        self.view.addSubview(revealingSplashView)
+        
         // Splash View
-        revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "music-icon4")!,iconInitialSize: CGSize(width: 100, height: 100), backgroundColor: UIColor.black)
-        self.view.addSubview(revealingSplashView!)
         // セットアップされていたら遷移
         let setuped = UserDefaults.standard.string(forKey: "setuped")
         if setuped != nil  {
-            revealingSplashView?.startAnimation()
+            revealingSplashView.startAnimation()
         }
     }
     
+    func setNotification() {
+        nc.addObserver(self, selector: #selector(self.set(_:)), name: NSNotification.Name(rawValue: "setup"), object: nil)
+        nc.addObserver(self, selector: #selector(player.setup), name: NSNotification.Name(rawValue: "setup_player"), object: nil)
+    }
+    
     func set(_ notify: NSNotification) {
+        print("main_set")
         // セットアップされていなかったとき
         Progress.stopProgress()
-        revealingSplashView?.startAnimation()
+        DispatchQueue.main.async {
+            self.revealingSplashView.startAnimation()
+        }
         UserDefaults.standard.set(true,forKey:"setuped")
     }
 }
@@ -88,6 +95,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
 extension MainViewController {
     // UI初期設定
     func setup() {
+        print("main_setup")
         tabBar.delegate = self
         player.viewController = self
         ratingBar.didFinishTouchingCosmos = didFinishTouchingCosmos

@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let nc = NotificationCenter.default
     var realm:Realm
     var library = [MPMediaItem]()
+    let player = AudioPlayer.shared
     
     override init() {
         realm = try! Realm()
@@ -92,6 +93,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
         nc.post(name: NSNotification.Name(rawValue: "setup"), object: nil)
+        DispatchQueue.main.async {
+            self.player.setup()
+        }
     }
     
     func setArtist() {

@@ -12,24 +12,29 @@ import SVProgressHUD
 class Progress {
     
     class func start(){
-        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 140))
+        SVProgressHUD.setFont(UIFont(name: "HelveticaNeue-Light", size: 14))
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 180))
         SVProgressHUD.show(withStatus: "Loading...")
     }
     
     class func showProgressWithMessage(_ message:String){
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setBackgroundColor(UIColor.darkGray)
         SVProgressHUD.show(withStatus: message)
     }
     
     class func showProgress() {
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.show()
     }
     
     class func stopProgress(){
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.dismiss()
     }
     
     class func showMessageWithRating(_ rating: Double) {
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         switch rating {
@@ -43,6 +48,7 @@ class Progress {
     }
     
     class func showMessageWithKnown(_ isKnown: Bool) {
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         if isKnown {
@@ -53,12 +59,15 @@ class Progress {
     }
     
     class func showMessage(_ message:String) {
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         SVProgressHUD.showSuccess(withStatus: message)
     }
     
     class func showAlert(_ message:String) {
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
+        SVProgressHUD.setFont(UIFont(name: "HelveticaNeue-Light", size: 14))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         SVProgressHUD.showInfo(withStatus: message)

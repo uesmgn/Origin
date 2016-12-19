@@ -72,11 +72,17 @@ class AudioPlayer: NSObject {
     var O_PlaylistDict:[String:Int] = [:]
     
     var setuped:Bool = false
+    var retry = 0
     
+    let nc = NotificationCenter.default // Notification Center
+
     override init() {
         self.mode = .Shuffle
         self.status = .Stop
     }
+    
+    var Library:[UserSong] = []
+    var Other:[OtherSong] = []
     
     // 起動時に実行
     func setup() {
@@ -88,6 +94,14 @@ class AudioPlayer: NSObject {
         }
         self.L_Playlist = array
         self.L_PlaylistDict = idDict
+        
+        var l_songs = [UserSong]()
+        let l_Response = realm.objects(UserSong.self)
+        for result in l_Response {
+            l_songs.append(result)
+        }
+        Library =  l_songs
+        
         array.removeAll()
         idDict.removeAll()
         for song in realm.objects(OtherSong.self) {
@@ -96,55 +110,31 @@ class AudioPlayer: NSObject {
         }
         self.O_Playlist = array
         self.O_PlaylistDict = idDict
+        
+        var o_songs = [OtherSong]()
+        let o_Response = realm.objects(OtherSong.self)
+        for result in o_Response {
+            o_songs.append(result)
+        }
+        Other =  o_songs
+        if mode == .Shuffle {
+            L_Playlist.shuffle()
+            O_Playlist.shuffle()
+        }
         setuped = true
-    }
-    
-    var  Library:[UserSong] {
-        var songs: [UserSong] = []
-        let realmResponse = realm.objects(UserSong.self)
-        for result in realmResponse {
-            songs.append(result)
-        }
-        return songs
-    }
-    
-    var Other:[OtherSong] {
-        var songs: [OtherSong] = []
-        let realmResponse = realm.objects(OtherSong.self)
-        for result in realmResponse {
-            songs.append(result)
-        }
-        return songs
     }
     
     // * Do this method in main thread
     func updatePlaylist() {
-        var array = [String]()
-        L_Playlist.removeAll()
-        O_Playlist.removeAll()
-        switch (status) {
-            case .Play(0), .Pause(0):
-                for song in Library {
-                    array.append(song.trackSource)
-                }
-                L_Playlist = array
-            case .Play(1), .Pause(1):
-                for song in Other {
-                    array.append(song.trackSource)
-                }
-                O_Playlist = array
-            default: break
-        }
-        if let song = usersong {
-            L_Index = L_Playlist.index(of: song.trackSource) ?? 0
-        } else if let song = othersong {
-            O_Index = O_Playlist.index(of: song.trackSource) ?? 0
-        }
         switch (mode) {
-            case .Shuffle:
+        case .Shuffle:
+            if L_Playlist.count != 0 {
                 L_Playlist.shuffle()
+            }
+            if O_Playlist.count != 0 {
                 O_Playlist.shuffle()
-            default: break
+            }
+        default: setup()
         }
     }
     
@@ -160,25 +150,21 @@ class AudioPlayer: NSObject {
             self.mode = .Stream
             Progress.showMessage("Streaming Mode")
         }
+        updatePlaylist()
     }
     
     var usersong:UserSong? {
         willSet {
-            guard let song = self.usersong else {
-                return
-            }
+            status = .Pause(0)
             DispatchQueue.main.async {
-                self.status = .Pause(0)
-                self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
-                self.updatePlaylist()
                 self.viewController.updatePlayinfo()
-                self.player = nil
             }
         }
         didSet {
             guard let song = self.usersong else {
                 return
             }
+            self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
             let url = URL(string: song.trackSource)
             DispatchQueue.global().async {
                 do {
@@ -202,11 +188,10 @@ class AudioPlayer: NSObject {
             guard let song = self.othersong else {
                 return
             }
+            status = .Pause(1)
             Progress.showProgress()
             DispatchQueue.main.async {
-                self.status = .Pause(1)
                 self.O_Index = self.O_Playlist.index(of: song.trackSource) ?? 0
-                self.updatePlaylist()
                 self.viewController.updatePlayinfo()
             }
         }
@@ -231,14 +216,13 @@ class AudioPlayer: NSObject {
     }
     
     func prepareToPlay() {
-        if let player = self.player {
-            player.prepareToPlay()
-            player.delegate = self
-            play()
-            Progress.stopProgress()
-        } else {
-            self.status = .Stop
+        guard let player = player else {
+            return
         }
+        player.prepareToPlay()
+        player.delegate = self
+        play()
+        Progress.stopProgress()
         Progress.stopProgress()
     }
 
@@ -251,61 +235,61 @@ class AudioPlayer: NSObject {
     }
     
     func play() {
-        if let player = player {
-            player.play()
-            switch (status) {
-            case .Pause(0):
-                status = .Play(0)
-                othersong = nil
-            case .Pause(1):
-                status = .Play(1)
-                usersong = nil
-            default:
-                status = .Stop
-                usersong = nil
-                othersong = nil
-            }
-            DispatchQueue.main.async {
-                self.viewController?.updatePlayinfo()
-                self.viewController?.updateToggle()
-            }
-        } else {
+        guard let player = player else {
+            return
+        }
+        player.play()
+        switch (status) {
+        case .Pause(0),.Play(0):
+            status = .Play(0)
+            othersong = nil
+        case .Pause(1),.Play(1):
+            status = .Play(1)
+            usersong = nil
+        default:
             status = .Stop
+            print("1111")
             usersong = nil
             othersong = nil
+        }
+        DispatchQueue.main.async {
+            self.viewController?.updatePlayinfo()
+            self.viewController?.updateToggle()
         }
     }
     
     func pause() {
-        if let player = player {
-            player.pause()
-            switch (status) {
-            case .Play(0):
-                status = .Pause(0)
-            case .Play(1):
-                status = .Pause(1)
-            default:
-                break
-            }
-        } else {
-            status = .Stop
+        guard let player = player else {
+            return
+        }
+        player.pause()
+        switch (status) {
+        case .Play(0):
+            status = .Pause(0)
+        case .Play(1):
+            status = .Pause(1)
+        default:
+            break
         }
     }
     
     func stop() {
+        guard let player = player else {
+            return
+        }
         status = .Stop
-        if let player = player {
-            player.stop()
-            DispatchQueue.main.async {
-                self.viewController?.updatePlayinfo()
-                self.viewController?.updateToggle()
-            }
-        } 
+        print("1113")
+        player.stop()
+        DispatchQueue.main.async {
+            self.viewController?.updatePlayinfo()
+            self.viewController?.updateToggle()
+        }
     }
     
     func incrCurrentIndex(_ i:Int) -> Bool {
         switch (status) {
         case .Play(0), .Pause(0):
+            print("\(L_Index)/\(L_Playlist.count)")
             return (L_Index + i < L_Playlist.count)
         case .Play(1), .Pause(1):
             return (O_Index + i < O_Playlist.count)
@@ -316,29 +300,36 @@ class AudioPlayer: NSObject {
     
     func skipToNextItem(_ i:Int) {
         switch (status) {
-        case .Play(0), .Pause(0):
+        case .Pause(0),.Play(0) :
             guard incrCurrentIndex(i) else {
-                stop()
-                return // Task:はじめに戻る　or 終了
+                switch (mode) {
+                case .Shuffle:
+                    L_Index = 0
+                    O_Index = 0
+                    skipToNextItem(1)
+                default:
+                    Progress.showMessage("最後の曲です")
+                    stop()
+                }
+                return
             }
+            print(status)
             L_Index += i
+            print("\(L_Index)/\(L_Playlist.count)")
             let url = L_Playlist[L_Index]
-            print(url)
-            print(L_PlaylistDict)
             let id = L_PlaylistDict[url]!
             usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
-        case .Play(1), .Pause(1):
+        case .Pause(1),.Play(1):
             guard incrCurrentIndex(i) else {
-                stop()
+                //stop()
                 return // Task:はじめに戻る　or 終了
             }
             O_Index += i
+            print("\(O_Index)/\(O_Playlist.count)")
             let url = O_Playlist[O_Index]
             let id = O_PlaylistDict[url]!
             othersong = realm.object(ofType: OtherSong.self, forPrimaryKey: id)
-        default:
-            stop()
-            break
+        default: break
         }
     }
     
