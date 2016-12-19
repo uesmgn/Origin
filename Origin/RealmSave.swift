@@ -17,7 +17,7 @@ class Save:NSObject {
         var comment:String = ""
         let (usersong, othersong) = AudioPlayer.shared.nowPlayingItem()
         if let song = usersong, othersong == nil {
-            comment = "あなたは"+((song.isKnown == false) ? "\(song.title)を知っていました":"\(song.title)を知りませんでした")
+            comment = ((song.isKnown == false) ? "\(song.title)を知っていました":"\(song.title)を知りませんでした")
             Progress.showMessageWithKnown(isKnown)
             let request = SaveRatedSongRequest(item: song)
             let ratedsong = try! request.response()
@@ -26,7 +26,7 @@ class Save:NSObject {
                 realm.add(ratedsong!, update: true)
             }
         } else if let song = othersong, usersong == nil {
-            comment = "あなたは"+((song.isKnown == false) ? "\(song.title)を知っていました":"\(song.title)を知りませんでした")
+            comment = ((song.isKnown == false) ? "\(song.title)を知っていました":"\(song.title)を知りませんでした")
             Progress.showMessageWithKnown(isKnown)
             let request = SaveRatedSongRequest(item: song)
             let ratedsong = try! request.response()

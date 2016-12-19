@@ -24,11 +24,17 @@ class AudioPlayer: NSObject {
     let realm = try! Realm()
     var player: AVAudioPlayer!
     
+    let queue = OperationQueue()
+    let m_queue = DispatchQueue.main
+    let g_queue = DispatchQueue.global()
+    
+    
     // STATUS
     enum Status {
         case Play(Int) // Library:0 iTunes:1
         case Pause(Int) // Library:0 iTunes:1
         case Stop
+        case Loading(Int)
     }
     
     enum Mode {
@@ -37,25 +43,34 @@ class AudioPlayer: NSObject {
         case Stream
     }
     
-    var status:Status
+    var status:Status {
+        didSet {
+            print("status change"+"\(oldValue)->\(status)")
+            self.viewController?.updatePlayinfo()
+        }
+    }
+    
     var mode:Mode
     
     func nowPlayingItem() -> (UserSong?, OtherSong?) {
-        if (player) != nil {
-            switch (status) {
-            case .Play(0), .Pause(0):
-                return (usersong, nil)
-            case .Play(1), .Pause(1):
-                return (nil, othersong)
-            default:
-                return (nil,nil)
-            }
+        switch (status) {
+        case .Play(0), .Pause(0), .Loading(0):
+            return (usersong, nil)
+        case .Play(1), .Pause(1), .Loading(1):
+            return (nil, othersong)
+        default:
+            return (nil,nil)
         }
-        return (nil,nil)
     }
     
     func isPlaying() -> Bool {
         if let player = player {
+            switch (status) {
+            case .Loading:
+                return false
+            default:
+                break
+            }
             return player.isPlaying
         }
         return false
@@ -139,77 +154,54 @@ class AudioPlayer: NSObject {
     }
     
     func updateMode(to mode: Mode) {
-        switch (mode) {
-        case .Shuffle:
-            self.mode = .Shuffle
-            Progress.showMessage("Shuffle Mode")
-        case .Repeat:
-            self.mode = .Repeat
-            Progress.showMessage("Repeat Mode")
-        case .Stream:
-            self.mode = .Stream
-            Progress.showMessage("Streaming Mode")
-        }
+        self.mode = mode
+        Progress.showWithMode(mode)
         updatePlaylist()
     }
     
     var usersong:UserSong? {
         willSet {
-            status = .Pause(0)
-            DispatchQueue.main.async {
-                self.viewController.updatePlayinfo()
-            }
+            initRemoteControl()
+            queue.cancelAllOperations()
         }
         didSet {
             guard let song = self.usersong else {
                 return
             }
+            status = .Loading(0)
             self.L_Index = self.L_Playlist.index(of: song.trackSource) ?? 0
             let url = URL(string: song.trackSource)
-            DispatchQueue.global().async {
+            queue.addOperation {
                 do {
                     self.player = try AVAudioPlayer(contentsOf: url!)
                     self.prepareToPlay()
                 } catch {
-                    Progress.showAlert("Sorry, missed to play")
-                    self.player = nil
-                    DispatchQueue.main.async {
-                        self.viewController.updatePlayinfo()
-                    }
+                    print("error")
                 }
             }
         }
     }
     
-    let g_queue = DispatchQueue.global()
-    
     var othersong:OtherSong? {
         willSet {
-            guard let song = self.othersong else {
-                return
-            }
-            status = .Pause(1)
-            Progress.showProgress()
-            DispatchQueue.main.async {
-                self.O_Index = self.O_Playlist.index(of: song.trackSource) ?? 0
-                self.viewController.updatePlayinfo()
-            }
+            initRemoteControl()
+            pause()
+            queue.cancelAllOperations()
         }
         didSet {
             guard let song = self.othersong else {
                 return
             }
+            self.status = .Loading(1)
+            self.O_Index = self.O_Playlist.index(of: song.trackSource) ?? 0
             let url = URL(string: song.trackSource)
-            DispatchQueue.global().async {
+            queue.addOperation {
                 do {
                     let soundData = try Data(contentsOf: url!)
                     self.player = try AVAudioPlayer(data: soundData)
                     self.prepareToPlay()
                 } catch {
-                    Progress.stopProgress()
-                    DispatchQueue.main.async {
-                        self.viewController.updatePlayinfo()
-                    }
+                    print("error")
                 }
             }
         }
@@ -238,22 +230,25 @@ class AudioPlayer: NSObject {
         guard let player = player else {
             return
         }
-        player.play()
-        switch (status) {
+        m_queue.async {
+        self.viewController?.loading(false)
+        switch (self.status) {
         case .Pause(0),.Play(0):
-            status = .Play(0)
-            othersong = nil
+            player.play()
+            self.status = .Play(0)
         case .Pause(1),.Play(1):
-            status = .Play(1)
-            usersong = nil
+            player.play()
+            self.status = .Play(1)
+        case .Loading(0):
+            player.play()
+            self.status = .Play(0)
+        case .Loading(1):
+            player.play()
+            self.status = .Play(1)
         default:
-            status = .Stop
-            usersong = nil
-            othersong = nil
+            self.status = .Stop
         }
-        DispatchQueue.main.async {
-            self.viewController?.updatePlayinfo()
-            self.viewController?.updateToggle()
+        self.viewController?.updateToggle()
         }
     }
     
@@ -276,19 +271,18 @@ class AudioPlayer: NSObject {
         guard let player = player else {
             return
         }
-        status = .Stop
-        player.stop()
-        DispatchQueue.main.async {
-            self.viewController?.updatePlayinfo()
+        m_queue.async {
+            self.status = .Stop
+            player.stop()
             self.viewController?.updateToggle()
         }
     }
     
     func incrCurrentIndex(_ i:Int) -> Bool {
         switch (status) {
-        case .Play(0), .Pause(0):
+        case .Play(0), .Pause(0), .Loading(0):
             return (L_Index + i < L_Playlist.count)
-        case .Play(1), .Pause(1):
+        case .Play(1), .Pause(1), .Loading(1):
             return (O_Index + i < O_Playlist.count)
         default:
             return false
@@ -297,7 +291,7 @@ class AudioPlayer: NSObject {
     
     func skipToNextItem(_ i:Int) {
         switch (status) {
-        case .Pause(0),.Play(0) :
+        case .Pause(0),.Play(0),.Loading(0) :
             guard incrCurrentIndex(i) else {
                 switch (mode) {
                 case .Shuffle:
@@ -314,7 +308,7 @@ class AudioPlayer: NSObject {
             let url = L_Playlist[L_Index]
             let id = L_PlaylistDict[url]!
             usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
-        case .Pause(1),.Play(1):
+        case .Pause(1),.Play(1),.Loading(1):
             guard incrCurrentIndex(i) else {
                 //stop()
                 return // Task:はじめに戻る　or 終了
@@ -379,6 +373,7 @@ extension AudioPlayer: AVAudioPlayerDelegate {
     
     /// Decoding error
     public func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        print("DECODE ERROR")
         if let error = error {
             print(error.localizedDescription)
         }

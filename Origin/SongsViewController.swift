@@ -97,9 +97,6 @@ extension SongsViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let player = AudioPlayer.shared
-        if player.isPlaying() {
-            player.pause()
-        }
         let song = playlist[indexPath.row]
         player.usersong = song
     }

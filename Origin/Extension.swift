@@ -57,6 +57,10 @@ extension UIImage {
         case Next = "fastforward"
         case Known = "known"
         case Unknown = "unknown"
+        case Like = "like"
+        case Dislike = "dislike"
+        case Success = "success"
+        case Question = "question"
     }
     
     convenience init(image: image) {

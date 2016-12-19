@@ -39,11 +39,11 @@ class Progress {
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         switch rating {
         case 0..<2.5:
-            SVProgressHUD.show(UIImage(named:"dislike"), status: "Hate")
+            SVProgressHUD.show(UIImage(image: .Dislike), status: "Hate")
         case 3.5..<5.5:
-            SVProgressHUD.show(UIImage(named:"like"), status: "Love")
+            SVProgressHUD.show(UIImage(image: .Like), status: "Love")
         default:
-            SVProgressHUD.show(UIImage(named:"like"), status: "Like")
+            SVProgressHUD.show(UIImage(image: .Like), status: "Like")
         }
     }
     
@@ -52,9 +52,23 @@ class Progress {
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         if isKnown {
-            SVProgressHUD.showSuccess(withStatus: "この曲を知っています")
+            SVProgressHUD.show(UIImage(image: .Success), status: "Known")
         } else {
-            SVProgressHUD.showSuccess(withStatus: "この曲を知りません")
+            SVProgressHUD.show(UIImage(image: .Question), status: "Unknown")
+        }
+    }
+    
+    class func  showWithMode(_ mode:AudioPlayer.Mode) {
+        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
+        SVProgressHUD.setMinimumDismissTimeInterval(0.1)
+        SVProgressHUD.setFadeOutAnimationDuration(0.3)
+        switch (mode) {
+        case .Shuffle:
+            SVProgressHUD.show(UIImage(image: .Shuffle), status: "Shuffle Mode")
+        case .Repeat:
+            SVProgressHUD.show(UIImage(image: .Repeat), status: "Repeat Mode")
+        case .Stream:
+            SVProgressHUD.show(UIImage(image: .Stream), status: "Streaming Mode")
         }
     }
     

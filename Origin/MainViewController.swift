@@ -64,6 +64,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
         super.viewDidLoad()
         
         setup()
+        player.setup()
         setNotification()
         
         self.view.addSubview(revealingSplashView)
@@ -224,22 +225,35 @@ extension MainViewController {
     
     func updatePlayinfo() {
         let (usersong, othersong) = self.player.nowPlayingItem()
-        if let song = usersong, othersong == nil {
-            self.miniplayerHidden(false)
-            self.currentTitle.text = song.title
-            self.currentDetail.text = song.artist
-            self.currentArtwork.image = UIImage(data: song.artwork!)
-            self.radioButton.isKnown = song.isKnown
-            self.ratingBar.rating = Double(song.rating)
-        } else if let song = othersong, usersong == nil {
-            self.miniplayerHidden(false)
-            self.const.constant = 0
-            self.currentTitle.text = song.title
-            self.currentDetail.text = song.artist
-            self.currentArtwork.image = UIImage(named: "artwork_default")
-            self.radioButton.isKnown = song.isKnown
-            self.ratingBar.rating = Double(song.rating)
-        } else {
+        print(self.player.nowPlayingItem())
+        switch (player.status) {
+        case .Loading(0):
+            //loading(true)
+            fallthrough
+        case .Pause(0), .Play(0):
+            if let song = usersong {
+                self.miniplayerHidden(false)
+                self.currentTitle.text = song.title
+                self.currentDetail.text = song.artist
+                self.currentArtwork.image = UIImage(data: song.artwork!)
+                self.radioButton.isKnown = song.isKnown
+                self.ratingBar.rating = Double(song.rating)
+            }
+        case .Loading(1):
+            loading(true)
+            fallthrough
+        case .Pause(1), .Play(1):
+            if let song = othersong {
+                self.miniplayerHidden(false)
+                self.currentTitle.text = song.title
+                self.currentDetail.text = song.artist
+                self.currentArtwork.image = UIImage(named: "artwork_default")
+                self.radioButton.isKnown = song.isKnown
+                self.ratingBar.rating = Double(song.rating)
+            } else {
+                print("else")
+            }
+        default:
             self.miniplayerHidden(true)
         }
         // Task: update playlist table
@@ -248,13 +262,14 @@ extension MainViewController {
     
     func miniplayerHidden(_ hidden:Bool) {
         m_queue.async {
-            if hidden {
-                self.miniPlayerView.isHidden = true
-                self.const.constant = -self.miniPlayerView.frame.size.height
-            } else {
-                self.miniPlayerView.isHidden = false
-                self.const.constant = 0
-            }
+            self.miniPlayerView.isHidden = hidden
+            self.const.constant = hidden ? -self.miniPlayerView.frame.size.height : 0
+        }
+    }
+    
+    func loading(_ loading:Bool) {
+        m_queue.async {
+            self.activityView.isHidden = !loading
         }
     }
     
