@@ -1,5 +1,5 @@
 //
-//  SaveRatedSongsHelper.swift
+//  SaveFavoriteSongsHelper.swift
 //  Origin
 //
 //  Created by Gen on 2016/12/05.
@@ -16,14 +16,18 @@ protocol SaveRatedSongsHelper {
     func response() throws -> Response
 }
 
-struct SaveRatedSongRequest: SaveRatedSongsHelper {
+struct SaveRatedSongsRequest: SaveRatedSongsHelper {
     
     typealias Response = RatedSong?
     
     var item:Any
+    var rating:Int
+    var isKnown:Bool
     
-    init(item:Any) {
+    init(_ item:Any, _ rating:Int, _ isKnown:Bool) {
         self.item = item
+        self.rating = rating
+        self.isKnown = isKnown
     }
     
     func response() throws -> Response {
@@ -35,9 +39,9 @@ struct SaveRatedSongRequest: SaveRatedSongsHelper {
             song.artist = item.artist
             song.album = item.album
             song.itunesId = item.id
-            song.rating = item.rating
-            song.isKnown = item.isKnown
             song.artwork = UIImagePNGRepresentation(UIImage(named:"artwork_default")!)
+            song.rating = rating
+            song.isKnown = isKnown
             song.trackSource = item.trackSource
             Songs = song
         }
@@ -49,9 +53,9 @@ struct SaveRatedSongRequest: SaveRatedSongsHelper {
             song.album = item.album
             song.itunesId = item.id
             song.artwork = item.artwork
+            song.rating = rating
+            song.isKnown = isKnown
             song.trackSource = item.trackSource
-            song.rating = item.rating
-            song.isKnown = item.isKnown
             Songs = song
         }
         return Songs

@@ -9,6 +9,12 @@ class UserSong: Object {
     dynamic var trackSource = ""
     dynamic var rating = 0
     dynamic var isKnown:Bool = true //既知
+    dynamic var playbackTime = 0
+    
+    func playbackTimeStr() -> String {
+        let ms = self.playbackTime
+        return "\(ms/1000/60):\(ms/1000%60)"
+    }
     override static func primaryKey() -> String? {
         return "id"
     }
@@ -25,6 +31,12 @@ class OtherSong: Object {
     dynamic var genre = "1"
     dynamic var rating = 0
     dynamic var isKnown:Bool = false //未知
+    dynamic var playbackTime = 0
+    
+    func playbackTimeStr() -> String {
+        let ms = self.playbackTime
+        return "\(ms/1000/60):\(ms/1000%60)"
+    }
     override static func primaryKey() -> String? {
         return "id"
     }
@@ -44,4 +56,3 @@ class Artist: Object {
     dynamic var artistName = ""
     var albums = List<Album>()
 }
-

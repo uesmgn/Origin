@@ -16,13 +16,30 @@ import RealmSwift
 class AudioPlayer: NSObject {
    
     // MARK: Types
-    
+   
+    /// Notification that is posted when the `skipToNextItem()` is called.
+    static let nextTrackNotification = Notification.Name("nextTrackNotification")
+    /// Notification that is posted when the `skipToPreviousItem()` is called.
+    static let previousTrackNotification = Notification.Name("previousTrackNotification")
+    /// Notification that is posted when currently playing `Asset` did change.
+    static let currentAssetDidChangeNotification = Notification.Name("currentItemDidChangeNotification")
+    /// Notification that is posted when the internal AVPlayer rate did change.
+    static let playerRateDidChangeNotification = Notification.Name("playerRateDidChangeNotification")
+    /// The progress in percent for the playback of `asset`.  This is marked as `dynamic` so that this property can be observed using KVO.
+    dynamic var percentProgress: Float = 0
+    /// The total duration in seconds for the `asset`.  This is marked as `dynamic` so that this property can be observed using KVO.
+    dynamic var duration: Float = 0
+    /// The current playback position in seconds for the `asset`.  This is marked as `dynamic` so that this property can be observed using KVO.
+    dynamic var playbackPosition: Float = 0
+    /// A token obtained from calling `player`'s `addPeriodicTimeObserverForInterval(_:queue:usingBlock:)` method.
+    private var timeObserverToken: Any?
     /// The singleton of the player to share throughout the application.
     static let shared = AudioPlayer()
     
     weak var viewController:MainViewController! // Task: revise to notification
     
     /// An enumeration of possible playback states that `AudioPlayer` can be in.
+    ///
     /// - Pause(Int): The playback state that `AudioPlayer` is in when a song is selected and being paused.
     /// - Stop: The playback state that `AudioPlayer` is in when deselected an item.
     /// - Loading(Int): The playback state that `AudioPlayer` is in when loading sound data.
@@ -34,6 +51,7 @@ class AudioPlayer: NSObject {
     }
     
     /// An enumeration of possible playback mode that `AudioPlayer` can be in.
+    ///
     /// - Shuffle: The playback mode that set after sort playlist at random.
     /// - Stream: The playback mode that playing the song in order of default playlist.
     /// - Repeat: The playback mode that playing the song repeatedly unless operating. If operated the order of playback is the default.
@@ -46,6 +64,7 @@ class AudioPlayer: NSObject {
     var status:Status = .Stop {
         didSet {
             self.viewController?.updatePlayinfo()
+            //self.updateGeneralInfo()
         }
     }
     
@@ -64,6 +83,18 @@ class AudioPlayer: NSObject {
         }
     }
     
+    /// Selected song's ID．
+    func nowPlayingItemID() -> Int? {
+        switch (status) {
+        case .Play(0), .Pause(0), .Loading(0):
+            return usersong?.id
+        case .Play(1), .Pause(1), .Loading(1):
+            return othersong?.id
+        default:
+            return nil
+        }
+    }
+    
     /// A Bool for tracking playback state
     func isPlaying() -> Bool {
         if let player = player {
@@ -76,6 +107,24 @@ class AudioPlayer: NSObject {
             return player.isPlaying
         }
         return false
+    }
+    
+    // MARK: Initialization
+    
+    override init() {
+        super.init()
+        
+        // Add the notification observer needed to respond to audio interruptions.
+        NotificationCenter.default.addObserver(self, selector: #selector(AudioPlayer.handleAVPlayerItemDidPlayToEndTimeNotification(notification:)), name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
+        // Add the Key-Value Observers needed to keep internal state of `AssetPlaybackManager` and `MPNowPlayingInfoCenter` in sync.
+       // player.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.new], context: nil)
+    
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
+        //player.removeObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), context: nil)
+       // player.removeObserver(self, forKeyPath: #keyPath(AVPlayer.rate), context: nil)
     }
     
     // MARK: Properties
@@ -166,6 +215,68 @@ class AudioPlayer: NSObject {
 }
 
 extension AudioPlayer {
+    // MARK: Key-Value Observing Method
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        print(keyPath ?? "keypath")
+        print(object ?? "object")
+        print(change ?? "change")
+        print(context ?? "context")
+    }
+
+    
+    // MARK: Notification Observing Methods
+    
+    func handleAVPlayerItemDidPlayToEndTimeNotification(notification: Notification) {
+        //player.replaceCurrentItem(with: nil)
+    }
+    
+    // MARK: MPNowPlayingInforCenter Management Methods
+
+    func updateGeneralInfo() {
+        let (usersong, othersong) = self.nowPlayingItem()
+        guard (usersong ?? othersong) != nil else {
+            return
+        }
+        var nowPlayingInfo = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
+        
+        var title = ""
+        var artist = ""
+        var album = ""
+        var artworkData:Data?
+        
+        switch (status) {
+        case .Loading(0):
+            fallthrough
+        case .Pause(0), .Play(0):
+            if let song = usersong {
+                title = song.title
+                artist = song.artist
+                album = song.album
+                artworkData = song.artwork
+            }
+        case .Loading(1):
+            fallthrough
+        case .Pause(1), .Play(1):
+            if let song = othersong {
+                title = song.title
+                artist = song.artist
+                album = song.album
+            }
+        default: break
+        }
+        let image = UIImage(data: artworkData!) ?? UIImage(named: "artwork_default")
+        let artwork = MPMediaItemArtwork(boundsSize: (image?.size)!, requestHandler: {  (_) -> UIImage in
+                return image!
+            })
+        nowPlayingInfo[MPMediaItemPropertyTitle] = title
+        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = artist + " - " + album
+        nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
+    }
+}
+
+extension AudioPlayer {
     
     // MARK: Private methods.
     
@@ -211,7 +322,7 @@ extension AudioPlayer {
         setuped = true
     }
     
-    /// Change play list order　when playback mode is changed.
+    /// Change play list order when playback mode is changed.
     func updatePlaylist() {
         switch (mode) {
         case .Shuffle:
@@ -381,7 +492,6 @@ extension AudioPlayer: AVAudioPlayerDelegate {
         } catch {
             print(error.localizedDescription)
         }
-        
     }
         
     /// Did finish. Finish means when music ended not when calling stop

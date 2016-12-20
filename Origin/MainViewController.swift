@@ -57,6 +57,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     let player = AudioPlayer.shared
     let history = HistoryViewController.shared
     
+    var notificationToken: NotificationToken? = nil
     let nc = NotificationCenter.default // Notification Center
     var realm = try! Realm() //Realm
     
@@ -80,7 +81,28 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     func setNotification() {
         nc.addObserver(self, selector: #selector(self.set(_:)), name: NSNotification.Name(rawValue: "setup"), object: nil)
         nc.addObserver(self, selector: #selector(player.setup), name: NSNotification.Name(rawValue: "setup_player"), object: nil)
+        let results = realm.objects(RatedSong.self)
+        
+        // Observation　of change in RatedSong
+        notificationToken = results.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+            switch changes {
+            case .initial: break
+            case .update(_, deletions: _, insertions: _, modifications: _):
+                if let id = self?.player.nowPlayingItemID() {
+                    FirebasePost.post(id)
+                }
+                break
+            case .error(let error):
+                print("\(error)")
+                break
+            }
+        }
     }
+    
+    deinit {
+        notificationToken?.stop()
+    }
+
     
     func set(_ notify: NSNotification) {
         // セットアップされていなかったとき
@@ -159,10 +181,6 @@ extension MainViewController {
             return
         }
         Save.rating(rating)
-        DispatchQueue.global().async {
-            let jsonpost = JsonPost()
-            jsonpost.post()
-        }
         nc.post(name: NSNotification.Name(rawValue: "AddHistory"), object: nil)
     }
     

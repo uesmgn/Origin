@@ -42,6 +42,7 @@ extension RssRequest {
                     song.artist = (entry["im:artist"].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.artistUrl = (entry["im:artist"].dictionary?["attributes"]?.dictionaryObject?["href"] as? String ?? "unknown")!
                     song.trackSource  = (entry["link"].arrayValue[1].dictionary?["attributes"]?.dictionaryObject?["href"] as? String ?? "unknown")!
+                    song.playbackTime = (entry["im:duration"].dictionaryObject?["label"] as? Int ?? 0)!
                     //releaseDate = entry["im:releaseDate"].dictionaryObject?["label"] as? String
                     song.id = Int(entry["id"].dictionary?["attributes"]?.dictionaryObject?["im:id"] as! String)!
                     song.album = (entry["im:collection"].dictionary?["im:name"]?.dictionaryObject?["label"] as? String ?? "unknown")!

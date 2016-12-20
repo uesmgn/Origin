@@ -43,10 +43,15 @@ struct AlbumsRequest: LibraryAccessHelper {
                 song.title = item.title ?? "unknown"
                 song.artist = item.albumArtist ?? "unknown"
                 song.album = item.albumTitle ?? "unknown"
-                song.id = Int(item.persistentID) // Task:iTunesID割り当て
+                let str = "\(item.persistentID)"
+                guard let int = Int(str) else {
+                    continue
+                }
+                song.id = int // Task:iTunesID割り当て Int(item.persistentID)+
                 let size = CGSize(width: 100, height: 100)
                 song.artwork = UIImagePNGRepresentation(item.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)
                 song.rating = 0
+                song.playbackTime = item.beatsPerMinute
                 song.trackSource = "\(item.assetURL!)"
                 songs.append(song)
             }

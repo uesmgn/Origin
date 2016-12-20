@@ -19,12 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var navigationController: UINavigationController?
     let nc = NotificationCenter.default
-    var realm:Realm
+    var realm:Realm = try! Realm()
     var library = [MPMediaItem]()
     let player = AudioPlayer.shared
     
     override init() {
-        realm = try! Realm()
         // firebase初期化
         FIRApp.configure()
         // オフライン永続化
