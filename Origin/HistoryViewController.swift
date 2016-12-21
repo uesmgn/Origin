@@ -23,7 +23,7 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         // NotificationCenterに登録する。
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(self.reload(notify:)), name: NSNotification.Name(rawValue: "AddHistory"), object: nil)
+        nc.addObserver(self, selector: #selector(self.reload(notify:)), name: NSNotification.Name(key: .UpdateHistoryMenu), object: nil)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self

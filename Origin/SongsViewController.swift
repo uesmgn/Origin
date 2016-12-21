@@ -28,7 +28,7 @@ class SongsViewController: UITableViewController {
         super.viewDidLoad()
         
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(self.reload(_:)), name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
+        nc.addObserver(self, selector: #selector(self.reload(_:)), name: NSNotification.Name(key: .UpdateSongMenu), object: nil)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self

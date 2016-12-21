@@ -17,7 +17,7 @@ protocol LibraryAccessHelper {
     func response() throws -> Response
 }
 
-struct AlbumsRequest: LibraryAccessHelper {
+struct MediaLibraryRequest: LibraryAccessHelper {
     
     typealias Response = List<Album>
     

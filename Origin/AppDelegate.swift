@@ -24,39 +24,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let player = AudioPlayer.shared
     
     override init() {
-        // firebase初期化
+        super.init()
+        // firebase initialization
         FIRApp.configure()
-        // オフライン永続化
+        // off line persistence
         FIRDatabase.database().persistenceEnabled = true
+        // Permit remote control
+        initRemoteControl()
+        // Task: Interrupption processing
     }
     
-    // 初回起動時実行
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        // Get unique ID
         let uuid = UserDefaults.standard.string(forKey: "uuid")
-        if uuid != nil {
-            print("uuid:"+uuid!)
-        }else{
-            // uidを端末に記録
+        if uuid == nil {
             UserDefaults.standard.set(NSUUID().uuidString,forKey:"uuid")
         }
         
-        // ライブラリーの曲をRealmに保存            
-        let Songs = realm.objects(UserSong.self)
-        if Songs.count == 0 {
-            authorize()
+        let usersongs = realm.objects(UserSong.self)
+        if usersongs.count == 0 {
+            setMediaLibrary()
         }
         
-        // デフォルトのプレビューデータをRealmに保存
-        let songs = realm.objects(OtherSong.self)
-        if songs.count == 0 {
-            setAllRss()
-            //setGenreRss()
+        let othersongs = realm.objects(OtherSong.self)
+        if othersongs.count == 0 {
+            setAllRss()//setGenreRss()
         }
         return true
     }
     
-    func authorize() {
+    func setMediaLibrary() {
         if #available(iOS 9.3, *) {
             let authorizationStatus = MPMediaLibrary.authorizationStatus()
             switch authorizationStatus {
@@ -72,57 +70,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             case .notDetermined:
                 MPMediaLibrary.requestAuthorization({[weak self] (newAuthorizationStatus: MPMediaLibraryAuthorizationStatus) in
-                    self?.authorize()
+                    self?.setMediaLibrary()
                 })
             case .denied, .restricted:
                 return
             }
         }
         if library.count != 0 {
-            let albumReq = AlbumsRequest()
-            let albums = try! albumReq.response()
-            realm = try! Realm()// 入れないとエラー
+            let req = MediaLibraryRequest()
+            let albums = try! req.response()
+            realm = try! Realm() // *
             try! self.realm.write {
                 self.realm.add(albums)
             }
-            setArtist()
+            setMediaLibrarySubMenu()
         } else {
             Progress.stopProgress()
             Progress.showAlert("ライブラリーに曲がありません")
         }
-        nc.post(name: NSNotification.Name(rawValue: "setLibrary"), object: nil)
-        nc.post(name: NSNotification.Name(rawValue: "setup"), object: nil)
-        DispatchQueue.main.async {
-            self.player.setup()
-        }
+        // load table
+        nc.post(name: NSNotification.Name(key: .UpdateSongMenu), object: nil)
+        // splash view open
+        nc.post(name: NSNotification.Name(key: .Open), object: nil)
     }
     
-    func setArtist() {
+    func setMediaLibrarySubMenu() {
         var artistNameArray:[String] = []
         let albums = self.realm.objects(Album.self)
         for album in albums {
+            // bound same name artist
             if !artistNameArray.contains(album.artistName) {
                 artistNameArray.append(album.artistName)
             }
         }
         for artistName in artistNameArray {
             let artist = Artist()
-            let objects = self.realm.objects(Album.self).filter("artistName = '\(artistName)'") // Change: 12/09 by Gen
+            let objects = self.realm.objects(Album.self).filter("artistName = '\(artistName)'")
             artist.albums.append(objectsIn: objects)
             artist.artistName = artistName
             try! self.realm.write {
                 self.realm.add(artist)
             }
         }
-        nc.post(name: NSNotification.Name(rawValue: "setArtist"), object: nil)
+        // load table
+        nc.post(name: NSNotification.Name(key: .UpdateAlbumMenu), object: nil)
+        nc.post(name: NSNotification.Name(key: .UpdateArtistMenu), object: nil)
     }
     
     func setAllRss() {
         let request = AllRssRequest()
         request.getRss()
-        nc.post(name: NSNotification.Name(rawValue: "setRss"), object: nil)
+        // load menu
+        nc.post(name: NSNotification.Name(key: .UpdateRssMenu), object: nil)
     }
-    
+    /*
     func setGenreRss() {
         let genreDict = ["Pop":"14","R&B/Soul":"15","Dance":"17","Hip-Hop/Rap":"18","Alternative":"20","Rock":"21","J-POP":"27"]
         for genre in genreDict.values {
@@ -146,8 +147,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("error")
             }
         }
-    }
+    }*/
 
+    func initRemoteControl() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        //self.becomeFirstResponder()
+        do  {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            //print("AVAudioSession Category Playback OK")
+            do {
+                try AVAudioSession.sharedInstance().setActive(true)
+                //print("AVAudioSession is Active")
+            } catch {
+                print(error.localizedDescription)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

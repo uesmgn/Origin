@@ -70,6 +70,28 @@ extension UIImage {
     }
 }
 
+extension NSNotification.Name {
+    
+    enum key:String {
+        case Open = "origin.notification.name.open.window"
+        case UpdateSongMenu = "origin.notification.name.update.song.menu"
+        case UpdateArtistMenu = "origin.notification.name.update.artist.menu"
+        case UpdateAlbumMenu = "origin.notification.name.update.album.menu"
+        case UpdateHistoryMenu = "origin.notification.name.update.history.menu"
+        case UpdateRssMenu = "origin.notification.name.update.rss.menu"
+        case SkipToNextSong = "origin.notification.name.skip.to.next.item"
+        case SkipToPreviousSong = "origin.notification.name.skip.to.previous.item"
+        case CurrentItemDidChange = "origin.notification.name.current.item.did.change"
+        case PlayerRateDidChange = "origin.notification.name.player.rate.did.change"
+        case PlayerSetup = "origin.notification.name.player.setup"
+        case UpdateCell = "origin.notification.name.update.cell"
+    }
+    
+    init(key: key) {
+        self = NSNotification.Name(rawValue: key.rawValue)
+    }
+}
+
 extension UIButton {
     
     func know() {

@@ -18,13 +18,13 @@ class AudioPlayer: NSObject {
     // MARK: Types
    
     /// Notification that is posted when the `skipToNextItem()` is called.
-    static let nextTrackNotification = Notification.Name("nextTrackNotification")
+    static let nextTrackNotification = Notification.Name(key: .SkipToNextSong)
     /// Notification that is posted when the `skipToPreviousItem()` is called.
-    static let previousTrackNotification = Notification.Name("previousTrackNotification")
+    static let previousTrackNotification = Notification.Name(key: .SkipToPreviousSong)
     /// Notification that is posted when currently playing `Asset` did change.
-    static let currentAssetDidChangeNotification = Notification.Name("currentItemDidChangeNotification")
+    static let currentAssetDidChangeNotification = Notification.Name(key: .CurrentItemDidChange)
     /// Notification that is posted when the internal AVPlayer rate did change.
-    static let playerRateDidChangeNotification = Notification.Name("playerRateDidChangeNotification")
+    static let playerRateDidChangeNotification = Notification.Name(key: .PlayerRateDidChange)
     /// The progress in percent for the playback of `asset`.  This is marked as `dynamic` so that this property can be observed using KVO.
     dynamic var percentProgress: Float = 0
     /// The total duration in seconds for the `asset`.  This is marked as `dynamic` so that this property can be observed using KVO.
@@ -166,7 +166,7 @@ class AudioPlayer: NSObject {
     /// selected song of library
     var usersong:UserSong? {
         willSet {
-            initRemoteControl()
+            //initRemoteControl()
             queue.cancelAllOperations()
         }
         didSet {
@@ -190,7 +190,7 @@ class AudioPlayer: NSObject {
     /// selected song of iTunes preview
     var othersong:OtherSong? {
         willSet {
-            initRemoteControl()
+            //initRemoteControl()
             pause()
             queue.cancelAllOperations()
         }
@@ -476,24 +476,7 @@ extension AudioPlayer {
 }
 
 extension AudioPlayer: AVAudioPlayerDelegate {
-
-    func initRemoteControl() {
-        UIApplication.shared.beginReceivingRemoteControlEvents()
-        //self.becomeFirstResponder()
-        do  {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            //print("AVAudioSession Category Playback OK")
-            do {
-                try AVAudioSession.sharedInstance().setActive(true)
-                //print("AVAudioSession is Active")
-            } catch {
-                print(error.localizedDescription)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-        
+    
     /// Did finish. Finish means when music ended not when calling stop
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         switch mode {

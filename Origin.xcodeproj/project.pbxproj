@@ -314,6 +314,7 @@
 				B2CC1B271DE6C6AE00356219 /* Main.storyboard */,
 				B28627301DF09E3A007A333D /* MenuViewController.storyboard */,
 				B209F72F1DFBD4E70036AD37 /* GenreViewController.storyboard */,
+				B2CC1B231DE6C6AE00356219 /* AppDelegate.swift */,
 				B2CC1B251DE6C6AE00356219 /* MainViewController.swift */,
 				B2CC1B391DE6C80900356219 /* Origin */,
 				B20C55291DEC00F800C1F4A8 /* TabBarItems */,
@@ -339,7 +340,6 @@
 		B2CC1B391DE6C80900356219 /* Origin */ = {
 			isa = PBXGroup;
 			children = (
-				B2CC1B231DE6C6AE00356219 /* AppDelegate.swift */,
 			);
 			name = Origin;
 			sourceTree = "<group>";

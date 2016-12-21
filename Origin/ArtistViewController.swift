@@ -45,7 +45,7 @@ class ArtistViewController: UITableViewController {
         super.viewDidLoad()
         
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(self.reload(_:)), name: NSNotification.Name(rawValue: "setArtist"), object: nil)
+        nc.addObserver(self, selector: #selector(self.reload(_:)), name: NSNotification.Name(key: .UpdateArtistMenu), object: nil)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
