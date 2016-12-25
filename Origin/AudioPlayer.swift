@@ -12,11 +12,10 @@ import UIKit
 import MediaPlayer
 import RealmSwift
 
-
 class AudioPlayer: NSObject {
-   
+
     // MARK: Types
-   
+
     /// Notification that is posted when the `skipToNextItem()` is called.
     static let nextTrackNotification = Notification.Name(key: .SkipToNextSong)
     /// Notification that is posted when the `skipToPreviousItem()` is called.
@@ -35,9 +34,9 @@ class AudioPlayer: NSObject {
     private var timeObserverToken: Any?
     /// The singleton of the player to share throughout the application.
     static let shared = AudioPlayer()
-    
-    weak var viewController:MainViewController! // Task: revise to notification
-    
+
+    weak var viewController: MainViewController! // Task: revise to notification
+
     /// An enumeration of possible playback states that `AudioPlayer` can be in.
     ///
     /// - Pause(Int): The playback state that `AudioPlayer` is in when a song is selected and being paused.
@@ -49,7 +48,7 @@ class AudioPlayer: NSObject {
     enum Status {
         case Play(Int), Pause(Int), Stop, Loading(Int)
     }
-    
+
     /// An enumeration of possible playback mode that `AudioPlayer` can be in.
     ///
     /// - Shuffle: The playback mode that set after sort playlist at random.
@@ -58,19 +57,19 @@ class AudioPlayer: NSObject {
     enum Mode {
         case Shuffle, Stream, Repeat
     }
-    
+
     /// The playback state that the internal 'player' is in.
     /// - Updated information of song metadata when value is rewritten.
-    var status:Status = .Stop {
+    var status: Status = .Stop {
         didSet {
             self.viewController?.updatePlayinfo()
-            //self.updateGeneralInfo()
+            self.updateGeneralInfo()
         }
     }
-    
+
     /// The playback mode that the internal 'player' is in.
-    var mode:Mode = .Shuffle
-    
+    var mode: Mode = .Shuffle
+
     /// Selected song as an optional tuple．
     func nowPlayingItem() -> (UserSong?, OtherSong?) {
         switch (status) {
@@ -79,10 +78,10 @@ class AudioPlayer: NSObject {
         case .Play(1), .Pause(1), .Loading(1):
             return (nil, othersong)
         default:
-            return (nil,nil)
+            return (nil, nil)
         }
     }
-    
+
     /// Selected song's ID．
     func nowPlayingItemID() -> Int? {
         switch (status) {
@@ -94,7 +93,7 @@ class AudioPlayer: NSObject {
             return nil
         }
     }
-    
+
     /// A Bool for tracking playback state
     func isPlaying() -> Bool {
         if let player = player {
@@ -108,27 +107,27 @@ class AudioPlayer: NSObject {
         }
         return false
     }
-    
+
     // MARK: Initialization
-    
+
     override init() {
         super.init()
-        
+
         // Add the notification observer needed to respond to audio interruptions.
         NotificationCenter.default.addObserver(self, selector: #selector(AudioPlayer.handleAVPlayerItemDidPlayToEndTimeNotification(notification:)), name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
         // Add the Key-Value Observers needed to keep internal state of `AssetPlaybackManager` and `MPNowPlayingInfoCenter` in sync.
        // player.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.new], context: nil)
-    
+
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self, name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
         //player.removeObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), context: nil)
        // player.removeObserver(self, forKeyPath: #keyPath(AVPlayer.rate), context: nil)
     }
-    
+
     // MARK: Properties
-    
+
     /// The instance of AVAudioPlayer that will be used for playback of usersong and othersong.
     var player: AVAudioPlayer!
     /// The instance of `MPNowPlayingInfoCenter` that is used for updating metadata for the currently playing
@@ -144,27 +143,26 @@ class AudioPlayer: NSObject {
     /// Global queues used for other purposes.
     let g_queue = DispatchQueue.global()
     /// A Bool for tracking initial setup state
-    var setuped:Bool = false
-    
+    var setuped: Bool = false
     /// Index of the library song that last played
     var L_Index = 0
     /// Index of the iTunes preview that last played
     var O_Index = 0
     /// Array containing the URL of the library songs in order according to mode
-    var L_Playlist:[String] = []
+    var L_Playlist: [String] = []
     /// Array containing the URL of the iTunes previews in order according to mode
-    var O_Playlist:[String] = []
+    var O_Playlist: [String] = []
     /// Dictionary associating  url and id(PersistentID) of library songs
-    var L_PlaylistDict:[String:Int] = [:]
+    var L_PlaylistDict: [String:Int] = [:]
     /// Dictionary associating  url and id(iTunesID) of iTunes previews
-    var O_PlaylistDict:[String:Int] = [:]
+    var O_PlaylistDict: [String:Int] = [:]
     /// Songs of the library stored in the default order
-    var Library:[UserSong] = []
+    var Library: [UserSong] = []
     /// Songs of the iTunes preview stored in the default order
-    var Other:[OtherSong] = []
-    
+    var Other: [OtherSong] = []
+
     /// selected song of library
-    var usersong:UserSong? {
+    var usersong: UserSong? {
         willSet {
             //initRemoteControl()
             queue.cancelAllOperations()
@@ -186,9 +184,9 @@ class AudioPlayer: NSObject {
             }
         }
     }
-    
+
     /// selected song of iTunes preview
-    var othersong:OtherSong? {
+    var othersong: OtherSong? {
         willSet {
             //initRemoteControl()
             pause()
@@ -215,8 +213,9 @@ class AudioPlayer: NSObject {
 }
 
 extension AudioPlayer {
+
     // MARK: Key-Value Observing Method
-    
+
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         print(keyPath ?? "keypath")
         print(object ?? "object")
@@ -224,13 +223,12 @@ extension AudioPlayer {
         print(context ?? "context")
     }
 
-    
     // MARK: Notification Observing Methods
-    
+
     func handleAVPlayerItemDidPlayToEndTimeNotification(notification: Notification) {
         //player.replaceCurrentItem(with: nil)
     }
-    
+
     // MARK: MPNowPlayingInforCenter Management Methods
 
     func updateGeneralInfo() {
@@ -239,12 +237,13 @@ extension AudioPlayer {
             return
         }
         var nowPlayingInfo = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
-        
+
         var title = ""
         var artist = ""
         var album = ""
-        var artworkData:Data?
-        
+        var rating = ""
+        var artworkData: Data?
+
         switch (status) {
         case .Loading(0):
             fallthrough
@@ -253,6 +252,7 @@ extension AudioPlayer {
                 title = song.title
                 artist = song.artist
                 album = song.album
+                rating = "\(song.rating)"
                 artworkData = song.artwork
             }
         case .Loading(1):
@@ -262,24 +262,54 @@ extension AudioPlayer {
                 title = song.title
                 artist = song.artist
                 album = song.album
+                rating = "\(song.rating)"
             }
         default: break
         }
-        let image = UIImage(data: artworkData!) ?? UIImage(named: "artwork_default")
-        let artwork = MPMediaItemArtwork(boundsSize: (image?.size)!, requestHandler: {  (_) -> UIImage in
+        let image = (artworkData != nil) ? UIImage(data: artworkData!) : UIImage(named: "artwork_default")
+        let artwork = MPMediaItemArtwork(boundsSize: image!.size, requestHandler: {  (_) -> UIImage in
                 return image!
             })
         nowPlayingInfo[MPMediaItemPropertyTitle] = title
-        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = artist + " - " + album
+        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = album
+        nowPlayingInfo[MPMediaItemPropertyArtist] = artist
         nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+        nowPlayingInfo[MPMediaItemPropertyRating] = rating
         nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
+    }
+
+    func updateGeneralPlayback() {
+        guard let player = player else {
+            duration = 0
+            nowPlayingInfoCenter.nowPlayingInfo = nil
+            return
+        }
+        var nowPlayingInfo = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
+
+        duration = Float(player.currentTime)
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.currentTime
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
+        nowPlayingInfo[MPNowPlayingInfoPropertyDefaultPlaybackRate] = player.rate
+
+        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
+
+        switch (status) {
+        case .Pause(0), .Pause(1):
+            pause()
+            //nowPlayingInfoCenter.nowPlayingInfo.
+        case .Play(0), .Play(1):
+            play()
+        default: break
+
+        }
     }
 }
 
 extension AudioPlayer {
-    
+
     // MARK: Private methods.
-    
+
     /// Methods that set default values for the properties to use.
     /// - On first start
     /// - When playback mode changes from shuffle to repeat
@@ -292,14 +322,14 @@ extension AudioPlayer {
         }
         self.L_Playlist = array
         self.L_PlaylistDict = idDict
-        
+
         var l_songs = [UserSong]()
         let l_Response = realm.objects(UserSong.self)
         for result in l_Response {
             l_songs.append(result)
         }
         Library =  l_songs
-        
+
         array.removeAll()
         idDict.removeAll()
         for song in realm.objects(OtherSong.self) {
@@ -308,7 +338,7 @@ extension AudioPlayer {
         }
         self.O_Playlist = array
         self.O_PlaylistDict = idDict
-        
+
         var o_songs = [OtherSong]()
         let o_Response = realm.objects(OtherSong.self)
         for result in o_Response {
@@ -321,7 +351,7 @@ extension AudioPlayer {
         }
         setuped = true
     }
-    
+
     /// Change play list order when playback mode is changed.
     func updatePlaylist() {
         switch (mode) {
@@ -335,7 +365,7 @@ extension AudioPlayer {
         default: setup()
         }
     }
-    
+
     /// Change playback mode
     func updateMode(to mode: Mode) {
         self.mode = mode
@@ -345,31 +375,27 @@ extension AudioPlayer {
 }
 
 extension AudioPlayer {
-    
+
     // MARK: Playback Control Methods.
-    
+
     func prepareToPlay() {
-        guard let player = player else {
-            return
-        }
+        guard let player = player else { return }
         player.prepareToPlay()
         player.delegate = self
         play()
         Progress.stopProgress()
         Progress.stopProgress()
     }
-    
+
     func play() {
-        guard let player = player else {
-            return
-        }
+        guard let player = player else { return }
         m_queue.async {
         self.viewController?.loading(false)
         switch (self.status) {
-        case .Pause(0),.Play(0):
+        case .Pause(0), .Play(0):
             player.play()
             self.status = .Play(0)
-        case .Pause(1),.Play(1):
+        case .Pause(1), .Play(1):
             player.play()
             self.status = .Play(1)
         case .Loading(0):
@@ -384,11 +410,9 @@ extension AudioPlayer {
         self.viewController?.updateToggle()
         }
     }
-    
+
     func pause() {
-        guard let player = player else {
-            return
-        }
+        guard let player = player else { return }
         player.pause()
         switch (status) {
         case .Play(0):
@@ -399,21 +423,20 @@ extension AudioPlayer {
             break
         }
     }
-    
+
     func stop() {
-        guard let player = player else {
-            return
-        }
+        guard let player = player else { return }
         m_queue.async {
             self.status = .Stop
             player.stop()
+            self.player = nil
             self.viewController?.updateToggle()
         }
     }
-    
-    func skipToNextItem(_ i:Int) {
+
+    func skipToNextItem(_ i: Int) {
         switch (status) {
-        case .Pause(0),.Play(0),.Loading(0) :
+        case .Pause(0), .Play(0), .Loading(0) :
             guard incrCurrentIndex(i) else {
                 switch (mode) {
                 case .Shuffle:
@@ -430,7 +453,7 @@ extension AudioPlayer {
             let url = L_Playlist[L_Index]
             let id = L_PlaylistDict[url]!
             usersong = realm.object(ofType: UserSong.self, forPrimaryKey: id)
-        case .Pause(1),.Play(1),.Loading(1):
+        case .Pause(1), .Play(1), .Loading(1):
             guard incrCurrentIndex(i) else {
                 //stop()
                 return // Task:はじめに戻る　or 終了
@@ -442,8 +465,8 @@ extension AudioPlayer {
         default: break
         }
     }
-    
-    func incrCurrentIndex(_ i:Int) -> Bool {
+
+    func incrCurrentIndex(_ i: Int) -> Bool {
         switch (status) {
         case .Play(0), .Pause(0), .Loading(0):
             return (L_Index + i < L_Playlist.count)
@@ -453,10 +476,10 @@ extension AudioPlayer {
             return false
         }
     }
-    
+
     func skipToPreviousItem() {
     }
-    
+    /*
     func currentTime() -> Double {
         if let player = player {
             return player.currentTime
@@ -472,11 +495,16 @@ extension AudioPlayer {
             return "\(min):\(sec)"
         }
         return "0:00"
+    }*/
+
+    func seekTo(_ position: TimeInterval) {
+        guard let player = player else { return }
+        player.currentTime = position
     }
 }
 
 extension AudioPlayer: AVAudioPlayerDelegate {
-    
+
     /// Did finish. Finish means when music ended not when calling stop
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         switch mode {
@@ -486,7 +514,7 @@ extension AudioPlayer: AVAudioPlayerDelegate {
             skipToNextItem(1)
         }
     }
-    
+
     /// Decoding error
     public func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
         print("DECODE ERROR")
@@ -495,5 +523,3 @@ extension AudioPlayer: AVAudioPlayerDelegate {
         }
     }
 }
-
-

@@ -5,7 +5,7 @@
 //  Created by Gen on 2016/12/06.
 //  Copyright © 2016年 Gen. All rights reserved.
 //
-
+/*
 import Foundation
 import UIKit
 import RealmSwift
@@ -17,7 +17,6 @@ class FindViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     
     let realm = try! Realm()
-    var playlist = [FavoriteSong]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,4 +88,4 @@ extension FindViewController {
         }
     }
 }
-
+*/

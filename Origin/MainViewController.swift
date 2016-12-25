@@ -20,9 +20,9 @@ import Firebase
 import RevealingSplashView
 
 class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBarDelegate {
-    
+
     // MARK: Outlet
-    
+
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var miniPlayerView: MiniPlayerView!
     @IBOutlet weak var ratingView: UIView!
@@ -47,20 +47,16 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var radioButton: SpringButton!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
 
-    
-    
     // MARK: Dispatch_queue
-    
+
     /// DispatchQueue for UI
     var m_queue = DispatchQueue.main
     /// BackgroundQueue
     var b_queue = DispatchQueue.global()
-    var revealingSplashView:RevealingSplashView = RevealingSplashView(iconImage: UIImage(image: .Icon),iconInitialSize: CGSize(width: 100, height: 100), backgroundColor: UIColor.black)
-    
-    
-    
+    var revealingSplashView: RevealingSplashView = RevealingSplashView(iconImage: UIImage(image: .Icon), iconInitialSize: CGSize(width: 100, height: 100), backgroundColor: UIColor.black)
+
     // MARK: Properties
-    
+
     weak var containerView: UIView!
     fileprivate let vcArray = [UIViewController]()
     let player = AudioPlayer.shared
@@ -68,27 +64,27 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     var notificationToken: NotificationToken? = nil
     let nc = NotificationCenter.default // Notification Center
     var realm = try! Realm() //Realm
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setNotification()
         setup()
         player.setup()
-        
+
         self.view.addSubview(revealingSplashView)
-        
+
         // open splash view
         let setuped = UserDefaults.standard.bool(forKey: "setuped")
-        if setuped == true  {
+        if setuped == true {
             revealingSplashView.startAnimation()
         }
     }
-    
+
     func setNotification() {
         nc.addObserver(self, selector: #selector(self.set(_:)), name: NSNotification.Name(key: .Open), object: nil)
         nc.addObserver(self, selector: #selector(player.setup), name: NSNotification.Name(key: .PlayerSetup), object: nil)
-       
+
         // Observation　of change in RatedSong
         let results = realm.objects(RatedSong.self)
         notificationToken = results.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
@@ -109,7 +105,7 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
         DispatchQueue.main.async {
             self.revealingSplashView.startAnimation()
         }
-        UserDefaults.standard.set(true,forKey:"setuped")
+        UserDefaults.standard.set(true, forKey:"setuped")
     }
 }
 
@@ -136,7 +132,7 @@ extension MainViewController {
         historyTab.selectedImage = UIImage(named: "history-green-m")?.withRenderingMode(.alwaysOriginal)
         let selectedColor   = UIColor(hex: "4caf50")
         let unselectedColor = UIColor.white
-        let font = UIFont(name:"HelveticaNeue-Light",size:7)
+        let font = UIFont(name:"HelveticaNeue-Light", size:7)
         let attrsNormal = [
             NSForegroundColorAttributeName: unselectedColor,
             NSFontAttributeName: font
@@ -159,9 +155,9 @@ extension MainViewController {
 }
 
 extension MainViewController {
-    
+
     // MARK: Action
-    
+
     @IBAction func tapRadioButton(_ sender: Any) {
         let (usersong, othersong) = player.nowPlayingItem()
         guard (usersong ?? othersong) != nil else { return }
@@ -170,7 +166,7 @@ extension MainViewController {
         Save.known(isKnown)
         nc.post(name: NSNotification.Name(key: .UpdateHistoryMenu), object: nil)
     }
-    
+
     fileprivate func didFinishTouchingCosmos(_ rating: Double) {
         let (usersong, othersong) = self.player.nowPlayingItem()
         guard (usersong ?? othersong) != nil else {
@@ -179,12 +175,12 @@ extension MainViewController {
         Save.rating(rating)
         nc.post(name: NSNotification.Name(key: .UpdateHistoryMenu), object: nil)
     }
-    
+
     // Didplay how to use
     @IBAction func tappedInfo(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapModeButton(_ sender: Any) {
         var image: UIImage?
         switch (player.mode) {
@@ -207,7 +203,7 @@ extension MainViewController {
         // maybe shuffle playlist
         AudioPlayer.shared.updatePlaylist()
     }
-    
+
     @IBAction func tapToggleButton(_ sender: Any) {
         m_queue.async {
             self.toggleButton.animation = "pop"
@@ -224,7 +220,7 @@ extension MainViewController {
             }
         }
     }
-    
+
     @IBAction func tapNextButton(_ sender: Any) {
         m_queue.async {
             self.nextButton.animation = "pop"
@@ -236,7 +232,7 @@ extension MainViewController {
 }
 
 extension MainViewController {
-    
+
     func updatePlayinfo() {
         let (usersong, othersong) = self.player.nowPlayingItem()
         print(self.player.nowPlayingItem())
@@ -273,20 +269,20 @@ extension MainViewController {
         // Task: update playlist table
         self.nc.post(name: NSNotification.Name(key: .UpdateCell), object: nil)
     }
-    
-    func miniplayerHidden(_ hidden:Bool) {
+
+    func miniplayerHidden(_ hidden: Bool) {
         m_queue.async {
             self.miniPlayerView.isHidden = hidden
             self.const.constant = hidden ? -self.miniPlayerView.frame.size.height : 0
         }
     }
-    
-    func loading(_ loading:Bool) {
+
+    func loading(_ loading: Bool) {
         m_queue.async {
             self.activityView.isHidden = !loading
         }
     }
-    
+
     func updateToggle() {
         m_queue.async {
             if self.player.isPlaying() {
@@ -296,12 +292,12 @@ extension MainViewController {
             }
         }
     }
-    
+
     // tab bar selected
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         setUI()
     }
-    
+
     /// 各種UI設定
     func setUI() {
         //tabbar動作設定
@@ -314,7 +310,7 @@ extension MainViewController {
         self.discoverContainer.isHidden = !(tag == 2)
         self.findContainer.isHidden = !(tag == 3)
         self.historyContainer.isHidden = !(tag == 4)
-        
+
         switch tag {
         case 1:
             PageTitle.text = "Library"
@@ -332,7 +328,6 @@ extension MainViewController {
             PageTitle.text = "History"
             containerView = historyContainer
             self.view.sendSubview(toBack: historyContainer)
-            //nc.post(name: NSNotification.Name(key: .UpdateHistoryMenu), object: nil)
         default:
             return
         }
@@ -345,6 +340,5 @@ extension MainViewController {
             const.constant = -miniPlayerView.frame.size.height
         }
     }
-    
-}
 
+}
