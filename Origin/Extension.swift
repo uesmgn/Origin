@@ -50,6 +50,8 @@ extension Array {
 extension UIImage {
     
     enum image: String {
+        case Player_play = "play-2"
+        case Player_pause = "pause-2"
         case Icon = "icon"
         case Shuffle = "shuffle"
         case Repeat = "repeat"

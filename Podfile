@@ -18,6 +18,8 @@ pod 'Alamofire', '~> 4.0'
 pod 'SwiftyJSON'
 pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
 pod 'Cosmos', '~> 7.0'
+pod 'MarqueeLabel/Swift'
+pod 'KDEAudioPlayer', '~> 1.1.0-beta'
 
 target 'Origin' do
 end

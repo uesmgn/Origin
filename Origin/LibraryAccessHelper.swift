@@ -51,7 +51,7 @@ struct MediaLibraryRequest: LibraryAccessHelper {
                 let size = CGSize(width: 100, height: 100)
                 song.artwork = UIImagePNGRepresentation(item.artwork?.image(at: size) ?? UIImage(named: "artwork_default")!)
                 song.rating = 0
-                song.playbackTime = item.beatsPerMinute
+                song.playbackTime = Int(item.playbackDuration)
                 song.trackSource = "\(item.assetURL!)"
                 songs.append(song)
             }

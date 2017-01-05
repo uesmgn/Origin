@@ -9,51 +9,51 @@
 import UIKit
 import CoreData
 import RealmSwift
-import APIKit
 import MediaPlayer
 import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+
     var window: UIWindow?
     var navigationController: UINavigationController?
     let nc = NotificationCenter.default
-    var realm:Realm = try! Realm()
+    var realm: Realm = try! Realm()
     var library = [MPMediaItem]()
-    let player = AudioPlayer.shared
-    
+    let player = AudioManager.shared
+
     override init() {
         super.init()
         // firebase initialization
         FIRApp.configure()
         // off line persistence
         FIRDatabase.database().persistenceEnabled = true
-        // Permit remote control
-        initRemoteControl()
         // Task: Interrupption processing
     }
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+
         // Get unique ID
         let uuid = UserDefaults.standard.string(forKey: "uuid")
         if uuid == nil {
-            UserDefaults.standard.set(NSUUID().uuidString,forKey:"uuid")
+            UserDefaults.standard.set(NSUUID().uuidString, forKey:"uuid")
         }
-        
+
+        // Permit remote control
+        initRemoteControl()
+
         let usersongs = realm.objects(UserSong.self)
         if usersongs.count == 0 {
             setMediaLibrary()
         }
-        
+
         let othersongs = realm.objects(OtherSong.self)
         if othersongs.count == 0 {
-            setAllRss()//setGenreRss()
+            setAllRss()
         }
         return true
     }
-    
+
     func setMediaLibrary() {
         if #available(iOS 9.3, *) {
             let authorizationStatus = MPMediaLibrary.authorizationStatus()
@@ -61,15 +61,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             case .authorized:
                 Progress.start()
                 let query = MPMediaQuery.songs()
-                if query.items?.count == 0  {
-                    self.library = []
-                } else {
+                if query.items?.count != 0 {
                     for item in query.items! {
                         library.append(item)
                     }
                 }
             case .notDetermined:
-                MPMediaLibrary.requestAuthorization({[weak self] (newAuthorizationStatus: MPMediaLibraryAuthorizationStatus) in
+                MPMediaLibrary.requestAuthorization({[weak self] (_) in
                     self?.setMediaLibrary()
                 })
             case .denied, .restricted:
@@ -78,45 +76,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         if library.count != 0 {
             let req = MediaLibraryRequest()
-            let albums = try! req.response()
+            let res = try! req.response()
             realm = try! Realm() // *
             try! self.realm.write {
-                self.realm.add(albums)
+                self.realm.add(res)
             }
-            setMediaLibrarySubMenu()
+            var artistNameArray: [String] = []
+            let albums = self.realm.objects(Album.self)
+            for album in albums {
+                // bound same name artist
+                if !artistNameArray.contains(album.artistName) {
+                    artistNameArray.append(album.artistName)
+                }
+            }
+            for artistName in artistNameArray {
+                let artist = Artist()
+                let objects = self.realm.objects(Album.self).filter("artistName = '\(artistName)'")
+                artist.albums.append(objectsIn: objects)
+                artist.artistName = artistName
+                try! self.realm.write {
+                    self.realm.add(artist)
+                }
+            }
         } else {
             Progress.stopProgress()
             Progress.showAlert("ライブラリーに曲がありません")
         }
         // load table
         nc.post(name: NSNotification.Name(key: .UpdateSongMenu), object: nil)
+        nc.post(name: NSNotification.Name(key: .UpdateAlbumMenu), object: nil)
+        nc.post(name: NSNotification.Name(key: .UpdateArtistMenu), object: nil)
         // splash view open
         nc.post(name: NSNotification.Name(key: .Open), object: nil)
     }
-    
-    func setMediaLibrarySubMenu() {
-        var artistNameArray:[String] = []
-        let albums = self.realm.objects(Album.self)
-        for album in albums {
-            // bound same name artist
-            if !artistNameArray.contains(album.artistName) {
-                artistNameArray.append(album.artistName)
-            }
-        }
-        for artistName in artistNameArray {
-            let artist = Artist()
-            let objects = self.realm.objects(Album.self).filter("artistName = '\(artistName)'")
-            artist.albums.append(objectsIn: objects)
-            artist.artistName = artistName
-            try! self.realm.write {
-                self.realm.add(artist)
-            }
-        }
-        // load table
-        nc.post(name: NSNotification.Name(key: .UpdateAlbumMenu), object: nil)
-        nc.post(name: NSNotification.Name(key: .UpdateArtistMenu), object: nil)
-    }
-    
+
     func setAllRss() {
         let request = AllRssRequest()
         request.getRss()
@@ -151,8 +144,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func initRemoteControl() {
         UIApplication.shared.beginReceivingRemoteControlEvents()
-        //self.becomeFirstResponder()
-        do  {
+        self.becomeFirstResponder()
+        do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             //print("AVAudioSession Category Playback OK")
             do {
@@ -200,11 +193,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          error conditions that could cause the creation of the store to fail.
         */
         let container = NSPersistentContainer(name: "Origin")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
+
                 /*
                  Typical reasons for an error here include:
                  * The parent directory does not exist, cannot be created, or disallows writing.
@@ -234,17 +227,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+
     lazy var applicationDocumentsDirectory: NSURL = {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count-1] as NSURL
     }()
-    
+
     lazy var managedObjectModel: NSManagedObjectModel = {
         let modelURL = Bundle.main.url(forResource: "Origin", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
-    
+
     lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         // Create the coordinator and store
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
@@ -262,7 +255,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
             abort()
         }
-        
+
         return coordinator
     }()
     lazy var managedObjectContext: NSManagedObjectContext = {
@@ -272,6 +265,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return managedObjectContext
     }()
 
-
 }
-

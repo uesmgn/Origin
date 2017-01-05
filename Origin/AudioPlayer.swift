@@ -5,7 +5,7 @@
 //  Created by Gen on 2016/12/03.
 //  Copyright © 2016年 Gen. All rights reserved.
 //
-
+/*
 import Foundation
 import AVFoundation
 import UIKit
@@ -21,21 +21,13 @@ class AudioPlayer: NSObject {
     /// Notification that is posted when the `skipToPreviousItem()` is called.
     static let previousTrackNotification = Notification.Name(key: .SkipToPreviousSong)
     /// Notification that is posted when currently playing `Asset` did change.
-    static let currentAssetDidChangeNotification = Notification.Name(key: .CurrentItemDidChange)
+    static let currentItemDidChangeNotification = Notification.Name(key: .CurrentItemDidChange)
     /// Notification that is posted when the internal AVPlayer rate did change.
     static let playerRateDidChangeNotification = Notification.Name(key: .PlayerRateDidChange)
-    /// The progress in percent for the playback of `asset`.  This is marked as `dynamic` so that this property can be observed using KVO.
-    dynamic var percentProgress: Float = 0
-    /// The total duration in seconds for the `asset`.  This is marked as `dynamic` so that this property can be observed using KVO.
-    dynamic var duration: Float = 0
-    /// The current playback position in seconds for the `asset`.  This is marked as `dynamic` so that this property can be observed using KVO.
-    dynamic var playbackPosition: Float = 0
-    /// A token obtained from calling `player`'s `addPeriodicTimeObserverForInterval(_:queue:usingBlock:)` method.
-    private var timeObserverToken: Any?
     /// The singleton of the player to share throughout the application.
     static let shared = AudioPlayer()
 
-    weak var viewController: MainViewController! // Task: revise to notification
+    weak var delegate: MainViewController! // Task: revise to notification
 
     /// An enumeration of possible playback states that `AudioPlayer` can be in.
     ///
@@ -62,7 +54,7 @@ class AudioPlayer: NSObject {
     /// - Updated information of song metadata when value is rewritten.
     var status: Status = .Stop {
         didSet {
-            self.viewController?.updatePlayinfo()
+            self.delegate?.updatePlayinfo()
             self.updateGeneralInfo()
         }
     }
@@ -115,15 +107,11 @@ class AudioPlayer: NSObject {
 
         // Add the notification observer needed to respond to audio interruptions.
         NotificationCenter.default.addObserver(self, selector: #selector(AudioPlayer.handleAVPlayerItemDidPlayToEndTimeNotification(notification:)), name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
-        // Add the Key-Value Observers needed to keep internal state of `AssetPlaybackManager` and `MPNowPlayingInfoCenter` in sync.
-       // player.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.new], context: nil)
 
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
-        //player.removeObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), context: nil)
-       // player.removeObserver(self, forKeyPath: #keyPath(AVPlayer.rate), context: nil)
     }
 
     // MARK: Properties
@@ -164,7 +152,6 @@ class AudioPlayer: NSObject {
     /// selected song of library
     var usersong: UserSong? {
         willSet {
-            //initRemoteControl()
             queue.cancelAllOperations()
         }
         didSet {
@@ -188,7 +175,6 @@ class AudioPlayer: NSObject {
     /// selected song of iTunes preview
     var othersong: OtherSong? {
         willSet {
-            //initRemoteControl()
             pause()
             queue.cancelAllOperations()
         }
@@ -241,7 +227,6 @@ extension AudioPlayer {
         var title = ""
         var artist = ""
         var album = ""
-        var rating = ""
         var artworkData: Data?
 
         switch (status) {
@@ -252,7 +237,6 @@ extension AudioPlayer {
                 title = song.title
                 artist = song.artist
                 album = song.album
-                rating = "\(song.rating)"
                 artworkData = song.artwork
             }
         case .Loading(1):
@@ -262,7 +246,6 @@ extension AudioPlayer {
                 title = song.title
                 artist = song.artist
                 album = song.album
-                rating = "\(song.rating)"
             }
         default: break
         }
@@ -274,36 +257,8 @@ extension AudioPlayer {
         nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = album
         nowPlayingInfo[MPMediaItemPropertyArtist] = artist
         nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
-        nowPlayingInfo[MPMediaItemPropertyRating] = rating
-        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
     }
 
-    func updateGeneralPlayback() {
-        guard let player = player else {
-            duration = 0
-            nowPlayingInfoCenter.nowPlayingInfo = nil
-            return
-        }
-        var nowPlayingInfo = nowPlayingInfoCenter.nowPlayingInfo ?? [String: Any]()
-
-        duration = Float(player.currentTime)
-        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
-        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.currentTime
-        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
-        nowPlayingInfo[MPNowPlayingInfoPropertyDefaultPlaybackRate] = player.rate
-
-        nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
-
-        switch (status) {
-        case .Pause(0), .Pause(1):
-            pause()
-            //nowPlayingInfoCenter.nowPlayingInfo.
-        case .Play(0), .Play(1):
-            play()
-        default: break
-
-        }
-    }
 }
 
 extension AudioPlayer {
@@ -390,7 +345,7 @@ extension AudioPlayer {
     func play() {
         guard let player = player else { return }
         m_queue.async {
-        self.viewController?.loading(false)
+        self.delegate?.loading(false)
         switch (self.status) {
         case .Pause(0), .Play(0):
             player.play()
@@ -407,7 +362,7 @@ extension AudioPlayer {
         default:
             self.status = .Stop
         }
-        self.viewController?.updateToggle()
+        self.delegate?.updateToggle()
         }
     }
 
@@ -430,7 +385,7 @@ extension AudioPlayer {
             self.status = .Stop
             player.stop()
             self.player = nil
-            self.viewController?.updateToggle()
+            self.delegate?.updateToggle()
         }
     }
 
@@ -479,28 +434,6 @@ extension AudioPlayer {
 
     func skipToPreviousItem() {
     }
-    /*
-    func currentTime() -> Double {
-        if let player = player {
-            return player.currentTime
-        }
-        return 0.0
-    }
-    
-    func currentTimeStr() -> String {
-        if let player = player {
-            let origin = player.currentTime
-            let min = Int(origin/60)
-            let sec = NSString(format: "%02d", Int(origin.truncatingRemainder(dividingBy: 60)))
-            return "\(min):\(sec)"
-        }
-        return "0:00"
-    }*/
-
-    func seekTo(_ position: TimeInterval) {
-        guard let player = player else { return }
-        player.currentTime = position
-    }
 }
 
 extension AudioPlayer: AVAudioPlayerDelegate {
@@ -522,4 +455,4 @@ extension AudioPlayer: AVAudioPlayerDelegate {
             print(error.localizedDescription)
         }
     }
-}
+}*/

@@ -13,20 +13,20 @@ import RealmSwift
 
 // ランキング情報取得
 protocol RssRequest {
-    
+
     var method: Alamofire.HTTPMethod { get }
-    
+
     var URLString: String { get }
-    
+
     func getRss()
 }
 
 extension RssRequest {
-    
+
     var method: HTTPMethod {
         return .get
     }
-    
+
     func getRss() {
         let realm = try! Realm()
         Alamofire.request(URLString, method: method, parameters: nil, encoding: JSONEncoding.default, headers: nil)
@@ -42,8 +42,7 @@ extension RssRequest {
                     song.artist = (entry["im:artist"].dictionaryObject?["label"] as? String ?? "unknown")!
                     song.artistUrl = (entry["im:artist"].dictionary?["attributes"]?.dictionaryObject?["href"] as? String ?? "unknown")!
                     song.trackSource  = (entry["link"].arrayValue[1].dictionary?["attributes"]?.dictionaryObject?["href"] as? String ?? "unknown")!
-                    song.playbackTime = (entry["im:duration"].dictionaryObject?["label"] as? Int ?? 0)!
-                    //releaseDate = entry["im:releaseDate"].dictionaryObject?["label"] as? String
+                    song.playbackTime = (entry["link"].arrayValue[1].dictionary?["im:duration"]?.dictionaryObject?["label"] as? Int ?? 30)!
                     song.id = Int(entry["id"].dictionary?["attributes"]?.dictionaryObject?["im:id"] as! String)!
                     song.album = (entry["im:collection"].dictionary?["im:name"]?.dictionaryObject?["label"] as? String ?? "unknown")!
                     song.artwork = (entry["im:image"].arrayValue[0].dictionaryObject?["label"] as? String ?? "unknown")!
@@ -68,16 +67,16 @@ struct AllRssRequest: RssRequest {
 }
 
 // ジャンルごとのランキング
-struct GenreRssRequest:RssRequest {
-    
-    var genre:String
-    var limit:Int
-    
-    init(genre:String, limit:Int = 20) {
+struct GenreRssRequest: RssRequest {
+
+    var genre: String
+    var limit: Int
+
+    init(genre: String, limit: Int = 20) {
         self.genre = genre
         self.limit = limit
     }
-    
+
     var URLString: String {
         return "https://itunes.apple.com/jp/rss/topsongs/genre=\(genre)/limit=\(limit)/json"
     }
