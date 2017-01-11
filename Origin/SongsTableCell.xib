@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="customCell" id="uYU-X2-qQn" userLabel="SongsTableCell" customClass="SongsTableCell" customModule="Origin">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uYU-X2-qQn" id="jHb-OK-7Vj">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="md4-Hp-LU9">
+                        <rect key="frame" x="4" y="4" width="312" height="35"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WUi-1A-z5W">
+                                <rect key="frame" x="0.0" y="0.0" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="WUi-1A-z5W" secondAttribute="height" multiplier="1:1" id="7Jl-jO-tEg"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tHR-DI-py1">
+                                <rect key="frame" x="43" y="0.0" width="10" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="10" id="HQ4-Yk-QYs"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="IoG-dt-9eb">
+                                <rect key="frame" x="61" y="0.0" width="208" height="35"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vPJ-60-kTF">
+                                        <rect key="frame" x="0.0" y="0.0" width="208" height="22.5"/>
+                                        <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="16"/>
+                                        <color key="textColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zlB-gQ-50b">
+                                        <rect key="frame" x="0.0" y="24.5" width="208" height="10.5"/>
+                                        <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="11"/>
+                                        <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rnv-B2-kKr">
+                                <rect key="frame" x="277" y="0.0" width="35" height="35"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hsZ-eK-ZdL" customClass="AudioIndicatorBarsView" customModule="AudioIndicatorBars">
+                                        <rect key="frame" x="5" y="8" width="24" height="18"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="Zut-7v-JKZ"/>
+                                            <constraint firstAttribute="height" constant="18" id="oCO-N1-7h4"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="corner">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="bars">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                                <color key="value" red="0.90942543750000004" green="0.34829589719999998" blue="0.46233785150000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="hsZ-eK-ZdL" firstAttribute="centerY" secondItem="Rnv-B2-kKr" secondAttribute="centerY" id="AsA-c8-mPz"/>
+                                    <constraint firstAttribute="width" secondItem="Rnv-B2-kKr" secondAttribute="height" multiplier="1:1" id="cea-Il-rq7"/>
+                                    <constraint firstItem="hsZ-eK-ZdL" firstAttribute="centerX" secondItem="Rnv-B2-kKr" secondAttribute="centerX" id="vGx-Kl-8o3"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="corner">
+                                        <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="bars">
+                                        <real key="value" value="6"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                        <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="md4-Hp-LU9" secondAttribute="bottom" constant="4" id="Te5-s3-qMg"/>
+                    <constraint firstItem="md4-Hp-LU9" firstAttribute="top" secondItem="jHb-OK-7Vj" secondAttribute="top" constant="4" id="Tf6-hv-6hd"/>
+                    <constraint firstItem="md4-Hp-LU9" firstAttribute="leading" secondItem="jHb-OK-7Vj" secondAttribute="leading" constant="4" id="bf4-pk-wNN"/>
+                    <constraint firstAttribute="trailing" secondItem="md4-Hp-LU9" secondAttribute="trailing" constant="4" id="fCM-Qc-RRl"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="artwork" destination="WUi-1A-z5W" id="tBO-pB-8hW"/>
+                <outlet property="containerView" destination="Rnv-B2-kKr" id="Krq-Wz-kEQ"/>
+                <outlet property="detail" destination="zlB-gQ-50b" id="T9Z-el-ktN"/>
+                <outlet property="indicator" destination="hsZ-eK-ZdL" id="TwT-DW-eVc"/>
+                <outlet property="spaceView" destination="tHR-DI-py1" id="VXc-wF-cAk"/>
+                <outlet property="title" destination="vPJ-60-kTF" id="v1h-pf-8if"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

@@ -12,26 +12,26 @@ import UIKit
 import RealmSwift
 
 class AnimeViewController: D_BasePageMenuController {
-    
+
     class func instantiateFromStoryboard() -> AnimeViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! AnimeViewController
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.loadPlaylistData()
         self.tableView.reloadData()
     }
-    
+
 }
 
 extension AnimeViewController {
     func loadPlaylistData() {
         playlist.removeAll()
-        
-        var Songs: [OtherSong] = []
-        let realmResponse = realm.objects(OtherSong.self).filter("genre == '29'")
+
+        var Songs: [Song] = []
+        let realmResponse = realm.objects(Song.self).filter("genre == '29' && have == false")
         for result in realmResponse {
             Songs.append(result)
         }

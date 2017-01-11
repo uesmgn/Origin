@@ -1,42 +1,35 @@
 import RealmSwift
+import KDEAudioPlayer
 
-class UserSong: Object {
-    dynamic var id = 0
+class Song: Object {
+    dynamic var id = ""
     dynamic var title = ""
     dynamic var artist = ""
     dynamic var album = ""
-    dynamic var artwork:Data?
+    dynamic var artworkUrl: String?
+    dynamic var artworkData: Data?
     dynamic var trackSource = ""
+    dynamic var genre = ""
+    dynamic var have: Bool = false
     dynamic var rating = 0
-    dynamic var isKnown:Bool = true //既知
-    dynamic var playbackTime = 0
-    
-    func playbackTimeStr() -> String {
-        let ms = self.playbackTime
-        return "\(ms/1000/60):\(ms/1000%60)"
-    }
-    override static func primaryKey() -> String? {
-        return "id"
-    }
-}
+    dynamic var isKnown: Bool = false //既知
 
-class OtherSong: Object {
-    dynamic var id = 0
-    dynamic var title = ""
-    dynamic var artist = ""
-    dynamic var artistUrl = ""
-    dynamic var album = ""
-    dynamic var artwork = ""
-    dynamic var trackSource = ""
-    dynamic var genre = "1"
-    dynamic var rating = 0
-    dynamic var isKnown:Bool = false //未知
-    dynamic var playbackTime = 0
-    
-    func playbackTimeStr() -> String {
-        let ms = self.playbackTime
-        return "\(ms/1000/60):\(ms/1000%60)"
+    var audioItem: AudioItem? {
+        let item = AudioItem(mediumQualitySoundURL: URL(string: trackSource))
+        item?.title = title
+        item?.artist = artist
+        item?.album = album
+        item?.artworkUrl = artworkUrl
+        item?.id = id
+        item?.isKnown = isKnown
+        item?.rating = rating
+        item?.have = have
+        if let data = artworkData {
+            item?.artworkImage = UIImage(data: data)
+        }
+        return item
     }
+
     override static func primaryKey() -> String? {
         return "id"
     }
@@ -44,15 +37,15 @@ class OtherSong: Object {
 
 class Album: Object {
     dynamic var id = ""
-    dynamic var artwork:Data?
+    dynamic var artwork = ""
     dynamic var albumTitle = ""
     dynamic var artistName = ""
-    let songs = List<UserSong>()
+    let songs = List<Song>()
 }
 
 class Artist: Object {
     dynamic var id = ""
-    dynamic var artwork:Data?
+    dynamic var artwork = ""
     dynamic var artistName = ""
     var albums = List<Album>()
 }

@@ -9,11 +9,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>ARNTransitionAnimator.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Alamofire.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -29,12 +24,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>CollectionViewShelfLayout.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Cosmos.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>GoogleToolboxForMac.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>HidingNavigationBar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -99,30 +104,10 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>expanding-collection.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>00103D6C821BE85971C563025527BA5D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>054A0307290DB7F01CA51FD0ADA5C319</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>076937B09F78A4943E4F8764A5DE1986</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>1533F149321A5BC3F7398E3A1A1CC6D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -132,7 +117,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1EF06851DEA995DFF47D682BC1319FE5</key>
+		<key>250D99F2844040011F39228A08D0C861</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,27 +147,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4C67514EA7D98658F641516ED8328206</key>
+		<key>49007095969BF6F70819F12CDBFFA494</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>81CB0BF1B3CCD3E4DA7AEBAAA351497A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>83E9C7D8531565CED41FF08D1FC7DAA6</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>88A4351E4A3023134F5F9504E025CF57</key>
+		<key>52193E2D3B4FD58FDEAA19F11D4E0679</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>94DE8D6B6B667535514FAB66D7074F4F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9F2453BEB34E1B8F99BCED16B0321C4D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A241BD493139C3A8A5B651631F4A1003</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -197,12 +187,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D95D433E34F18A7ABDCF8AA89DB881F2</key>
+		<key>C52D5673FEB64004212B3B04EBA27750</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E1C66704B53E83CD5CF8903920ED6A6E</key>
+		<key>CE085D2BFDE571AD7D5B5F974B83B204</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F5A7C08DCBA9FD4444BE32C415E69F50</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F70747D478C4890C7662A31BB3EF762C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

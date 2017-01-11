@@ -12,26 +12,26 @@ import UIKit
 import RealmSwift
 
 class RockViewController: D_BasePageMenuController {
-    
+
     class func instantiateFromStoryboard() -> RockViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! RockViewController
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         self.loadPlaylistData()
         self.tableView.reloadData()
     }
-    
+
 }
 
 extension RockViewController {
     func loadPlaylistData() {
         playlist.removeAll()
-        var Songs: [OtherSong] = []
-        let realmResponse = realm.objects(OtherSong.self).filter("genre == '21'")
+        var Songs: [Song] = []
+        let realmResponse = realm.objects(Song.self).filter("genre == '21' && have == false")
         for result in realmResponse {
             Songs.append(result)
         }

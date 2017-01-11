@@ -8,31 +8,31 @@
 
 import Foundation
 import SVProgressHUD
-
+import KDEAudioPlayer
 
 class Progress {
-    class func start(){
+    class func start() {
         SVProgressHUD.setFont(UIFont(name: "HelveticaNeue-Light", size: 14))
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 180))
         SVProgressHUD.show(withStatus: "Loading...")
     }
-    
-    class func showProgressWithMessage(_ message:String){
+
+    class func showProgressWithMessage(_ message: String) {
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setBackgroundColor(UIColor.darkGray)
         SVProgressHUD.show(withStatus: message)
     }
-    
+
     class func showProgress() {
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.show()
     }
-    
-    class func stopProgress(){
+
+    class func stopProgress() {
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.dismiss()
     }
-    
+
     class func showMessageWithRating(_ rating: Double) {
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
@@ -46,7 +46,7 @@ class Progress {
             SVProgressHUD.show(UIImage(image: .Like), status: "Like")
         }
     }
-    
+
     class func showMessageWithKnown(_ isKnown: Bool) {
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
@@ -57,29 +57,31 @@ class Progress {
             SVProgressHUD.show(UIImage(image: .Question), status: "Unknown")
         }
     }
-    
-    class func  showWithMode(_ mode:AudioPlayer.Mode) {
+
+    class func  showWithMode(_ mode: AudioPlayerMode) {
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         switch (mode) {
-        case .Shuffle:
+        case AudioPlayerMode.shuffle:
             SVProgressHUD.show(UIImage(image: .Shuffle), status: "Shuffle Mode")
-        case .Repeat:
+        case AudioPlayerMode.repeat:
             SVProgressHUD.show(UIImage(image: .Repeat), status: "Repeat Mode")
-        case .Stream:
+        case AudioPlayerMode.repeatAll:
             SVProgressHUD.show(UIImage(image: .Stream), status: "Streaming Mode")
+        case AudioPlayerMode.normal:
+            SVProgressHUD.show(UIImage(image: .Stream), status: "Normal Mode")
         }
     }
-    
-    class func showMessage(_ message:String) {
+
+    class func showMessage(_ message: String) {
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
         SVProgressHUD.setFadeOutAnimationDuration(0.3)
         SVProgressHUD.showSuccess(withStatus: message)
     }
-    
-    class func showAlert(_ message:String) {
+
+    class func showAlert(_ message: String) {
         SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: 0, vertical: 0))
         SVProgressHUD.setFont(UIFont(name: "HelveticaNeue-Light", size: 14))
         SVProgressHUD.setMinimumDismissTimeInterval(0.1)
@@ -87,5 +89,3 @@ class Progress {
         SVProgressHUD.showInfo(withStatus: message)
     }
 }
-
-    

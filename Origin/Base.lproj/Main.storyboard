@@ -78,7 +78,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="513"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8J-jc-LbG" customClass="MiniPlayerView" customModule="Origin" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8J-jc-LbG" customClass="PlayerView" customModule="Origin" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="513" width="375" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -108,7 +108,7 @@
                     <connections>
                         <outlet property="PageTitle" destination="viH-3G-56R" id="bde-OD-RIM"/>
                         <outlet property="containerView" destination="vlQ-xC-7if" id="MbA-LF-FXS"/>
-                        <outlet property="miniPlayerView" destination="v8J-jc-LbG" id="659-cc-wqH"/>
+                        <outlet property="playerView" destination="v8J-jc-LbG" id="5oT-Hh-lJA"/>
                         <outlet property="tab1" destination="Ddp-RJ-uY3" id="9ss-fQ-5qD"/>
                         <outlet property="tab2" destination="NWF-M9-6zV" id="oV7-gN-sTM"/>
                         <outlet property="tab3" destination="u3b-Gt-NZm" id="JU7-BA-a8r"/>

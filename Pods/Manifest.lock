@@ -2,11 +2,10 @@ PODS:
   - Alamofire (4.2.0)
   - APIKit (3.1.0):
     - Result (~> 3.0)
-  - ARNTransitionAnimator (2.0.3)
   - AudioIndicatorBars (0.0.1)
   - BTNavigationDropdownMenu (0.4.1)
+  - CollectionViewShelfLayout (0.6.0)
   - Cosmos (7.0.0)
-  - expanding-collection (1.0.4)
   - Firebase (3.10.0):
     - Firebase/Core (= 3.10.0)
   - Firebase/Core (3.10.0):
@@ -33,6 +32,7 @@ PODS:
   - GoogleToolboxForMac/Defines (2.1.0)
   - GoogleToolboxForMac/NSData+zlib (2.1.0):
     - GoogleToolboxForMac/Defines (= 2.1.0)
+  - HidingNavigationBar (1.0.0)
   - KDEAudioPlayer (1.1.0-beta)
   - MarqueeLabel/Swift (3.0.1)
   - PagingMenuController (2.0.0)
@@ -53,13 +53,13 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - APIKit (~> 3.0)
-  - ARNTransitionAnimator
   - AudioIndicatorBars (~> 0.0.1)
   - BTNavigationDropdownMenu (from `https://github.com/PhamBaTho/BTNavigationDropdownMenu.git`, branch `swift-3.0`)
+  - CollectionViewShelfLayout
   - Cosmos (~> 7.0)
-  - expanding-collection (~> 1.0.3)
   - Firebase
   - Firebase/Database
+  - HidingNavigationBar (~> 1.0)
   - KDEAudioPlayer (~> 1.1.0-beta)
   - MarqueeLabel/Swift
   - PagingMenuController
@@ -89,11 +89,10 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
   APIKit: e9fddf34a1b2786e7c8d9079c9df6ef278749b23
-  ARNTransitionAnimator: 51c63c904e61435d1ff741722ec49819cd38fc4f
   AudioIndicatorBars: bbf11d3589bb4456a47ff023ba6cdb057d01d488
   BTNavigationDropdownMenu: 093f3cbfad1572f2c222bdf8d17584d1e13380d4
+  CollectionViewShelfLayout: 33215957cbb3b33e42c24137f1e898c0018f3fb3
   Cosmos: 2c8299147138758f6ebbb247cf1aeed77998bdf9
-  expanding-collection: be78b5822d7382d3da02b52d52273f4661567a64
   Firebase: 387f37c7dca894a02708da9ff35ba147040eae9e
   FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
   FirebaseCore: 1e383fdfe37b6b5d6ff88e84204bdee30276af0f
@@ -102,6 +101,7 @@ SPEC CHECKSUMS:
   GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
+  HidingNavigationBar: 170dd21df8e89c465c01f047d4306778d1ce304c
   KDEAudioPlayer: ebb0fdd5d1a85c84cbaf242cd1bd3bd6e9c4eb44
   MarqueeLabel: 80ba85d2b76a9f5fa6c13de337db80bcd94feb1d
   PagingMenuController: 60602bfb5421d6536c1e3097baeed601dec1d85b
@@ -114,6 +114,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: bfde85ed6c573ea802b9cb37894ed9b629034f1b
   SwiftyJSON: 38a8ea2006779c0fc4c310cb2ee8195327740faf
 
-PODFILE CHECKSUM: 7171c0ac740404458dc5fbe86478abcf8157d2cd
+PODFILE CHECKSUM: db257d9aa1ed9c9da56e424a63fbf03bf893a3a2
 
 COCOAPODS: 1.2.0.beta.1

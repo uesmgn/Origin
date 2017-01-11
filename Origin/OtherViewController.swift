@@ -11,28 +11,28 @@ import UIKit
 import RealmSwift
 
 class OtherViewController: D_BasePageMenuController {
-    
+
     class func instantiateFromStoryboard() -> OtherViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! OtherViewController
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         self.loadPlaylistData()
         self.tableView.reloadData()
     }
-    
+
 }
 
 extension OtherViewController {
     func loadPlaylistData() {
         self.playlist.removeAll()
         //["Pop":"14","R&B/Soul":"15","Dance":"17","Hip-Hop/Rap":"18","Alternative":"20","Rock":"21","J-POP":"27"]
-        var Songs: [OtherSong] = []
-        let predicate = NSPredicate(format: "NOT (genre IN %@)", ["14","17","18","20","21","27","29"])
-        let realmResponse = realm.objects(OtherSong.self).filter(predicate)
+        var Songs: [Song] = []
+        let predicate = NSPredicate(format: "NOT (genre IN %@)  AND (have == false)", ["14", "17", "18", "20", "21", "27", "29"])
+        let realmResponse = realm.objects(Song.self).filter(predicate)
         for result in realmResponse {
             Songs.append(result)
         }

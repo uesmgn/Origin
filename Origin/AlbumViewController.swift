@@ -14,9 +14,8 @@ import MediaPlayer
 class AlbumViewController: UITableViewController {
 
     let realm = try! Realm()
-    var sectionNameArray: [String] = []
-    var sectionElement: [[UserSong]] = []
-    let player = AudioPlayer.shared
+    var albumDict: [Album:[Song]] = [:]
+    let shared = AudioManager.shared
 
     class func instantiateFromStoryboard() -> AlbumViewController {
         let storyboard = UIStoryboard(name: "MenuViewController", bundle: nil)
@@ -33,7 +32,7 @@ class AlbumViewController: UITableViewController {
 
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        reloadTable()
+        loadTable()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -44,34 +43,33 @@ class AlbumViewController: UITableViewController {
         //playlist.removeAll()
         // メインスレッドで実行しないとエラー
         DispatchQueue.main.async {
-            let realmResponse = self.realm.objects(Album.self)
-            if realmResponse.count == 0 {
-                Progress.stopProgress()
-                Progress.showAlert("楽曲が読み込めませんでした")
-            }
-            for results in realmResponse {
-                let albumTitle = results.albumTitle
-                var resultArray: [UserSong] = []
-                for result in results.songs {
-                    resultArray.append(result)
+            let sections = [Section]()
+            if albumDict.count != 0 {
+                for dict in albumDict {
+                    sections.append(Section(name: dict.key.albumTitle, items: dict.value))
                 }
-                let songs = resultArray
-                self.sections.append(Section(name: albumTitle, items: songs))
+                self.sections = sections
+            } else {
+                self.loadTable()
             }
             self.tableView.reloadData()
         }
     }
-    func reloadTable() {
+
+    func loadTable() {
         // ユーザライブラリの曲をlibraryに格納
-        let realmResponse = realm.objects(Album.self)
+        let realmResponse = self.realm.objects(Album.self)
+        if realmResponse.count == 0 {
+            Progress.stopProgress()
+            Progress.showAlert("楽曲が読み込めませんでした")
+        }
         for results in realmResponse {
-            let albumTitle = results.albumTitle
-            var resultArray: [UserSong] = []
+            var songs: [Song] = []
             for result in results.songs {
-                resultArray.append(result)
+                songs.append(result)
             }
-            let songs = resultArray
-            self.sections.append(Section(name: albumTitle, items: songs))
+            albumDict[results] = songs
+            self.sections.append(Section(name: results.albumTitle, items: songs))
         }
         self.tableView.reloadData()
     }
@@ -92,11 +90,12 @@ extension AlbumViewController {
 
     // Cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell? ?? UITableViewCell(style: .default, reuseIdentifier: "cell")
-        let song = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
-        cell.textLabel?.text = song.title
-        cell.detailTextLabel?.text = song.album
-        cell.imageView?.image = UIImage(data: song.artwork!)
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: "songstablecell", for: indexPath) as! SongsTableCell
+        if let song = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row] {
+            cell.set(item: song)
+            cell.currentItem = shared.currentItem
+        }
         return cell
     }
 
@@ -105,13 +104,9 @@ extension AlbumViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let player = AudioPlayer.shared
-        if player.isPlaying() {
-            player.pause()
+        if let song = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row] {
+            shared.play(song)
         }
-        let song = sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).row]
-        player.usersong = song
-        player.play()
     }
 
     // Header

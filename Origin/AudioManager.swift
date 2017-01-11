@@ -1,20 +1,33 @@
 //
 //  AudioManager.swift
-//  Origin
+//  Origin2.0
 //
-//  Created by Gen on 2017/01/05.
+//  Created by Gen on 2017/01/07.
 //  Copyright © 2017年 Gen. All rights reserved.
 //
 
 import Foundation
 import AVFoundation
 import KDEAudioPlayer
+import RealmSwift
 
 class AudioManager: NSObject, AudioPlayerDelegate {
 
-    static let shared = Audiomanager()
+    static let shared = AudioManager()
+
+    weak var delegate: MainViewController?
+    weak var controll: PlayerView?
 
     var player = AudioPlayer()
+
+    override init() {
+        super.init()
+        player.delegate = self
+    }
+
+    func initiarize() {
+        player.mode = .repeatAll
+    }
 
     var currentItem: AudioItem! {
         didSet {
@@ -26,19 +39,13 @@ class AudioManager: NSObject, AudioPlayerDelegate {
     }
 
     var currentIndex = 0
-
     var playlist: [AudioItem]?
 
-    func play(_ item: AudioItem? = nil) {
-        guard let item = item else {
+    func play(_ audioitem: AudioItem? = nil) {
+        guard let item = audioitem else {
             if let item = player.currentItem {
                 // 一時停止中の曲
-                if let playlist = playlist {
-                    player.play(items: playlist, startAtIndex: playlist.index(of: item)!)
-                } else {
-                    player.play(item: item)
-                }
-                self.currentItem = item
+                player.resume()
             }
             return
         }
@@ -48,7 +55,6 @@ class AudioManager: NSObject, AudioPlayerDelegate {
         } else {
             player.play(item: item)
         }
-        self.currentItem = item
     }
 
     func pause() {
@@ -69,7 +75,7 @@ class AudioManager: NSObject, AudioPlayerDelegate {
         player.previous()
     }
 
-    func changeModeTo(_ mode: AudioPlayerMode) {
+    private func changeModeTo(_ mode: AudioPlayerMode) {
         switch (mode) {
         case AudioPlayerMode.normal:
             player.mode = .normal
@@ -82,6 +88,7 @@ class AudioManager: NSObject, AudioPlayerDelegate {
         default:
             break
         }
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateplaylist"), object: nil)
     }
 
     /// mode cycle: normal -> shuffle -> repeatAll -> repeat ->
@@ -89,13 +96,13 @@ class AudioManager: NSObject, AudioPlayerDelegate {
         let mode = self.player.mode
         switch (mode) {
         case AudioPlayerMode.normal:
+            fallthrough
+        case AudioPlayerMode.repeatAll:
             changeModeTo(.shuffle)
         case AudioPlayerMode.shuffle:
-            changeModeTo(.repeatAll)
-        case AudioPlayerMode.repeatAll:
             changeModeTo(.repeat)
         case AudioPlayerMode.repeat:
-            changeModeTo(.normal)
+            changeModeTo(.repeatAll)
         default:
             break
         }
@@ -109,11 +116,22 @@ class AudioManager: NSObject, AudioPlayerDelegate {
 
     func audioPlayer(_ audioPlayer: AudioPlayer, didChangeStateFrom from: AudioPlayerState,
                      to state: AudioPlayerState) {
-
+        // セルのindicatorの状態を変化
+        delegate?.updateCell()
+        if state == .playing || state == .paused { controll?.changeState(state) }
     }
 
     func audioPlayer(_ audioPlayer: AudioPlayer, willStartPlaying item: AudioItem) {
-
+        // セルのcurrentItemを変化
+        if let playlist = playlist {
+            if playlist.contains(item) {
+                delegate?.updateCell(item)
+                controll?.currentItem = item
+                currentItem = item
+                currentIndex = playlist.index(of: item) ?? 0
+                controll?.updateMetadata()
+            }
+        }
     }
 
     func audioPlayer(_ audioPlayer: AudioPlayer, didUpdateProgressionTo time: TimeInterval, percentageRead: Float) {

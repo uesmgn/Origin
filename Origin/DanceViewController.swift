@@ -12,27 +12,27 @@ import UIKit
 import RealmSwift
 
 class DanceViewController: D_BasePageMenuController {
-    
+
     class func instantiateFromStoryboard() -> DanceViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! DanceViewController
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         self.loadPlaylistData()
         self.tableView.reloadData()
     }
-    
+
 }
 
 extension DanceViewController {
     func loadPlaylistData() {
         playlist.removeAll()
-        
-        var Songs: [OtherSong] = []
-        let realmResponse = realm.objects(OtherSong.self).filter("genre == '17'")
+
+        var Songs: [Song] = []
+        let realmResponse = realm.objects(Song.self).filter("genre == '17' && have == false")
         for result in realmResponse {
             Songs.append(result)
         }

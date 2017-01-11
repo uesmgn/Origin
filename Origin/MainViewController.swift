@@ -25,21 +25,19 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
     @IBOutlet weak var tab4: UITabBarItem!
     @IBOutlet weak var PageTitle: UILabel!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var miniPlayerView: MiniPlayerView!
-
-    var revealingSplashView: RevealingSplashView = RevealingSplashView(iconImage: UIImage(image: .Icon), iconInitialSize: CGSize(width: 100, height: 100), backgroundColor: UIColor.black)
+    @IBOutlet weak var playerView: PlayerView!
 
     // MARK: Properties
+    let revealingSplashView: RevealingSplashView = RevealingSplashView(iconImage: UIImage(image: .Icon), iconInitialSize: CGSize(width: 100, height: 100), backgroundColor: UIColor.black)
     let vcArray = [UIViewController]()
-    let player = AudioPlayer.shared
+    let shared = AudioManager.shared
+    let history = HistoryViewController.shared
     let nc = NotificationCenter.default // Notification Center
     var realm = try! Realm() //Realm
     var vc1: HomeViewController?
     var vc2: DiscoverViewController?
     var vc3: FindViewController?
     var vc4: HistoryViewController?
-
-    let history = HistoryViewController.shared
     var notificationToken: NotificationToken? = nil
 
     override func viewDidLoad() {
@@ -48,12 +46,13 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
         self.view.addSubview(revealingSplashView)
 
         tabBar.delegate = self
-        player.delegate = self
+        shared.delegate = self
+        playerView.didChangeKnown = didChangeKnown
+        playerView.didFinishRating = didFinishRating
 
         notificationInit()
-        miniPlayerInit()
         tabbarInit()
-        player.setup()
+        shared.initiarize()
 
         let setuped = UserDefaults.standard.bool(forKey: "setuped")
         if setuped == true {
@@ -61,28 +60,15 @@ class MainViewController: UIViewController, UIGestureRecognizerDelegate, UITabBa
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-
-    }
-
-    func set(_ notify: NSNotification) {
-        Progress.stopProgress()
-        DispatchQueue.main.async {
-            self.revealingSplashView.startAnimation()
+    override func remoteControlReceived(with event: UIEvent?) {
+        if let event = event {
+            shared.player.remoteControlReceived(with: event)
         }
-        UserDefaults.standard.set(true, forKey:"setuped")
     }
-
-    deinit { notificationToken?.stop() }
-}
-
-extension MainViewController {
 
     func notificationInit() {
         nc.addObserver(self, selector: #selector(self.set(_:)), name: NSNotification.Name(key: .Open), object: nil)
-        nc.addObserver(self, selector: #selector(player.setup), name: NSNotification.Name(key: .PlayerSetup), object: nil)
-
+        // RatedSongが更新されたらFirebaseを更新
         let results = realm.objects(RatedSong.self)
         notificationToken = results.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
             switch changes {
@@ -95,13 +81,16 @@ extension MainViewController {
         }
     }
 
-    func miniPlayerInit() {
-        miniPlayerView.didChangeState = tapedToggle
-        miniPlayerView.didChangeKnown = tapedKnown
-        miniPlayerView.didChangeMode = tapedMode
-        miniPlayerView.didFinishRating = didFinishRating
-        miniPlayerView.isHidden = true
+    func set(_ notify: NSNotification) {
+        Progress.stopProgress()
+        DispatchQueue.main.async {
+            self.revealingSplashView.startAnimation()
+        }
+        UserDefaults.standard.set(true, forKey:"setuped")
     }
+}
+
+extension MainViewController {
 
     func tabbarInit() {
         tabBar.barTintColor = UIColor(hex: "1e171a")
@@ -126,7 +115,6 @@ extension MainViewController {
         ]
         UITabBarItem.appearance().setTitleTextAttributes(attrsNormal, for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes(attrsSelected, for: .selected)
-
         vc1 = createVC(name: "HomeViewController") as? HomeViewController
         vc2 = createVC(name: "DiscoverViewController") as? DiscoverViewController
         vc3 = createVC(name: "FindViewController") as? FindViewController
@@ -152,10 +140,9 @@ extension MainViewController {
             displayContentController(content: vc4!, container: containerView)
         default: break
         }
-
     }
 
-    func displayContentController(content: UIViewController, container: UIView) {
+    private func displayContentController(content: UIViewController, container: UIView) {
         addChildViewController(content)
         content.view.frame = container.bounds
         container.addSubview(content.view)
@@ -172,91 +159,13 @@ extension MainViewController {
     }
 
     func didFinishRating(_ rating: Double) {
-        let (usersong, othersong) = self.player.nowPlayingItem()
-        guard (usersong ?? othersong) != nil else { return }
-        Save.rating(rating)
         nc.post(name: NSNotification.Name(key: .UpdateHistoryMenu), object: nil)
     }
 
-    func tapedKnown(_ isKnown: Bool) {
-        let (usersong, othersong) = player.nowPlayingItem()
-        guard (usersong ?? othersong) != nil else { return }
-        Save.known(isKnown)
+    func didChangeKnown(_ isKnown: Bool) {
         nc.post(name: NSNotification.Name(key: .UpdateHistoryMenu), object: nil)
-    }
-
-    func tapedMode(_ mode: MiniPlayerView.Mode) {
-        let (usersong, othersong) = self.player.nowPlayingItem()
-        guard (usersong ?? othersong) != nil else { return }
-        switch (mode) {
-        case .Shuffle:
-            player.updateMode(to: .Shuffle)
-        case .Repeat:
-            player.updateMode(to: .Repeat)
-        case .Stream:
-            player.updateMode(to: .Stream)
-        }
-        AudioPlayer.shared.updatePlaylist()
-    }
-
-    func tapedToggle(_ state: MiniPlayerView.State) {
-        let (usersong, othersong) = self.player.nowPlayingItem()
-        guard (usersong ?? othersong) != nil else { return }
-        switch (state) {
-        case .playing:
-            player.play()
-        case .paused:
-            player.pause()
-        }
     }
 }
 
 extension MainViewController {
-
-    func updatePlayinfo() {
-        let (usersong, othersong) = self.player.nowPlayingItem()
-        print(self.player.nowPlayingItem())
-        switch (player.status) {
-        case .Loading(0):
-            //loading(true)
-            fallthrough
-        case .Pause(0), .Play(0):
-            if let song = usersong {
-                self.miniPlayerView.isHidden = false
-                self.miniPlayerView.title = "   "+song.title+" - "+song.artist+"   "
-                self.miniPlayerView.isKnown = song.isKnown
-                self.miniPlayerView.rating = Double(song.rating)
-            }
-        case .Loading(1):
-            loading(true)
-            fallthrough
-        case .Pause(1), .Play(1):
-            if let song = othersong {
-                self.miniPlayerView.isHidden = false
-                self.miniPlayerView.title = "   "+song.title+" - "+song.artist+"   "
-                self.miniPlayerView.isKnown = song.isKnown
-                self.miniPlayerView.rating = Double(song.rating)
-            } else {
-                print("else")
-            }
-        default:
-            self.miniPlayerView.isHidden = true
-        }
-        // Task: update playlist table
-        self.nc.post(name: NSNotification.Name(key: .UpdateCell), object: nil)
-    }
-
-    func loading(_ loading: Bool) {
-    }
-
-    func updateToggle() {
-        DispatchQueue.main.async {
-            if self.player.isPlaying() {
-                self.miniPlayerView.state = .playing
-            } else {
-                self.miniPlayerView.state = .paused
-            }
-        }
-    }
-
 }

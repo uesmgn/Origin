@@ -12,13 +12,13 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class PopViewController: D_BasePageMenuController{
-    
+class PopViewController: D_BasePageMenuController {
+
     class func instantiateFromStoryboard() -> PopViewController {
         let storyboard = UIStoryboard(name: "GenreViewController", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as! PopViewController
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadPlaylistData()
@@ -29,15 +29,14 @@ class PopViewController: D_BasePageMenuController{
 extension PopViewController {
     func loadPlaylistData() {
         playlist.removeAll()
-        
-        var Songs: [OtherSong] = []
-        let realmResponse = realm.objects(OtherSong.self).filter("genre == '14'")
+
+        var Songs: [Song] = []
+        let realmResponse = realm.objects(Song.self).filter("genre == '14' && have == false")
         for result in realmResponse {
             Songs.append(result)
         }
         self.playlist = Songs//.sorted(by: {$0.0.title < $0.1.title} )
         self.tableView.reloadData()
     }
-    
-}
 
+}

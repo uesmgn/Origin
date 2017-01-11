@@ -5,18 +5,20 @@
 //  Created by Gen on 2016/12/19.
 //  Copyright © 2016年 Gen. All rights reserved.
 //
-
+/*
 import Foundation
 import RealmSwift
 import AVFoundation
 
-class Save:NSObject {
+class Save: NSObject {
 
-    class func known(_ isKnown:Bool) {
+    class func known(_ isKnown: Bool) {
         let realm = try! Realm()
-        var comment:String = ""
-        let (usersong, othersong) = AudioPlayer.shared.nowPlayingItem()
-        if let item = usersong, othersong == nil {
+        var comment: String = ""
+        guard let currentItem = AudioManager.shared.currentItem else {
+            return
+        }
+        if let item = AudioManager.shared.currentItem {
             comment = ((item.isKnown == false) ? "\(item.title)を知っていました":"\(item.title)を知りませんでした")
             let request = SaveRatedSongsRequest(item, item.rating, isKnown)
             guard let song = try! request.response() else { return }
@@ -42,10 +44,10 @@ class Save:NSObject {
             realm.add(record)
         }
     }
-            
-    class func rating(_ rating:Double) {
+
+    class func rating(_ rating: Double) {
         let realm = try! Realm()
-        var comment:String = ""
+        var comment: String = ""
         let (usersong, othersong) = AudioPlayer.shared.nowPlayingItem()
         if let item = usersong, othersong == nil {
             comment = (item.rating == 0) ? "\(item.title)に評価値\(Int(rating))をつけました":"\(item.title)の評価値を\(Int(rating))に更新しました"
@@ -74,3 +76,4 @@ class Save:NSObject {
         }
     }
 }
+*/
